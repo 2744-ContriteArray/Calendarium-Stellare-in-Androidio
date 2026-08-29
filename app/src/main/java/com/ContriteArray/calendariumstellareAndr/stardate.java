@@ -1,5 +1,9 @@
 package com.ContriteArray.calendariumstellareAndr;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class stardate
 {
     /// TODO
@@ -14,7 +18,7 @@ public class stardate
     ///     [] zeroDayJules
     ///         - private date obj
     ///         - 08/13/1970
-    //private string[] datum;
+    private List<String> datum = new ArrayList<String>();
 
     /// TODO
     /// [] define datum
@@ -24,7 +28,18 @@ public class stardate
     ///         [] with gregorian param
     public stardate()
     {
-        //this.datum = [""]*6;
+        // Initialize datum
+        for (int i=0; i<=5; i++)
+        {
+            if(i==3)
+            {
+                this.datum.add(".");
+            }
+            else
+            {
+                this.datum.add("00");
+            }
+        }
     }
 
 
