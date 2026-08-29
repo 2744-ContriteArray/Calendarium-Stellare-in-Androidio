@@ -14,7 +14,7 @@ public class stardate
     ///     [] zeroDayJules
     ///         - private date obj
     ///         - 08/13/1970
-    private string[] datum;
+    //private string[] datum;
 
     /// TODO
     /// [] define datum
@@ -24,7 +24,7 @@ public class stardate
     ///         [] with gregorian param
     public stardate()
     {
-        this.datum = [""]*6;
+        //this.datum = [""]*6;
     }
 
 
