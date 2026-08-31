@@ -3,6 +3,7 @@ package com.ContriteArray.calendariumstellareAndr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.lang.Math;
 
 public class stardate
 {
@@ -51,8 +52,32 @@ public class stardate
     private static String decToHex(int dec)
     {
         String hexa = "";
-        String[] buff = new String[1];
+        ArrayList<String> buff = new ArrayList<String>();
         String[] numLett = new String[] {"A", "B", "C", "D", "E", "F"};
+
+        // math time
+        while(dec > 0)
+        {
+            // if the remainder > 9, it's a letter not 10-16
+            if((dec%16) >= 10)// && ((dec%16) <= 15))
+            {
+                buff.add(numLett[(dec%16)-10]);
+            }
+            else
+            {
+                // remainder <= 9
+                buff.add(String.valueOf(dec%16));
+            }
+
+            // amend dec to reflect dec/16 without remainder as floats
+            dec = Math.floorDiv(dec, 16);
+        }
+
+        // assemble the collected remainders into the hex number
+        for(int i = buff.size()-1; i == 0; i--)
+        {
+            hexa = hexa.concat(buff.get(i));
+        }
 
         return hexa;
     }
