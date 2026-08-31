@@ -9,9 +9,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    private stardate Star_today = new stardate();
+    private stardate Star_today;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +25,31 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView Today_Is = (TextView) findViewById(R.id.Today_is);
-        TextView StarNow = (TextView) findViewById(R.id.NowDate);
+
 
 
     }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        TextView Today_Is = (TextView) findViewById(R.id.Today_is);
+        TextView StarNow = (TextView) findViewById(R.id.NowDate);
+
+        Star_today = new stardate();
+        // get stardate
+        ArrayList<String> unformatTime = Star_today.calcStardate();
+
+        // format the stardate into a string
+        String Stime = "";
+
+        for(String digit: unformatTime)
+        {
+            Stime = Stime.concat(digit);
+        }
+
+        StarNow.setText(Stime);
+    }
+
 }

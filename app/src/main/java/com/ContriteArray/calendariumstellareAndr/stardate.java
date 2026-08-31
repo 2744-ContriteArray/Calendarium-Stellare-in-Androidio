@@ -51,27 +51,7 @@ public class stardate
         }
     }
 
-    /// TODO
-    /// [] define datum
-    /// [] create and set gregorian now variable
-    /// [] call setter for datum
-    public stardate()
-    {
-        // Initialize datum
-        for (int i=0; i<=5; i++)
-        {
-            if(i==3)
-            {
-                this.datum.add(".");
-            }
-            else
-            {
-                this.datum.add("00");
-            }
-        }
 
-        LocalDateTime rightNowGreg = LocalDateTime.now();
-    }
 
     // Purpose: convert decimal integers to hexadecimal strings
     private static String decToHex(int dec)
@@ -167,8 +147,9 @@ public class stardate
 
     public ArrayList<String> calcStardate()
     {
-        ArrayList<String> when = new ArrayList<String>(6);
-        when.add(3, ".");
+        ArrayList<String> when = new ArrayList<>();
+        // THROWS INDEX OUT OF BOUNDS ERROR, INDEX: 3, SIZE: 0
+        //when.add(3, ".");
 
         // Debug printout
         System.out.println("Now in calcDateJ()");
@@ -188,15 +169,16 @@ public class stardate
         // Calculate stellar year and convert to hex
         int StellarYear = (int) Math.floor((H/30 - Y*0.25)/360);
         System.out.println(("Stellar year = floor(("+ H + "/30 - " + Y + "0.25)/360) = " + StellarYear));
-        when.add(0, decToHex(StellarYear));
+        when.add(decToHex(StellarYear));
 
         // Convert days
         int StellarDay = (int) Math.floor(H/30 - Y*0.25)%360;
-        when.add(1, String.valueOf(StellarDay));
+        when.add(String.valueOf(StellarDay));
 
         // Convert hours
         int StellarHour = H%30;
-        when.add(2, String.valueOf(StellarHour));
+        when.add(String.valueOf(StellarHour));
+        when.add(".");
 
         // Format stellar minutes
         if(delta.toMinutes() < 10)
@@ -219,4 +201,26 @@ public class stardate
         return when;
     }
 
+    /// TODO
+    /// [] define datum
+    /// [] create and set gregorian now variable
+    /// [] call setter for datum
+    public stardate()
+    {
+        // Initialize datum
+        for (int i=0; i<=5; i++)
+        {
+            if(i==3)
+            {
+                this.datum.add(".");
+            }
+            else
+            {
+                this.datum.add("00");
+            }
+        }
+
+        //LocalDateTime rightNowGreg = LocalDateTime.now();
+        this.setDatum(this.calcStardate());
+    }
 }
