@@ -194,11 +194,27 @@ public class stardate
         int StellarDay = (int) Math.floor(H/30 - Y*0.25)%360;
         when.add(1, String.valueOf(StellarDay));
 
+        // Convert hours
+        int StellarHour = H%30;
+        when.add(2, String.valueOf(StellarHour));
 
-        // Placeholder assignments
-        when.add(2, "00");
-        when.add(4, "00");
-        when.add(5, "00");
+        // Format stellar minutes
+        if(delta.toMinutes() < 10)
+        {
+            when.add(4, ("0"+String.valueOf(delta.toMinutes())));
+        }
+        else{
+            when.add(4, String.valueOf(delta.toMinutes()));
+        }
+
+        // Format stellar Seconds
+        if(delta.toSeconds() < 10)
+        {
+            when.add(5, ("0"+String.valueOf(delta.toSeconds())));
+        }
+        else{
+            when.add(5, String.valueOf(delta.toSeconds()));
+        }
 
         return when;
     }
