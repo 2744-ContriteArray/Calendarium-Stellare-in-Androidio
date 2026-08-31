@@ -42,5 +42,19 @@ public class stardate
         }
     }
 
+    /// TODO:
+    /// [] while dec > 0: do math
+    ///     [] if the remainder > 9, it's a letter
+    ///     [] else it's < 9 and an int
+    /// [] reassign dec to floor(dec/16)
+    /// [] for i in range(len(buff)-1, 0, -1): hexa += str(buff[i])
+    private static String decToHex(int dec)
+    {
+        String hexa = "";
+        String[] buff = new String[1];
+        String[] numLett = new String[] {"A", "B", "C", "D", "E", "F"};
+
+        return hexa;
+    }
 
 }
