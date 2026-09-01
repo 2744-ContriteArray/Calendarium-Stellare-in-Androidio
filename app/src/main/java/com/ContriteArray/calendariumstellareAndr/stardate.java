@@ -9,19 +9,6 @@ import java.time.*;
 
 public class stardate
 {
-    /// TODO
-    /// [*] learn timekeeping
-    ///     - What library is equivalent to datetime?
-    ///     - How does it work?
-    /// [] global variables
-    ///     [] datum
-    ///         - private string list
-    ///         - 6 cells
-    ///         - datum[3] = "."
-    ///     [*] zeroDayJules
-    ///         - private final LocalDateTime obj
-    ///     [*] zeroDayGreg
-
     private List<String> datum = new ArrayList<String>();
 
     // ZERO DAYS
@@ -145,6 +132,13 @@ public class stardate
         return dec;
     }
 
+    /// TODO:
+    /// [] Review calculations and formulae
+    ///     - could it be a datatype issue?
+    /// [] Verify accuracy
+    /// [] Repeat review until refined
+    /// [] Review formatting
+    ///     - only 4 decimal places
     public ArrayList<String> calcStardate()
     {
         ArrayList<String> when = new ArrayList<>();
@@ -201,10 +195,6 @@ public class stardate
         return when;
     }
 
-    /// TODO
-    /// [] define datum
-    /// [] create and set gregorian now variable
-    /// [] call setter for datum
     public stardate()
     {
         // Initialize datum
