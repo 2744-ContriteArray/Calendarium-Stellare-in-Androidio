@@ -9,6 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void debugPrintln(String message) {
-        debugHermes.append((message+"\n"));
+        debugHermes.append((LocalDateTime.now().getHour()+":" +
+                LocalDateTime.now().getMinute() + " " + message+"\n"));
 //        debugHermes.setText(message);
     }
 

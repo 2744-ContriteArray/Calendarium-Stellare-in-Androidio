@@ -157,21 +157,23 @@ public class stardate
 
 // CALCULATIONS
         // Calculate Julian years
-        int Y = (int) (Math.floor(delta.toDays()/365.25));
-        MainActivity.debugPrintln(("Years in duration: "+Y));
+        int Y = (int) (Math.floorDiv((int) delta.toDays(), (int) 365.25));
+        MainActivity.debugPrintln(("Years in duration " +
+                "(found using Math.floorDiv((int) delta.toDays(), (int) 365.25): "+Y));
 
-        int H = (int) Math.floor((delta.toDays()*24) + delta.toHours());
-        MainActivity.debugPrintln(("H = floor("+delta.toDays()+
-                "*24) + ("+delta.toHours()+" = "+ H));
+        int H = (int) Math.floor(delta.toHours());
+        MainActivity.debugPrintln(("H = floor("+delta.toHours()+" = "+ H));
 
         // Calculate stellar year and convert to hex
-        int StellarYear = (int) Math.floor((H/30 - Y*0.25)/360);
-        MainActivity.debugPrintln(("Stellar year = floor(("+ H +
-                "/30 - " + Y + "0.25)/360) = " + StellarYear));
+        int StellarYear = (int) Math.floorDiv((int) (H/30 - Y*0.25), 360);
+        MainActivity.debugPrintln(("Stellar year = floorDiv((int) ("+ H +
+                "/30 - " + Y + "0.25), 360) = " + StellarYear));
         when.add(decToHex(StellarYear));
 
         // Convert days
-        int StellarDay = (int) Math.floor(H/30 - Y*0.25)%360;
+        int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
+        MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
+                "= "+StellarDay);
         when.add(String.valueOf(StellarDay));
 
         // Convert hours
