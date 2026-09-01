@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void debugPrintln(String message) {
+        TextView debugHermes = (TextView) findViewById(R.id.debugHermes);
+        debugHermes.setText(message);
+    }
+
     @Override
     protected void onStart() {
 

@@ -147,10 +147,13 @@ public class stardate
 
         // Debug printout
         System.out.println("Now in calcDateJ()");
+
+        // Get right fucking now and convert to Julian
+        LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
         // Get duration difference between zero day and rn
-        Duration delta = Duration.between(zeroDayGreg, LocalDateTime.now());
+        Duration delta = Duration.between(zeroDayGreg, rightFuckinNow);
         // Convert to Julian
-        delta.minusDays((long) 13.0075);
+        //delta.minusDays((long) 13.0075);
 
 // CALCULATIONS
         // Calculate Julian years

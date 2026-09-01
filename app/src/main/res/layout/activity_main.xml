@@ -42,4 +42,19 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Today_is" />
+
+    <TextView
+        android:id="@+id/debugHermes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="175dp"
+        android:width="250sp"
+        android:height="250sp"
+        android:backgroundTint="#7C7B7B"
+        android:text="TextView"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NowDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>
