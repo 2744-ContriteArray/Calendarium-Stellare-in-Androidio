@@ -32,8 +32,8 @@ public class stardate
             }
         }catch (IndexOutOfBoundsException e)
         {
-            System.out.println(("ERROR IN setDatum(): "+e.getMessage()));
-            System.out.println(("STACK TRACE: "+e.getStackTrace()));
+            MainActivity.debugPrintln(("ERROR IN setDatum(): "+e.getMessage()));
+            MainActivity.debugPrintln(("STACK TRACE: "+e.getStackTrace()));
             throw new RuntimeException(e);
         }
     }
@@ -108,7 +108,7 @@ public class stardate
                     digit = Letters.get(String.valueOf(hexaD.charAt(i)));
                 }
                 catch (NullPointerException e) {
-                    System.out.println(("ERROR: "+e.getMessage()));
+                    MainActivity.debugPrintln(("ERROR: "+e.getMessage()));
                     throw new RuntimeException(e);
                 }
             }
@@ -119,8 +119,8 @@ public class stardate
                 }
                 catch (NullPointerException e){
                     digit = 0;
-                    System.out.println("ERROR: NULLPOINTER AT LINE 162");
-                    System.out.println(("Variable hexaD = "+hexaD));
+                    MainActivity.debugPrintln("ERROR: NULLPOINTER AT LINE 162");
+                    MainActivity.debugPrintln(("Variable hexaD = "+hexaD));
                 }
             }
 
@@ -146,7 +146,7 @@ public class stardate
         //when.add(3, ".");
 
         // Debug printout
-        System.out.println("Now in calcDateJ()");
+        MainActivity.debugPrintln("Now in calcDateJ()");
 
         // Get right fucking now and convert to Julian
         LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
@@ -158,14 +158,16 @@ public class stardate
 // CALCULATIONS
         // Calculate Julian years
         int Y = (int) (Math.floor(delta.toDays()/365.25));
-        System.out.println(("Years in duration: "+Y));
+        MainActivity.debugPrintln(("Years in duration: "+Y));
 
         int H = (int) Math.floor((delta.toDays()*24) + delta.toHours());
-        System.out.println(("H = floor("+delta.toDays()+"*24) + ("+delta.toHours()+" = "+ H));
+        MainActivity.debugPrintln(("H = floor("+delta.toDays()+
+                "*24) + ("+delta.toHours()+" = "+ H));
 
         // Calculate stellar year and convert to hex
         int StellarYear = (int) Math.floor((H/30 - Y*0.25)/360);
-        System.out.println(("Stellar year = floor(("+ H + "/30 - " + Y + "0.25)/360) = " + StellarYear));
+        MainActivity.debugPrintln(("Stellar year = floor(("+ H +
+                "/30 - " + Y + "0.25)/360) = " + StellarYear));
         when.add(decToHex(StellarYear));
 
         // Convert days

@@ -51,6 +51,7 @@
         android:width="250sp"
         android:height="250sp"
         android:backgroundTint="#7C7B7B"
+        android:scrollHorizontally="false"
         android:text="TextView"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"

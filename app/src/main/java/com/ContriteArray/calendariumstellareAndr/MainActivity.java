@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private stardate Star_today;
+    public static TextView debugHermes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void debugPrintln(String message) {
-        TextView debugHermes = (TextView) findViewById(R.id.debugHermes);
-        debugHermes.setText(message);
+    public static void debugPrintln(String message) {
+        debugHermes.append((message+"\n"));
+//        debugHermes.setText(message);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         TextView Today_Is = (TextView) findViewById(R.id.Today_is);
         TextView StarNow = (TextView) findViewById(R.id.NowDate);
+        debugHermes = (TextView) findViewById(R.id.debugHermes);
 
         Star_today = new stardate();
         // get stardate
