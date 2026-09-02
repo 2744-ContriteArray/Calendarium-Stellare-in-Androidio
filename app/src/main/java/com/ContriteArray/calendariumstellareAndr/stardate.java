@@ -215,21 +215,19 @@ public class stardate
         // Convert hours
         //MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
         int StellarHour = H%30;
-        //MainActivity.debugPrintln(("H%30 = " + StellarHour));
+        //MainActivity.debugPrintln(("H/30 = " + H/30));
         when.add(String.valueOf(StellarHour));
         when.add(".");
 
         //MainActivity.debugPrintln(("String.valueOf(delta.toMinutes()) = "+String.valueOf(delta.toMinutes())));
 
         // Calculate Minutes
-        int StellarMin = (int) (Math.floorMod(delta.toSeconds(),60)%60);
-        //int StellarMin = (int) delta.toSeconds()/3600;
-        MainActivity.debugPrintln(("delta.toSeconds() = "+delta.toSeconds()));
-        MainActivity.debugPrintln(("StellarMin = Math.floorDiv(delta.toSeconds(),60)%60 = "+StellarMin));
+        int StellarMin = (int) ((delta.toDays()+1/60)%60);
         MainActivity.debugPrintln(("delta.toHours() = "+delta.toHours()));
-        MainActivity.debugPrintln(("delta.toDays() = "+delta.toDays()));
-        MainActivity.debugPrintln(("delta.toYears() = "+ Math.floorDiv(delta.toDays(), (int) 365.0075)));
+        MainActivity.debugPrintln(("delta.toDays() = "+(((delta.toDays()/30)/60)+7)));
+        MainActivity.debugPrintln(("delta.toYears() = "+ delta.toDays()/365.0075));
 
+        //Calculate Seconds
 
         // Format stellar minutes
 /*        if(delta.toMinutes() < 10)
