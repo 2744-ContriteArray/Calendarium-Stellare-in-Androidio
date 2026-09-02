@@ -164,8 +164,6 @@ public class stardate
         LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
         // Get duration difference between zero day and rn
         Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
-        // Convert to Julian
-        //delta.minusDays((long) 13.0075);
 
 // CALCULATIONS
         // Calculate Julian years
@@ -206,7 +204,10 @@ public class stardate
         */
 
         // Convert days
-        int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
+        //int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
+        //var StellarDay = (int) Math.floor(H / 30 - Y * 0.25)%360;
+        int StellarDay = (int) delta.toSeconds()%60;
+
         //MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
         //MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
         //        "= "+StellarDay);
@@ -221,22 +222,24 @@ public class stardate
         //MainActivity.debugPrintln(("String.valueOf(delta.toMinutes()) = "+String.valueOf(delta.toMinutes())));
 
         // Calculate Minutes
-        /*
-        TODO
-            [] Convert stellar years to minutes
-            [] Subtract above from delta.toMinutes() and floor() it
-         */
-        int goneYears;
-        /*
+        int StellarMin = (int) (Math.floorMod(delta.toSeconds(),60)%60);
+        //int StellarMin = (int) delta.toSeconds()/3600;
+        MainActivity.debugPrintln(("delta.toSeconds() = "+delta.toSeconds()));
+        MainActivity.debugPrintln(("StellarMin = Math.floorDiv(delta.toSeconds(),60)%60 = "+StellarMin));
+        MainActivity.debugPrintln(("delta.toHours() = "+delta.toHours()));
+        MainActivity.debugPrintln(("delta.toDays() = "+delta.toDays()));
+        MainActivity.debugPrintln(("delta.toYears() = "+ Math.floorDiv(delta.toDays(), (int) 365.0075)));
+
+
         // Format stellar minutes
-        if(delta.toMinutes() < 10)
+/*        if(delta.toMinutes() < 10)
         {
-            when.add(4, ("0"+String.valueOf(delta.toMinutes())));
+            when.add(4, ("0"+String.valueOf(StellarMin)));
         }
         else{
-            when.add(4, String.valueOf(delta.toMinutes()));
-        }
-
+            when.add(4, String.valueOf(StellarMin));
+        }*/
+/*
         // Format stellar Seconds
         if(delta.toSeconds() < 10)
         {
@@ -252,18 +255,6 @@ public class stardate
 
     public stardate()
     {
-        /*// Initialize datum
-        for (int i=0; i<=5; i++)
-        {
-            if(i==3)
-            {
-                this.datum.add(".");
-            }
-            else
-            {
-                this.datum.add("00");
-            }
-        }*/
         this.datum = new ArrayList<String>();
         MainActivity.debugPrintln(("datum.isEmpty() evaluates to "+this.datum.isEmpty()));
 
