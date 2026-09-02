@@ -34,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void debugPrintln(String message) {
-        debugHermes.append((LocalDateTime.now().getHour()+":" +
-                LocalDateTime.now().getMinute() + " " + message+"\n"));
+        if(message=="/clear"){
+            debugHermes.setText(" ");
+        }
+        else {
+            debugHermes.append((LocalDateTime.now().getHour() + ":" +
+                    LocalDateTime.now().getMinute() + " " + message + "\n"));
 //        debugHermes.setText(message);
+        }
     }
 
     @Override
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         TextView Today_Is = (TextView) findViewById(R.id.Today_is);
         TextView StarNow = (TextView) findViewById(R.id.NowDate);
         debugHermes = (TextView) findViewById(R.id.debugHermes);
+        debugHermes.setText("");
 
         Star_today = new stardate();
         // get stardate

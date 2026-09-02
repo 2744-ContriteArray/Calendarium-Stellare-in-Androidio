@@ -9,7 +9,7 @@ import java.time.*;
 
 public class stardate
 {
-    private List<String> datum = new ArrayList<String>();
+    private ArrayList<String> datum;
 
     // ZERO DAYS
     private final LocalDateTime zeroDayGreg =
@@ -20,21 +20,15 @@ public class stardate
     // Setter for datum
     public void setDatum(ArrayList<String> when)
     {
+        //MainActivity.debugPrintln(("In setDatum - param \"when\" = "+when));
         try {
-            for (int i = 0; i < 6; i++) {
-                if(this.datum.get(i).equals("."))
-                {
-                    continue;
-                }
-                else {
-                    this.datum.set(i, when.get(i));
-                }
-            }
+            this.datum.addAll(when);
+            //MainActivity.debugPrintln(("datum = "+this.datum));
         }catch (IndexOutOfBoundsException e)
         {
             MainActivity.debugPrintln(("ERROR IN setDatum(): "+e.getMessage()));
             MainActivity.debugPrintln(("STACK TRACE: "+e.getStackTrace()));
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
     }
 
@@ -43,13 +37,32 @@ public class stardate
     // Purpose: convert decimal integers to hexadecimal strings
     private static String decToHex(int dec)
     {
+        //MainActivity.debugPrintln("Now in decToHex()");
         String hexa = "";
-        ArrayList<String> buff = new ArrayList<String>();
-        String[] numLett = new String[] {"A", "B", "C", "D", "E", "F"};
+        ArrayList<String> buff = new ArrayList<>();
 
+        /*if(buff.isEmpty()){
+            MainActivity.debugPrintln("buff was just constructed and found empty");
+        }
+        else{
+            MainActivity.debugPrintln("buff was just constructed and found not empty");
+            MainActivity.debugPrintln(("buff is of size "+buff.size()));
+        }*/
+        String[] numLett = new String[] {"A", "B", "C", "D", "E", "F"};
+        //MainActivity.debugPrintln(("param dec evaluates to "+dec));
+
+        /*
+        TODO
+            [*] evaluate operations within while loop
+                [*] debugPrintln() calls for to assess each value/result
+                [*] Identify problem: Why tf is this shit returning empties?
+         */
         // math time
+        int iter = 0;
         while(dec > 0)
         {
+            iter++;
+            //MainActivity.debugPrintln(("WHILE LOOP ITERATION #"+iter));
             // if the remainder > 9, it's a letter not 10-16
             if((dec%16) >= 10)// && ((dec%16) <= 15))
             {
@@ -60,16 +73,23 @@ public class stardate
                 // remainder <= 9
                 buff.add(String.valueOf(dec%16));
             }
+            //MainActivity.debugPrintln(("dec%16 = "+dec%16));
+            //MainActivity.debugPrintln(("buff = "+buff));
 
             // amend dec to reflect dec/16 without remainder as floats
+            //MainActivity.debugPrintln(("Math.floorDiv(dec, 16) = "+Math.floorDiv(dec,16)));
             dec = Math.floorDiv(dec, 16);
         }
-
+        /*MainActivity.debugPrintln("/clear");
+        MainActivity.debugPrintln("ABOUT TO ENTER FOR LOOP");
+        MainActivity.debugPrintln(("buff.size() returns "+buff.size()));*/
         // assemble the collected remainders into the hex number
-        for(int i = buff.size()-1; i == 0; i--)
+        for(int i = buff.size()-1; i >= 0; i--)
         {
             hexa = hexa.concat(buff.get(i));
         }
+//        MainActivity.debugPrintln("EXITED FOR LOOP");
+//        MainActivity.debugPrintln(("hexa = "+hexa));
 
         return hexa;
     }
@@ -132,55 +152,82 @@ public class stardate
         return dec;
     }
 
-    /// TODO:
-    /// [] Review calculations and formulae
-    ///     - could it be a datatype issue?
-    /// [] Verify accuracy
-    /// [] Repeat review until refined
-    /// [] Review formatting
-    ///     - only 4 decimal places
     public ArrayList<String> calcStardate()
     {
         ArrayList<String> when = new ArrayList<>();
-        // THROWS INDEX OUT OF BOUNDS ERROR, INDEX: 3, SIZE: 0
-        //when.add(3, ".");
 
         // Debug printout
-        MainActivity.debugPrintln("Now in calcDateJ()");
+        MainActivity.debugPrintln("/clear");
+        MainActivity.debugPrintln("Now in calcStardate()");
 
         // Get right fucking now and convert to Julian
         LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
         // Get duration difference between zero day and rn
-        Duration delta = Duration.between(zeroDayGreg, rightFuckinNow);
+        Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
         // Convert to Julian
         //delta.minusDays((long) 13.0075);
 
 // CALCULATIONS
         // Calculate Julian years
         int Y = (int) (Math.floorDiv((int) delta.toDays(), (int) 365.25));
-        MainActivity.debugPrintln(("Years in duration " +
-                "(found using Math.floorDiv((int) delta.toDays(), (int) 365.25): "+Y));
+        //MainActivity.debugPrintln(("Y = "+Y));
+        //MainActivity.debugPrintln(("Years in duration " +
+        //        "(found using Math.floorDiv((int) delta.toDays(), (int) 365.25): "+Y));
 
         int H = (int) Math.floor(delta.toHours());
-        MainActivity.debugPrintln(("H = floor("+delta.toHours()+" = "+ H));
+        MainActivity.debugPrintln(("H = "+ H));
 
         // Calculate stellar year and convert to hex
         int StellarYear = (int) Math.floorDiv((int) (H/30 - Y*0.25), 360);
-        MainActivity.debugPrintln(("Stellar year = floorDiv((int) ("+ H +
-                "/30 - " + Y + "0.25), 360) = " + StellarYear));
+        //MainActivity.debugPrintln(("StellarYear = "+StellarYear));
+        //MainActivity.debugPrintln(("Converted to dex = "+decToHex(StellarYear)));
+        /*MainActivity.debugPrintln(("Stellar year = floorDiv((int) ("+ H +
+                "/30 - " + Y + "0.25), 360) = " + StellarYear));*/
+        //when.set(0, decToHex(StellarYear));
         when.add(decToHex(StellarYear));
+
+        /*
+        TODO:
+         [] Review calculations and formulae
+             - Comb through operations and verify step-by-step
+             - Problem detected with decToHex(StellarYear) not returning proper
+             - Debug printout in-app reads as blank
+             - Could be returning an empty string or could be some other issue
+             - Need further review to diagnose and treat
+             - Verify accuracy
+             - Repeat review until refined and repeat for every calculation
+             [*] Years
+             [*] Days
+             [*] Hours
+             [] Minutes
+             [] Seconds
+         [] Review formatting
+             - only 4 decimal places
+        */
 
         // Convert days
         int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
-        MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
-                "= "+StellarDay);
+        //MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
+        //MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
+        //        "= "+StellarDay);
         when.add(String.valueOf(StellarDay));
-
         // Convert hours
+        //MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
         int StellarHour = H%30;
+        //MainActivity.debugPrintln(("H%30 = " + StellarHour));
         when.add(String.valueOf(StellarHour));
         when.add(".");
 
+        //MainActivity.debugPrintln(("String.valueOf(delta.toMinutes()) = "+String.valueOf(delta.toMinutes())));
+
+        // Calculate Minutes
+        /*
+        TODO
+            [] Convert stellar years to minutes
+            [] Subtract above from delta.toMinutes() and floor() it
+         */
+        int goneYears;
+        /*
         // Format stellar minutes
         if(delta.toMinutes() < 10)
         {
@@ -198,13 +245,14 @@ public class stardate
         else{
             when.add(5, String.valueOf(delta.toSeconds()));
         }
-
+*/
+        when.add("0000");
         return when;
     }
 
     public stardate()
     {
-        // Initialize datum
+        /*// Initialize datum
         for (int i=0; i<=5; i++)
         {
             if(i==3)
@@ -215,7 +263,9 @@ public class stardate
             {
                 this.datum.add("00");
             }
-        }
+        }*/
+        this.datum = new ArrayList<String>();
+        MainActivity.debugPrintln(("datum.isEmpty() evaluates to "+this.datum.isEmpty()));
 
         //LocalDateTime rightNowGreg = LocalDateTime.now();
         this.setDatum(this.calcStardate());
