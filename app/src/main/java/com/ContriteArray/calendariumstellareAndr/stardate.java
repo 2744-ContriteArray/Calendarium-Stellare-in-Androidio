@@ -51,12 +51,6 @@ public class stardate
         String[] numLett = new String[] {"A", "B", "C", "D", "E", "F"};
         //MainActivity.debugPrintln(("param dec evaluates to "+dec));
 
-        /*
-        TODO
-            [*] evaluate operations within while loop
-                [*] debugPrintln() calls for to assess each value/result
-                [*] Identify problem: Why tf is this shit returning empties?
-         */
         // math time
         int iter = 0;
         while(dec > 0)
@@ -195,8 +189,8 @@ public class stardate
              - Verify accuracy
              - Repeat review until refined and repeat for every calculation
              [*] Years
-             [*] Days
-             [*] Hours
+             [] Days
+             [] Hours
              [] Minutes
              [] Seconds
          [] Review formatting
@@ -208,15 +202,33 @@ public class stardate
         //var StellarDay = (int) Math.floor(H / 30 - Y * 0.25)%360;
         int StellarDay = (int) delta.toSeconds()%60;
 
-        //MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
-        //MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
-        //        "= "+StellarDay);
-        when.add(String.valueOf(StellarDay));
+        MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
+        MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
+                "= "+StellarDay);
+
+        // Format Stellar Days
+        if(StellarDay < 10)
+        {
+            when.add(("00"+String.valueOf(StellarDay)));
+        } else if ((StellarDay >= 10) && (StellarDay <= 99)) {
+            when.add(("0"+String.valueOf(StellarDay)));
+        } else {
+            when.add(String.valueOf(StellarDay));
+        }
+
         // Convert hours
-        //MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
+        MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
         int StellarHour = H%30;
-        //MainActivity.debugPrintln(("H/30 = " + H/30));
-        when.add(String.valueOf(StellarHour));
+        MainActivity.debugPrintln(("H/30 = " + H/30));
+        MainActivity.debugPrintln(("StellarHour = H%30 = "+StellarHour));
+
+        // Format stellar hours
+        if(StellarHour < 10){
+            when.add(("0"+StellarHour));
+        }
+        else {
+            when.add(String.valueOf(StellarHour));
+        }
         when.add(".");
 
         //MainActivity.debugPrintln(("String.valueOf(delta.toMinutes()) = "+String.valueOf(delta.toMinutes())));
@@ -228,6 +240,7 @@ public class stardate
         MainActivity.debugPrintln(("delta.toYears() = "+ delta.toDays()/365.0075));
 
         //Calculate Seconds
+
 
         // Format stellar minutes
 /*        if(delta.toMinutes() < 10)
