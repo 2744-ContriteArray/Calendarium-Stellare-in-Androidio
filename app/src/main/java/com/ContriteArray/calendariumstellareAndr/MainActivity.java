@@ -1,6 +1,8 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -9,13 +11,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.badge.BadgeUtils;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private stardate Star_today;
     public static TextView debugHermes;
+    Button refresher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
+        refresher = (Button) findViewById(R.id.refresher);
 
 
     }
 
     public static void debugPrintln(String message) {
-        if(message=="/clear"){
+        if(Objects.equals(message, "/clear")){
             debugHermes.setText(" ");
         }
         else {
@@ -53,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
         debugHermes = (TextView) findViewById(R.id.debugHermes);
         debugHermes.setText("");
 
-        Star_today = new stardate();
+        stardate star_today = new stardate();
         // get stardate
-        ArrayList<String> unformatTime = Star_today.calcStardate();
+        ArrayList<String> unformatTime = star_today.calcStardate();
 
         // format the stardate into a string
         String Stime = "";
@@ -66,6 +71,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         StarNow.setText(Stime);
+
+        refresher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stardate theDate = new stardate();
+                ArrayList<String> rawTime = theDate.calcStardate();
+
+                String Stime = "";
+
+                for(String digit: rawTime){
+                    Stime = Stime.concat(digit);
+                }
+
+                StarNow.setText(Stime);
+            }
+        });
     }
 
 }
