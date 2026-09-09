@@ -189,13 +189,13 @@ public class stardate
                 - Possibly fixed. requires close observation in case of relapse
                 - Has been "fixed" before only to break yet again
              [~] Hours
-             [~] Minutes
-             [~] Seconds
+             [] Minutes
+             [*] Seconds
          [~] Convert calculations from Duration obj operations to Period obj
             [~] Days
             [~] Hours
-            [~] Minutes
-            [~] Seconds
+            [] Minutes
+            [*] Seconds
          [*] Review formatting
              - only 4 decimal places
         */
@@ -244,26 +244,26 @@ public class stardate
         MainActivity.debugPrintln(("delta.toMinutes() = "+delta.toMinutes()));
 
         // Calculate Minutes
-        int StellarMin = (int) Math.floorMod(delta.toMinutes()/60,60);
+        int StellarMin = (int) Math.floorMod((delta.toMinutes()/60)+12,60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
                 delta.toMinutes()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
         MainActivity.debugPrintln("CALCULATING SECONDS NOW");
-        long StellarSec = delta.toSeconds() % 60;
-        MainActivity.debugPrintln(("StellarSec = delta.toSeconds % 60\n= "+delta.toSeconds()+
-                " % 60 = "+StellarSec));
+        long StellarSec = (delta.toSeconds() % 60)+12;
+        MainActivity.debugPrintln(("StellarSec = (delta.toSeconds % 60)+12\n= ("+delta.toSeconds()+
+                " % 60)+12 = "+StellarSec));
 
-//        when.add("00");
+        when.add("~~");
         // Format stellar minutes
-        if(StellarMin < 10)
+/*        if(StellarMin < 10)
         {
             when.add("0"+StellarMin);
         }
         else{
             when.add(String.valueOf(StellarMin));
         }
-
+*/
         // Format stellar Seconds
         if(StellarSec < 10)
         {
