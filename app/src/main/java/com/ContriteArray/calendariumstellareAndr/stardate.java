@@ -235,9 +235,9 @@ public class stardate
 
         // Calculate Minutes
         int StellarMin = (int) ((delta.toDays()+1/60)%60);
+        MainActivity.debugPrintln(("StellarMin = " + StellarMin));
         MainActivity.debugPrintln(("delta.toHours() = "+delta.toHours()));
-        MainActivity.debugPrintln(("delta.toDays() = "+(((delta.toDays()/30)/60)+7)));
-        MainActivity.debugPrintln(("delta.toYears() = "+ delta.toDays()/365.0075));
+        MainActivity.debugPrintln(("delta.toDays() = "+delta.toDays()));
 
         //Calculate Seconds
 
