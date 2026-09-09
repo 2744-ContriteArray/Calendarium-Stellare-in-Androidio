@@ -16,6 +16,7 @@ public class stardate
             LocalDateTime.of(1970, 8, 13, 0, 0, 0);
     private final LocalDateTime zeroDayJules =
             LocalDateTime.of(1970, 7, 31, 0, 0, 0);
+    private Period between;
 
     // Setter for datum
     public void setDatum(ArrayList<String> when)
@@ -171,11 +172,6 @@ public class stardate
 
         // Calculate stellar year and convert to hex
         int StellarYear = (int) Math.floorDiv((int) (H/30 - Y*0.25), 360);
-        //MainActivity.debugPrintln(("StellarYear = "+StellarYear));
-        //MainActivity.debugPrintln(("Converted to dex = "+decToHex(StellarYear)));
-        /*MainActivity.debugPrintln(("Stellar year = floorDiv((int) ("+ H +
-                "/30 - " + Y + "0.25), 360) = " + StellarYear));*/
-        //when.set(0, decToHex(StellarYear));
         when.add(decToHex(StellarYear));
 
         /*
@@ -189,21 +185,34 @@ public class stardate
              - Verify accuracy
              - Repeat review until refined and repeat for every calculation
              [*] Years
-             [] Days
+             [~] Days
+                - Possibly fixed. requires close observation in case of relapse
+                - Has been "fixed" before only to break yet again
              [] Hours
              [] Minutes
              [] Seconds
+         [] Convert calculations from Duration obj operations to Period obj
+            [] Days
+            [] Hours
+            [] Minutes
+            [] Seconds
          [] Review formatting
              - only 4 decimal places
         */
 
-        // Convert days
-        //int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
-        //var StellarDay = (int) Math.floor(H / 30 - Y * 0.25)%360;
-        int StellarDay = (int) delta.toSeconds()%60;
-
+        //MainActivity.debugPrintln("/clear");
         MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
-        MainActivity.debugPrintln("Stellar day = (int) Math.floorMod((int) (H/30 - Y*0.25), 360) " +
+        // Convert days
+        int Y2 = this.between.getYears();
+        MainActivity.debugPrintln(("this.between.getYears() = "+this.between.getYears()));
+
+        var H2 = (int) (this.between.getDays()*24 + delta.toHours()%24);
+        MainActivity.debugPrintln(("H = "+ between.getDays()+"* 24 + "+delta.toHours()+"%24 = "+H2));
+        MainActivity.debugPrintln(("between.getDays() = "+this.between.getDays()));
+        //int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
+        var StellarDay = (int) Math.floor(H / 30 - Y2 * 0.25)%360;
+        //int StellarDay = (int) delta.toSeconds()%60;
+        MainActivity.debugPrintln("Stellar day = (int) Math.floor(H/30 - Y*0.25)%360 " +
                 "= "+StellarDay);
 
         // Format Stellar Days
@@ -215,7 +224,7 @@ public class stardate
         } else {
             when.add(String.valueOf(StellarDay));
         }
-
+/*
         // Convert hours
         MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
         int StellarHour = H%30;
@@ -229,8 +238,9 @@ public class stardate
         else {
             when.add(String.valueOf(StellarHour));
         }
+*/      when.add("00");
         when.add(".");
-
+/*
         //MainActivity.debugPrintln(("String.valueOf(delta.toMinutes()) = "+String.valueOf(delta.toMinutes())));
 
         // Calculate Minutes
@@ -241,7 +251,7 @@ public class stardate
 
         //Calculate Seconds
 
-
+*/
         // Format stellar minutes
 /*        if(delta.toMinutes() < 10)
         {
@@ -269,7 +279,13 @@ public class stardate
         this.datum = new ArrayList<String>();
         MainActivity.debugPrintln(("datum.isEmpty() evaluates to "+this.datum.isEmpty()));
 
-        //LocalDateTime rightNowGreg = LocalDateTime.now();
+        // Initialize Period object "between"
+        LocalDate rightNowGreg = LocalDate.now();
+        LocalDate startingGreg = LocalDate.of(1970, 8, 13);
+        this.between = Period.between(startingGreg, rightNowGreg);
+        this.between.minusDays(12); // minus 12 days to convert to julian
+        // 12 and not 13 because Period.between() is second date EXclusive so treat it as already subtracted
+
         this.setDatum(this.calcStardate());
     }
 }
