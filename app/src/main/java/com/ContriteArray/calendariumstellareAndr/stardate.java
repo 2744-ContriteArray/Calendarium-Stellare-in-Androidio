@@ -176,7 +176,7 @@ public class stardate
 
         /*
         TODO:
-         [] Review calculations and formulae
+         [~] Review calculations and formulae
              - Comb through operations and verify step-by-step
              - Problem detected with decToHex(StellarYear) not returning proper
              - Debug printout in-app reads as blank
@@ -188,15 +188,15 @@ public class stardate
              [~] Days
                 - Possibly fixed. requires close observation in case of relapse
                 - Has been "fixed" before only to break yet again
-             [] Hours
-             [] Minutes
-             [] Seconds
-         [] Convert calculations from Duration obj operations to Period obj
-            [] Days
-            [] Hours
-            [] Minutes
-            [] Seconds
-         [] Review formatting
+             [~] Hours
+             [~] Minutes
+             [~] Seconds
+         [~] Convert calculations from Duration obj operations to Period obj
+            [~] Days
+            [~] Hours
+            [~] Minutes
+            [~] Seconds
+         [*] Review formatting
              - only 4 decimal places
         */
 
@@ -206,10 +206,9 @@ public class stardate
         int Y2 = this.between.getYears();
         MainActivity.debugPrintln(("this.between.getYears() = "+this.between.getYears()));
 
-        var H2 = (int) (this.between.getDays()*24 + delta.toHours()%24);
-        MainActivity.debugPrintln(("H = "+ between.getDays()+"* 24 + "+delta.toHours()+"%24 = "+H2));
-        MainActivity.debugPrintln(("between.getDays() = "+this.between.getDays()));
-        //int StellarDay = (int) Math.floorMod((int) (H/30 - Y*0.25), 360);
+        //var H2 = (int) (this.between.getDays()*24 + delta.toHours()%24);
+        //MainActivity.debugPrintln(("H = "+ between.getDays()+"* 24 + "+delta.toHours()+"%24 = "+H2));
+        //MainActivity.debugPrintln(("between.getDays() = "+this.between.getDays()));
         var StellarDay = (int) Math.floor(H / 30 - Y2 * 0.25)%360;
         //int StellarDay = (int) delta.toSeconds()%60;
         MainActivity.debugPrintln("Stellar day = (int) Math.floor(H/30 - Y*0.25)%360 " +
@@ -224,12 +223,13 @@ public class stardate
         } else {
             when.add(String.valueOf(StellarDay));
         }
-/*
+
         // Convert hours
+        MainActivity.debugPrintln("/clear");
         MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
-        int StellarHour = H%30;
-        MainActivity.debugPrintln(("H/30 = " + H/30));
-        MainActivity.debugPrintln(("StellarHour = H%30 = "+StellarHour));
+        int StellarHour = (H-1)%30;
+        MainActivity.debugPrintln((H+"/30 = " + H/30));
+        MainActivity.debugPrintln(("StellarHour = "+H+"%30 = "+StellarHour));
 
         // Format stellar hours
         if(StellarHour < 10){
@@ -238,39 +238,42 @@ public class stardate
         else {
             when.add(String.valueOf(StellarHour));
         }
-*/      when.add("00");
+        //when.add("00");
         when.add(".");
-/*
-        //MainActivity.debugPrintln(("String.valueOf(delta.toMinutes()) = "+String.valueOf(delta.toMinutes())));
+
+        MainActivity.debugPrintln(("delta.toMinutes() = "+delta.toMinutes()));
 
         // Calculate Minutes
-        int StellarMin = (int) ((delta.toDays()+1/60)%60);
-        MainActivity.debugPrintln(("StellarMin = " + StellarMin));
-        MainActivity.debugPrintln(("delta.toHours() = "+delta.toHours()));
-        MainActivity.debugPrintln(("delta.toDays() = "+delta.toDays()));
+        int StellarMin = (int) Math.floorMod(delta.toMinutes()/60,60);
+        MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
+                delta.toMinutes()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
+        MainActivity.debugPrintln("CALCULATING SECONDS NOW");
+        long StellarSec = delta.toSeconds() % 60;
+        MainActivity.debugPrintln(("StellarSec = delta.toSeconds % 60\n= "+delta.toSeconds()+
+                " % 60 = "+StellarSec));
 
-*/
+//        when.add("00");
         // Format stellar minutes
-/*        if(delta.toMinutes() < 10)
+        if(StellarMin < 10)
         {
-            when.add(4, ("0"+String.valueOf(StellarMin)));
+            when.add("0"+StellarMin);
         }
         else{
-            when.add(4, String.valueOf(StellarMin));
-        }*/
-/*
+            when.add(String.valueOf(StellarMin));
+        }
+
         // Format stellar Seconds
-        if(delta.toSeconds() < 10)
+        if(StellarSec < 10)
         {
-            when.add(5, ("0"+String.valueOf(delta.toSeconds())));
+            when.add("0"+StellarSec);
         }
         else{
-            when.add(5, String.valueOf(delta.toSeconds()));
+            when.add(String.valueOf(StellarSec));
         }
-*/
-        when.add("0000");
+
+        //when.add("0000");
         return when;
     }
 
