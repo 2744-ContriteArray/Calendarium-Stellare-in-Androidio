@@ -246,6 +246,13 @@ public class stardate
         MainActivity.debugPrintln(("delta.toMinutes() = "+delta.toMinutes()));
         MainActivity.debugPrintln(("delta.toSeconds() = "+delta.toSeconds()));
 
+        /*
+                    CURRENT BEHAVIOR
+        - Calculates current time in EST
+        - Ex. running at 4:27 pm it shows the stellar minute as 27
+        - Doesn't increment up when seconds digits reach 60 (possibly due to 12 second discrepancy)
+        - what the fuck
+         */
         // Calculate Minutes
         int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
