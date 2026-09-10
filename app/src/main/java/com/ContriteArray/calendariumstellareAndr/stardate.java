@@ -241,6 +241,7 @@ public class stardate
         //when.add("00");
         when.add(".");
 
+        MainActivity.debugPrintln("CALCULATING MINUTES NOW");
         MainActivity.debugPrintln(("delta.toMinutes() = "+delta.toMinutes()));
 
         // Calculate Minutes
@@ -254,16 +255,16 @@ public class stardate
         MainActivity.debugPrintln(("StellarSec = ((delta.toSeconds+12) % 60)\n= (("+delta.toSeconds()+
                 "+12) % 60) = "+StellarSec));
 
-        when.add("~~");
+//        when.add("~~");
         // Format stellar minutes
-/*        if(StellarMin < 10)
+        if(StellarMin < 10)
         {
             when.add("0"+StellarMin);
         }
         else{
             when.add(String.valueOf(StellarMin));
         }
-*/
+
         // Format stellar Seconds
         if(StellarSec < 10)
         {
