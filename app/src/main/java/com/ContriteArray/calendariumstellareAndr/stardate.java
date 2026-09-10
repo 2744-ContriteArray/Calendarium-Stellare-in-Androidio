@@ -253,13 +253,14 @@ public class stardate
         - Doesn't increment up when seconds digits reach 60 (possibly due to 12 second discrepancy)
         - what the fuck
          */
+
         // Calculate Minutes
         int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
                 delta.toSeconds()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
-        long StellarSec = ((delta.toSeconds()+12) % 60);
+        long StellarSec = ((delta.toSeconds()) % 60);
 
 //        when.add("~~");
         // Format stellar minutes
