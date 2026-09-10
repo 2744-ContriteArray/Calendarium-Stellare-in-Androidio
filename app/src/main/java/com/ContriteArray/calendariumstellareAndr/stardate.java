@@ -252,6 +252,10 @@ public class stardate
         - Ex. running at 4:27 pm it shows the stellar minute as 27
         - Doesn't increment up when seconds digits reach 60 (possibly due to 12 second discrepancy)
         - what the fuck
+        - Time discrepancy between versions: 49m11s
+            EST: 4:48 pm
+            Python: 2D17204.3722
+            Java: 2D17203.4811
          */
 
         // Calculate Minutes
