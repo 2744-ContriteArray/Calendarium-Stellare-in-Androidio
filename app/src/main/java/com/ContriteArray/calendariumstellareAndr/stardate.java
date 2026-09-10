@@ -244,11 +244,12 @@ public class stardate
         MainActivity.debugPrintln("/clear");
         MainActivity.debugPrintln("CALCULATING MINUTES NOW");
         MainActivity.debugPrintln(("delta.toMinutes() = "+delta.toMinutes()));
+        MainActivity.debugPrintln(("delta.toSeconds() = "+delta.toSeconds()));
 
         // Calculate Minutes
-        int StellarMin = (int) Math.floorMod((delta.toMinutes()/60),60);
+        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
-                delta.toMinutes()/60+", 60) = "+StellarMin));
+                delta.toSeconds()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
         long StellarSec = ((delta.toSeconds()+12) % 60);
