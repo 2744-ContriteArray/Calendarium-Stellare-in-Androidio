@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-<!--    android:background="@mipmap/ic_launcher">-->
+    tools:context=".MainActivity"
+    android:background="@mipmap/app_backdrop">
 
     <TextView
         android:id="@+id/Today_is"
