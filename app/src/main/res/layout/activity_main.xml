@@ -5,41 +5,59 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/app_backdrop"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/Today_is"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="330dp"
         android:accessibilityHeading="true"
         android:contentDescription="Today's stardate is:"
         android:editable="false"
         android:text="Today's Stardate is:"
         android:textAlignment="center"
+        android:textColor="@color/white"
         android:textIsSelectable="false"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/refresher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="160dp"
+        android:enabled="true"
+        android:soundEffectsEnabled="true"
+        android:text="Refresh"
+        android:textColorLink="#E7E701"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NowDate"
+        app:strokeColor="#D6A444" />
 
     <TextView
         android:id="@+id/NowDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
-        android:layout_marginBottom="435dp"
+        android:width="250sp"
+        android:height="34sp"
         android:editable="false"
         android:text="0000000.0000"
-        android:height="34sp"
-        android:width="250sp"
         android:textAlignment="center"
+        android:textColor="@color/white"
         android:textIsSelectable="true"
         android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Today_is" />
 
@@ -47,26 +65,28 @@
         android:id="@+id/debugHermes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="175dp"
+        android:layout_marginBottom="15dp"
         android:width="250sp"
         android:height="250sp"
         android:backgroundTint="#7C7B7B"
+        android:enabled="false"
         android:scrollHorizontally="false"
         android:text="TextView"
-        android:visibility="visible"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NowDate" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/refresher"
+    <ImageButton
+        android:id="@+id/mute_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Refresh"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NowDate" />
+        app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

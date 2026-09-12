@@ -1,8 +1,12 @@
 package com.ContriteArray.calendariumstellareAndr;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +24,8 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     public static TextView debugHermes;
+    private ImageButton mute_button;
+    private boolean muted;
     Button refresher;
 
     @Override
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         refresher = (Button) findViewById(R.id.refresher);
+        muted = false;
+        mute_button = (ImageButton) findViewById(R.id.mute_button);
 
 
     }
@@ -72,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
 
         StarNow.setText(Stime);
 
+        // Set OnClick() for mute button
+        mute_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                muted = !muted;
+            }
+        });
+
         refresher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
 
                 for(String digit: rawTime){
                     Stime = Stime.concat(digit);
+                }
+
+                /*SoundPool chirp = new SoundPool.Builder().build();
+                int soundCode = chirp.load(getApplicationContext(), R.raw.combadge, 1);
+                chirp.play(soundCode, 1.0f,1.0f,1,0,1.5f);*/
+                if(!muted) {
+                    MediaPlayer chirp = MediaPlayer.create(getApplicationContext(), R.raw.combadge);
+                    chirp.start();
                 }
 
                 StarNow.setText(Stime);
