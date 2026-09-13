@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static TextView debugHermes;
     private ImageButton mute_button;
     private boolean muted;
-    Button refresher;
+    ImageButton refresher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        refresher = (Button) findViewById(R.id.refresher);
+        refresher = (ImageButton) findViewById(R.id.refresher);
         muted = false;
         mute_button = (ImageButton) findViewById(R.id.mute_button);
         mute_button.setImageResource(R.mipmap.sound_on);
