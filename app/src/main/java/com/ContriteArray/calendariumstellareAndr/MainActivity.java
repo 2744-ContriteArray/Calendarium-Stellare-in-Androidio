@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         refresher = (Button) findViewById(R.id.refresher);
         muted = false;
         mute_button = (ImageButton) findViewById(R.id.mute_button);
-
+        mute_button.setImageResource(R.mipmap.sound_on);
 
     }
 
@@ -85,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 muted = !muted;
+                if(muted)
+                {
+                    mute_button.setImageResource(R.mipmap.sound_off);
+                }
+                else{
+                    mute_button.setImageResource(R.mipmap.sound_on);
+                }
             }
         });
 
