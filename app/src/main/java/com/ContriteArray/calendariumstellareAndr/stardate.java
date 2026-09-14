@@ -147,6 +147,62 @@ public class stardate
         return dec;
     }
 
+
+    public LocalDateTime conv2Greg(){
+        LocalDateTime result; //final result
+        int year; //int for the year to be assigned to result
+        int month; //int for the month to be assigned to result
+        int day; //int for the day to be assigned to result
+        int hour; //int for the hour to be assigned to result
+        int minute; //int for the minute to be assigned to result
+        int second; //int for the second to be assigned to result
+        /*
+        Reverse calcStardate()
+
+        TODO
+            [*] assign seconds
+            [*] assign minutes
+            [] reverse hour calculation
+            [] reverse day calculations
+            [] calculate year
+            []
+         */
+
+        second = Integer.parseInt(this.datum.get(5));
+        minute = Integer.parseInt(this.datum.get(4));
+
+        // YEAR CALCULATION
+        int yearGap = hexToDec(this.datum.get(0));
+        //LocalDateTime rightNow = this.zeroDayJules;
+        //rightNow.minusYears(yearGap);
+        year = this.zeroDayJules.getYear()+yearGap;
+
+        // Day/month calculation
+        /*
+        - take days from this.datum
+        - calculate from 30 hour days down to 24 hour days
+        - temp LocalDateTime zeroDayJules clone
+        - add calculated days
+        - assign day to clone
+        - clone.getDays()
+        - clone.getMonth()
+
+         */
+        int dayGap = Integer.parseInt(this.datum.get(2));
+
+
+        LocalDateTime zeroClone = this.zeroDayJules;
+        zeroClone.plusDays((long) Math.floor(dayGap+13.0075)); // convert to gregorian
+        month = zeroClone.getMonthValue();
+        day = zeroClone.getDayOfMonth();
+
+        // hour calculation
+
+
+        //result = LocalDateTime.of(year,month,day,hour,minute,second);
+        return LocalDateTime.now();
+    }
+
     public ArrayList<String> calcStardate()
     {
         ArrayList<String> when = new ArrayList<>();
