@@ -1,5 +1,6 @@
 package com.ContriteArray.calendariumstellareAndr;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -23,10 +24,17 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    // WIDGETS
     public static TextView debugHermes;
     private ImageButton mute_button;
     private boolean muted;
     ImageButton refresher;
+    ImageButton convert_nav_button;
+    ImageButton about_button;
+
+    // ACTIVITY INTENTS
+    protected Intent aboutAct;
+    protected Intent convAct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
         muted = false;
         mute_button = (ImageButton) findViewById(R.id.mute_button);
         mute_button.setImageResource(R.mipmap.sound_on);
+        about_button = (ImageButton) findViewById(R.id.about_button);
+        convert_nav_button = (ImageButton) findViewById(R.id.convert_nav_button);
 
+        aboutAct = new Intent(this, AboutStardates.class);
+        convAct = new Intent(this, ConversionToGregorian.class);
     }
 
     public static void debugPrintln(String message) {
@@ -116,6 +128,21 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 StarNow.setText(Stime);
+            }
+        });
+
+        // Assign value to image buttons
+        about_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(aboutAct);
+            }
+        });
+
+        convert_nav_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(convAct);
             }
         });
     }
