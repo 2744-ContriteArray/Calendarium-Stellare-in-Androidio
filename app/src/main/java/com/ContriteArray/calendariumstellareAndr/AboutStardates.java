@@ -28,7 +28,7 @@ public class AboutStardates extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+/*
         // initialize textview
         aboutSect = findViewById(R.id.about_sect);
 
@@ -48,6 +48,6 @@ public class AboutStardates extends AppCompatActivity {
 
 
         // assign contents to textview
-        aboutSect.setText(Piece);
+        aboutSect.setText(Piece);*/
     }
 }

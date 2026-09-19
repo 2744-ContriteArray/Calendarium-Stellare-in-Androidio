@@ -21,12 +21,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/about_sect"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:text="TextView"
-            android:textAlignment="viewStart" />
+            app:srcCompat="@mipmap/about_text_imagery" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
