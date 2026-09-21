@@ -63,12 +63,12 @@
         android:id="@+id/mute_button"
         android:layout_width="49dp"
         android:layout_height="40dp"
-        android:layout_marginStart="354dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="685dp"
+        android:layout_marginStart="344dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="274dp"
         android:background="@mipmap/sound_on"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/Today_is"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -86,29 +86,30 @@
         app:srcCompat="@mipmap/commbadge_refresh" />
 
     <ImageButton
-        android:id="@+id/about_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="3dp"
-        android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/refresher"
-        app:srcCompat="@mipmap/commbadge_about" />
-
-    <ImageButton
         android:id="@+id/convert_nav_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="57dp"
         android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/refresher"
+        app:layout_constraintStart_toEndOf="@+id/refresher"
         app:srcCompat="@mipmap/commbadge_convert" />
+
+    <ImageButton
+        android:id="@+id/about_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/refresher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/commbadge_about" />
 
     <!--        app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />-->
 
