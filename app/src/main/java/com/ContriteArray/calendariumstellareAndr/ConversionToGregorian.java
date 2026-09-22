@@ -1,6 +1,8 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +13,21 @@ import java.time.*;
 
 public class ConversionToGregorian extends AppCompatActivity {
 
-    private final String DEFAULT_STARDATE = "2D17100.0000";
-    private final LocalDateTime DEFAULT_GREG = LocalDateTime.of(2026,9,11,0,0,0);
+    //private final String DEFAULT_STARDATE = "0000000.0000";
+    //private final LocalDateTime DEFAULT_GREG = LocalDateTime.of(1970,8,13,0,0,0);
+
+    protected stardate pulsar; // A stardate object for use in all calculations herein
+    protected LocalDateTime Greg; // A LocalDateTime object for use in all calculations herein
+
+    // Declare text input fields for activity
+    EditText strdtInput;
+    EditText gregInput;
+
+    // Declare buttons
+    ImageButton copyStrdtButton;
+    ImageButton copyGregButton;
+    ImageButton con2Star;
+    ImageButton con2Greg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +39,8 @@ public class ConversionToGregorian extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        pulsar = new stardate();
+        Greg = LocalDateTime.of(1970,8,13,0,0,0);
     }
 }
