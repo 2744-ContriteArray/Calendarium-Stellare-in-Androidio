@@ -3,8 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@mipmap/conversion_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ConversionToGregorian">
 
+    <ImageButton
+        android:id="@+id/copyStrdtButton"
+        android:layout_width="92dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="368dp"
+        android:backgroundTint="#00FFFFFF"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/copy_lcars" />
+
+    <ImageButton
+        android:id="@+id/copyGregButton"
+        android:layout_width="92dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="36dp"
+        android:background="#00FFFFFF"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/copy_lcars" />
+
+    <ImageButton
+        android:id="@+id/con2Greg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="367dp"
+        android:layout_marginEnd="87dp"
+        android:background="#00FFFFFF"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/copyStrdtButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/greg_lcars" />
+
+    <ImageButton
+        android:id="@+id/con2Star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="87dp"
+        android:layout_marginBottom="38dp"
+        android:background="#00FFFFFF"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@mipmap/stardate_lcars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

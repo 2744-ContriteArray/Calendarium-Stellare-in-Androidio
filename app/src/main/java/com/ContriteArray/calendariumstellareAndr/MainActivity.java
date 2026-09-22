@@ -139,12 +139,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*convert_nav_button.setOnClickListener(new View.OnClickListener(){
+        convert_nav_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 startActivity(convAct);
             }
-        });*/
+        });
     }
 
 }
