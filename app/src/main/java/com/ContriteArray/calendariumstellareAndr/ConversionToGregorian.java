@@ -114,13 +114,10 @@ public class ConversionToGregorian extends AppCompatActivity {
 
     @Override
     protected void onStart(){
-
         super.onStart();
-
-
-
         // On Click Events
-        this.copyStrdtButton.setOnClickListener(new View.OnClickListener() {
+        /*
+        copyStrdtButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
              try{
@@ -134,7 +131,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                             - iterate through buffer, using iter numbers to determine units
                             [] Test and debug
                   */
-                     ArrayList<String> bufferList = new ArrayList<>();
+                     /*ArrayList<String> bufferList = new ArrayList<>();
                      String year = "";
                      String day = "";
                      String hour = "";
@@ -199,7 +196,7 @@ public class ConversionToGregorian extends AppCompatActivity {
              }
             }
         });
-        this.copyGregButton.setOnClickListener(new View.OnClickListener() {
+        copyGregButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
@@ -211,13 +208,13 @@ public class ConversionToGregorian extends AppCompatActivity {
                 }
             }
         });
-        this.con2Star.setOnClickListener(new View.OnClickListener() {
+        con2Star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        this.con2Greg.setOnClickListener(new View.OnClickListener() {
+        con2Greg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
@@ -231,7 +228,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                             - iterate through buffer, using iter numbers to determine units
                             [] Test and debug
                   */
-                        ArrayList<String> bufferList = new ArrayList<>();
+                        /*ArrayList<String> bufferList = new ArrayList<>();
                         String year = "";
                         String day = "";
                         String hour = "";
@@ -295,6 +292,6 @@ public class ConversionToGregorian extends AppCompatActivity {
                     return;
                 }
             }
-        });
+        });*/
     }
 }
