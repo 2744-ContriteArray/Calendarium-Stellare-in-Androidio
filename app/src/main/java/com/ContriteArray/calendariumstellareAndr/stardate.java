@@ -24,13 +24,16 @@ public class stardate
     {
         //MainActivity.debugPrintln(("In setDatum - param \"when\" = "+when));
         try {
+            this.datum.clear();
             this.datum.addAll(when);
             //MainActivity.debugPrintln(("datum = "+this.datum));
             /*
                 TODO:
                     [] take new stardate and convert to greg
-                    [] assign to todayGreg
+                        [] calcGregDate() is complete
+                    [*] assign to todayGreg
              */
+            this.todayGreg = this.calcGregDate();
         }catch (IndexOutOfBoundsException e)
         {
             MainActivity.debugPrintln(("ERROR IN setDatum(): "+e.getMessage()));
@@ -285,6 +288,10 @@ public class stardate
 
         //when.add("0000");
         return when;
+    }
+
+    public LocalDateTime calcGregDate(){
+        return this.zeroDayGreg;
     }
 
     public stardate()
