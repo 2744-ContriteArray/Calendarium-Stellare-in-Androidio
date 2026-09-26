@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/app_backdrop"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
@@ -63,11 +64,11 @@
         android:id="@+id/mute_button"
         android:layout_width="49dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18dp"
         android:background="@mipmap/sound_on"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/refresher"
@@ -80,6 +81,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NowDate"
         app:srcCompat="@mipmap/commbadge_refresh" />
+
+    <ImageButton
+        android:id="@+id/convert_nav_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="57dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/refresher"
+        app:srcCompat="@mipmap/commbadge_convert" />
+
+    <ImageButton
+        android:id="@+id/about_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/refresher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/commbadge_about" />
 
     <!--        app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />-->
 

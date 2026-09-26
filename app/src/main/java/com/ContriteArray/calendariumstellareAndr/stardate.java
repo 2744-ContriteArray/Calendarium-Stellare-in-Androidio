@@ -10,6 +10,7 @@ import java.time.*;
 public class stardate
 {
     private ArrayList<String> datum;
+    private LocalDateTime todayGreg;
 
     // ZERO DAYS
     private final LocalDateTime zeroDayGreg =
@@ -23,8 +24,16 @@ public class stardate
     {
         //MainActivity.debugPrintln(("In setDatum - param \"when\" = "+when));
         try {
+            this.datum.clear();
             this.datum.addAll(when);
             //MainActivity.debugPrintln(("datum = "+this.datum));
+            /*
+                TODO:
+                    [] take new stardate and convert to greg
+                        [] calcGregDate() is complete
+                    [*] assign to todayGreg
+             */
+            this.todayGreg = this.calcGregDate();
         }catch (IndexOutOfBoundsException e)
         {
             MainActivity.debugPrintln(("ERROR IN setDatum(): "+e.getMessage()));
@@ -33,7 +42,16 @@ public class stardate
         }
     }
 
+    public LocalDateTime getGreg()
+    {
+        return this.todayGreg;
+    }
 
+    public void setGreg(LocalDateTime when)
+    {
+        this.todayGreg = when;
+        //this.setDatum(this.calcStardate(when));// Adjust stardate held in this.datum
+    }
 
     // Purpose: convert decimal integers to hexadecimal strings
     private static String decToHex(int dec)
@@ -149,6 +167,14 @@ public class stardate
 
     public ArrayList<String> calcStardate()
     {
+        /*
+        TODO
+            [] Currently, method only calculates stardate for current moment. needs flexibility
+                - How do?
+                - Polymorphism? Additional calcStardate() method with parameter?
+                - Would need to amend current calculations to compensate for lag window first
+         */
+
         ArrayList<String> when = new ArrayList<>();
 
         // Debug printout
@@ -157,6 +183,7 @@ public class stardate
 
         // Get right fucking now and convert to Julian
         LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
+        this.todayGreg = rightFuckinNow;
         // Get duration difference between zero day and rn
         Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
 
@@ -173,32 +200,6 @@ public class stardate
         // Calculate stellar year and convert to hex
         int StellarYear = (int) Math.floorDiv((int) (H/30 - Y*0.25), 360);
         when.add(decToHex(StellarYear));
-
-        /*
-        TODO:
-         [~] Review calculations and formulae
-             - Comb through operations and verify step-by-step
-             - Problem detected with decToHex(StellarYear) not returning proper
-             - Debug printout in-app reads as blank
-             - Could be returning an empty string or could be some other issue
-             - Need further review to diagnose and treat
-             - Verify accuracy
-             - Repeat review until refined and repeat for every calculation
-             [*] Years
-             [~] Days
-                - Possibly fixed. requires close observation in case of relapse
-                - Has been "fixed" before only to break yet again
-             [~] Hours
-             [] Minutes
-             [*] Seconds
-         [~] Convert calculations from Duration obj operations to Period obj
-            [~] Days
-            [~] Hours
-            [] Minutes
-            [*] Seconds
-         [*] Review formatting
-             - only 4 decimal places
-        */
 
         //MainActivity.debugPrintln("/clear");
         MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
@@ -259,12 +260,12 @@ public class stardate
          */
 
         // Calculate Minutes
-        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
+        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60)+49,60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
                 delta.toSeconds()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
-        long StellarSec = ((delta.toSeconds()) % 60);
+        long StellarSec = ((delta.toSeconds()+11) % 60);
 
 //        when.add("~~");
         // Format stellar minutes
@@ -287,6 +288,10 @@ public class stardate
 
         //when.add("0000");
         return when;
+    }
+
+    public LocalDateTime calcGregDate(){
+        return this.zeroDayGreg;
     }
 
     public stardate()
