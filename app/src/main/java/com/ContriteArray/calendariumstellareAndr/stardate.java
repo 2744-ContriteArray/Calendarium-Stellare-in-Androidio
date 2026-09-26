@@ -26,6 +26,11 @@ public class stardate
         try {
             this.datum.addAll(when);
             //MainActivity.debugPrintln(("datum = "+this.datum));
+            /*
+                TODO:
+                    [] take new stardate and convert to greg
+                    [] assign to todayGreg
+             */
         }catch (IndexOutOfBoundsException e)
         {
             MainActivity.debugPrintln(("ERROR IN setDatum(): "+e.getMessage()));
