@@ -32,9 +32,6 @@ public class ConversionToGregorian extends AppCompatActivity {
     ImageButton con2Star;
     ImageButton con2Greg;
 
-
-
-
     /*
         TODO
             [] Check events for content input to fields
@@ -88,7 +85,9 @@ public class ConversionToGregorian extends AppCompatActivity {
         });
 
         strdError = (TextView) findViewById(R.id.strdError);
+        strdError.setVisibility(View.INVISIBLE);
         gregError = (TextView) findViewById(R.id.gregError);
+        gregError.setVisibility(View.INVISIBLE);
 
         pulsar = new stardate();
         Greg = LocalDateTime.of(1970,8,13,0,0,0);
@@ -106,11 +105,11 @@ public class ConversionToGregorian extends AppCompatActivity {
         // Current stardate years are 2 digits and won't be 3 for several years, but this constant
         // will be changed as necessary
 
-        return true;
+        return false;
     }
 
     private static boolean gregCheck(String date){
-        return true;
+        return false;
     }
 
     @Override
@@ -191,6 +190,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                  }
                  else{
                      System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
+                     strdError.setVisibility(View.VISIBLE);
                      return;
                  }
              }catch(NullPointerException e){
@@ -287,6 +287,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                     }
                     else{
                         System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
+                        strdError.setVisibility(View.VISIBLE);
                         return;
                     }
                 }catch(NullPointerException e){
