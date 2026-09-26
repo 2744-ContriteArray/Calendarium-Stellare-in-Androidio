@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/app_backdrop"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
@@ -25,23 +26,6 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/refresher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="160dp"
-        android:enabled="true"
-        android:soundEffectsEnabled="true"
-        android:text="Refresh"
-        android:textColorLink="#E7E701"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NowDate"
-        app:strokeColor="#D6A444" />
 
     <TextView
         android:id="@+id/NowDate"
@@ -63,9 +47,8 @@
 
     <TextView
         android:id="@+id/debugHermes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_width="97dp"
+        android:layout_height="80dp"
         android:width="250sp"
         android:height="250sp"
         android:backgroundTint="#7C7B7B"
@@ -74,19 +57,57 @@
         android:text="TextView"
         android:textColor="@color/white"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="-47dp"
+        tools:layout_editor_absoluteY="776dp" />
 
     <ImageButton
         android:id="@+id/mute_button"
+        android:layout_width="49dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18dp"
+        android:background="@mipmap/sound_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/refresher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NowDate"
+        app:srcCompat="@mipmap/commbadge_refresh" />
+
+    <ImageButton
+        android:id="@+id/convert_nav_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="57dp"
+        android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />
+        app:layout_constraintStart_toEndOf="@+id/refresher"
+        app:srcCompat="@mipmap/commbadge_convert" />
+
+    <ImageButton
+        android:id="@+id/about_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/refresher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/commbadge_about" />
+
+    <!--        app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
