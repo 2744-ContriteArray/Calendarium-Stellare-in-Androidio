@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,6 +72,10 @@ public class ConversionToGregorian extends AppCompatActivity {
                 [] Get stardate and assign to strdtInput text
      */
 
+    // Declare error message TextViews
+    TextView strdError;
+    TextView gregError;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +86,9 @@ public class ConversionToGregorian extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        strdError = (TextView) findViewById(R.id.strdError);
+        gregError = (TextView) findViewById(R.id.gregError);
 
         pulsar = new stardate();
         Greg = LocalDateTime.of(1970,8,13,0,0,0);
