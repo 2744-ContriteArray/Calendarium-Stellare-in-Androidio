@@ -187,8 +187,8 @@ public class ConversionToGregorian extends AppCompatActivity {
         }
     }
 
-    private static boolean gregCheck(String date){
-        return false;
+    private static LocalDateTime gregFormat(){
+        return LocalDateTime.of(1970,8,13,0,0,0);
     }
 
     @Override
