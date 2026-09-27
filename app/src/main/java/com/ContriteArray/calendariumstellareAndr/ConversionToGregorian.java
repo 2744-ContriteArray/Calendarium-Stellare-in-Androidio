@@ -89,6 +89,14 @@ public class ConversionToGregorian extends AppCompatActivity {
         gregError = (TextView) findViewById(R.id.gregError);
         gregError.setVisibility(View.INVISIBLE);
 
+        copyStrdtButton = (ImageButton) findViewById(R.id.copyStrdtButton);
+        copyGregButton = (ImageButton) findViewById(R.id.copyGregButton);
+        con2Star = (ImageButton) findViewById(R.id.con2Star);
+        con2Greg = (ImageButton) findViewById(R.id.con2Greg);
+
+        strdtInput = (EditText) findViewById(R.id.strdtInput);
+        gregInput = (EditText) findViewById(R.id.gregInput);
+
         pulsar = new stardate();
         Greg = LocalDateTime.of(1970,8,13,0,0,0);
     }
@@ -110,8 +118,10 @@ public class ConversionToGregorian extends AppCompatActivity {
 
     private ArrayList<String> strdFormat(){
         // cut from onStart()
+        System.out.println("ENTERED strdFormat() METHOD \n\n\n\n\n");
         final int MAXYEARDIGITS = 1; // Amount of digits in a staryear
-        String buffer = String.valueOf(strdtInput.getText());
+        System.out.println(("EditText contains text: "+strdtInput.getText().toString()+"\n\n\n\n"));
+        String buffer = String.valueOf(strdtInput.getText().toString());
         if(starCheck(buffer)) {
             // valid stardate, convert to gregorian
                  /*
@@ -189,12 +199,16 @@ public class ConversionToGregorian extends AppCompatActivity {
 
 
         // On Click Events
-        this.copyStrdtButton.setOnClickListener(new View.OnClickListener() {
+        copyStrdtButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
              try{
                  // set datum in pulsar and set gregorian date to equivalent
-                 pulsar.setDatum(strdFormat());
+                 ArrayList<String> buffer = strdFormat();
+
+                 if(buffer.contains("ERROR")){
+                     return;
+                 }
 
                  // Get gregorian date from pulsar
                  // LocalDateTime tempGreg =
@@ -202,11 +216,12 @@ public class ConversionToGregorian extends AppCompatActivity {
                  //gregInput.setText();
              }catch(NullPointerException e){
                  System.out.println("NULL POINTER EXCEPTION IN COPYSTRDTBUTTON ONCLICK");
+                 strdError.setVisibility(View.VISIBLE);
                  return;
              }
             }
         });
-        this.copyGregButton.setOnClickListener(new View.OnClickListener() {
+        copyGregButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
@@ -218,85 +233,23 @@ public class ConversionToGregorian extends AppCompatActivity {
                 }
             }
         });
-        this.con2Star.setOnClickListener(new View.OnClickListener() {
+        con2Star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        this.con2Greg.setOnClickListener(new View.OnClickListener() {
+        con2Greg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
-                    final int MAXYEARDIGITS = 1; // Amount of digits in a staryear
-                    String buffer = String.valueOf(strdtInput.getText());
-                    if(starCheck(buffer)) {
-                        // valid stardate, convert to gregorian
-                 /*
-                    TODO
-                        [] Convert buffer to ArrayList<String>
-                            - iterate through buffer, using iter numbers to determine units
-                            [] Test and debug
-                  */
-                        ArrayList<String> bufferList = new ArrayList<>();
-                        String year = "";
-                        String day = "";
-                        String hour = "";
-                        String minute = "";
-                        String second = "";
-                        // assemble buffer into arraylist (bufferList)
-                        {
-                            for (int i = 0; i < 9; i++) {
-                                if (i < MAXYEARDIGITS) {
-                                    year += buffer.charAt(i);
-                                    continue;
-                                }
-                                bufferList.add(year);
+                    ArrayList<String> buffer = strdFormat();
 
-                                if (i < 5) {
-                                    day += buffer.charAt(i);
-                                    continue;
-                                }
-                                bufferList.add(day);
-
-                                if (i < 7) {
-                                    hour += buffer.charAt(i);
-                                    continue;
-                                }
-                                bufferList.add(hour);
-                            }
-
-                            bufferList.add(String.valueOf(buffer.charAt(7))); // add '.'
-
-                            for (int i = 8; i < buffer.length(); i++) {
-                                if (i < 10) {
-                                    minute += buffer.charAt(i);
-                                    continue;
-                                }
-                                bufferList.add(minute);
-
-                                if (i == 10) {
-                                    second += buffer.charAt(i);
-                                    continue;
-                                } else {
-                                    second += buffer.charAt(i);
-                                    bufferList.add(second);
-                                }
-                            }
-                        }
-                        // set datum in pulsar and set gregorian date to equivalent
-                        pulsar.setDatum(bufferList);
-
-                        // Get gregorian date from pulsar
-                        // LocalDateTime tempGreg =
-                        // Apply to gregInput text
-                        //gregInput.setText();
-                    }
-                    else{
-                        System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
-                        strdError.setVisibility(View.VISIBLE);
+                    if(buffer.contains("ERROR")){
                         return;
                     }
+
+                    pulsar.setDatum(buffer);
                 }catch(NullPointerException e){
                     System.out.println("NULL POINTER EXCEPTION IN CON2GREG ONCLICK");
                     return;
