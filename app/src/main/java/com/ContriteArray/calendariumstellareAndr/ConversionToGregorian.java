@@ -124,7 +124,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                 var txtLen = strdtInput.getText().length();
 
                 if(txtLen == 7){
-                    strdtInput.setText(new StringBuilder(text).insert(text.length()-1, ".").toString());
+                    strdtInput.setText(new StringBuilder(text).insert(text.length(), ".").toString());
                     strdtInput.setSelection(strdtInput.getText().length());
                 }
             }});
@@ -149,17 +149,17 @@ public class ConversionToGregorian extends AppCompatActivity {
                 // DATE STRING FORMAT: MM/DD/YYYY HH:MM:SS
                 // Insert slashes
                 if(txtLen == 2 || txtLen == 5){
-                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, "/").toString());
+                    gregInput.setText(new StringBuilder(text).insert(text.length(), "/").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
                 // Insert space
                 if(txtLen == 10){
-                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, " ").toString());
+                    gregInput.setText(new StringBuilder(text).insert(text.length(), " ").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
                 // Insert colons
                 if(txtLen == 12 || txtLen == 15 || txtLen == 18){
-                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, ":").toString());
+                    gregInput.setText(new StringBuilder(text).insert(text.length(), ":").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
             }});
