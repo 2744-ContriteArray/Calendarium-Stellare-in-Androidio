@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import android.content.ClipboardManager;
 import android.content.ClipData;
@@ -176,10 +177,31 @@ public class ConversionToGregorian extends AppCompatActivity {
          */
 
         final int CHARAMOUNT = 12; // proper character amount in stardate format
+        final int YEARAMOUNT = 2;
         // Current stardate years are 2 digits and won't be 3 for several years, but this constant
         // will be changed as necessary
+        HashSet<Character> letters = new HashSet<Character>();
+        letters.add('A');
+        letters.add('B');
+        letters.add('C');
+        letters.add('D');
+        letters.add('E');
+        letters.add('F');
 
-        return false;
+        try {
+            for (int i = 0; i < date.length(); i++) {
+                if (i > YEARAMOUNT && letters.contains(date.charAt(i))) {
+                    System.out.println("starCheck() fails");
+                    return false;
+                }
+            }
+
+            System.out.println("starCheck() evaluates to true");
+            return true;
+        }catch(NullPointerException e){
+            System.out.println("starCheck() EVALUATES TO FALSE - DATE THROWS NULLPOINTER \n\n\n\n");
+            return false;
+        }
     }
 
     private ArrayList<String> strdFormat(){
@@ -187,9 +209,11 @@ public class ConversionToGregorian extends AppCompatActivity {
         System.out.println("ENTERED strdFormat() METHOD \n\n\n\n\n");
         final int MAXYEARDIGITS = 1; // Amount of digits in a staryear
         System.out.println(("EditText contains text: "+strdtInput.getText().toString()+"\n\n\n\n"));
-        String buffer = String.valueOf(strdtInput.getText().toString());
-        if(starCheck(buffer)) {
-            // valid stardate, convert to gregorian
+        try {
+            String buffer = String.valueOf(strdtInput.getText().toString());
+
+            if (starCheck(buffer)) {
+                // valid stardate, convert to gregorian
                  /*
                     TODO
                         [*] Convert buffer to ArrayList<String>
@@ -198,57 +222,67 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [] Run checks for improper use of hexadecimals
                             [] Test and debug
                   */
-            ArrayList<String> bufferList = new ArrayList<>();
-            String year = "";
-            String day = "";
-            String hour = "";
-            String minute = "";
-            String second = "";
-            // assemble buffer into arraylist (bufferList)
-            {
-                for (int i = 0; i < 9; i++) {
-                    if (i < MAXYEARDIGITS) {
-                        year += buffer.charAt(i);
-                        continue;
-                    }
-                    bufferList.add(year);
+                ArrayList<String> bufferList = new ArrayList<>();
+                String year = "";
+                String day = "";
+                String hour = "";
+                String minute = "";
+                String second = "";
+                // assemble buffer into arraylist (bufferList)
+                {
+                    for (int i = 0; i < 9; i++) {
+                        if (i < MAXYEARDIGITS) {
+                            year += buffer.charAt(i);
+                            continue;
+                        }
+                        bufferList.add(year);
 
-                    if (i < 5) {
-                        day += buffer.charAt(i);
-                        continue;
-                    }
-                    bufferList.add(day);
+                        if (i < 5) {
+                            day += buffer.charAt(i);
+                            continue;
+                        }
+                        bufferList.add(day);
 
-                    if (i < 7) {
-                        hour += buffer.charAt(i);
-                        continue;
+                        if (i < 7) {
+                            hour += buffer.charAt(i);
+                            continue;
+                        }
+                        bufferList.add(hour);
                     }
-                    bufferList.add(hour);
+
+                    bufferList.add(String.valueOf(buffer.charAt(7))); // add '.'
+
+                    for (int i = 8; i < buffer.length(); i++) {
+                        if (i < 10) {
+                            minute += buffer.charAt(i);
+                            continue;
+                        }
+                        bufferList.add(minute);
+
+                        if (i == 10) {
+                            second += buffer.charAt(i);
+                            continue;
+                        } else {
+                            second += buffer.charAt(i);
+                            bufferList.add(second);
+                        }
+                    }
                 }
-
-                bufferList.add(String.valueOf(buffer.charAt(7))); // add '.'
-
-                for (int i = 8; i < buffer.length(); i++) {
-                    if (i < 10) {
-                        minute += buffer.charAt(i);
-                        continue;
-                    }
-                    bufferList.add(minute);
-
-                    if (i == 10) {
-                        second += buffer.charAt(i);
-                        continue;
-                    } else {
-                        second += buffer.charAt(i);
-                        bufferList.add(second);
-                    }
-                }
+                return bufferList;
+            } else {
+                //System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
+                strdError.setVisibility(View.VISIBLE);
+                ArrayList<String> buffError = new ArrayList<>();
+                buffError.add("ERROR");
+                return buffError;
             }
-            return bufferList;
-        }
-        else{
-            System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
-            strdError.setVisibility(View.VISIBLE);
+        }catch(NullPointerException e){
+            System.out.println("NULLPOINTER EXCEPTION IN STRDFORMAT() - BUFFER WAS NULL \n\n\n\n");
+            ArrayList<String> buffError = new ArrayList<>();
+            buffError.add("ERROR");
+            return buffError;
+        }catch(StringIndexOutOfBoundsException I){
+            System.out.println("INDEX OUT OF BOUNDS EXCEPTION IN STRDFORMAT() - BUFFER WAS EMPTY \n\n\n\n");
             ArrayList<String> buffError = new ArrayList<>();
             buffError.add("ERROR");
             return buffError;
@@ -272,6 +306,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                  ArrayList<String> buffer = strdFormat();
 
                  if(buffer.contains("ERROR")){
+                     strdError.setVisibility(View.VISIBLE);
                      return;
                  }
 
