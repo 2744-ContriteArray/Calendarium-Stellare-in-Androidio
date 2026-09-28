@@ -1,6 +1,9 @@
 package com.ContriteArray.calendariumstellareAndr;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,6 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.time.*;
 import java.util.ArrayList;
+
+import android.content.ClipboardManager;
+import android.content.ClipData;
 
 public class ConversionToGregorian extends AppCompatActivity {
 
@@ -34,24 +40,24 @@ public class ConversionToGregorian extends AppCompatActivity {
 
     /*
         TODO
-            [] Check events for content input to fields
+            [*] Check events for content input to fields
                 - is it possible? do they throw events like that?
                 - if so:
-                [] strdtInput
-                    [] Check character count. if == 7, append '.'
-                    [] Character count limit of 12
-                [] gregInput
-                    [] Check character counts, add '/' between units
+                [*] strdtInput
+                    [*] Check character count. if == 7, append '.'
+                    [*] Character count limit of 12
+                [*] gregInput
+                    [*] Check character counts, add '/' between units
             [] string check functions
                 [] stardate
-                    [] check validity according to format
-                    [] throw error message if incomplete or misformatted
+                    [] check validity according to format - no misplaced hex!
+                    [*] throw error message if incomplete or misformatted
                 [] Gregorian
                     [] check validity according to format
                     [] throw error message if incomplete or misformatted
             [] Functionality for copyStrdtButton
                 [*] check for null string (try-catch)
-                [] copy strdtInput text onto system clipboard
+                [*] copy strdtInput text onto system clipboard
             [] Functionality for copyGregButton
                 [*] check for null string (try-catch)
                 [] copy date text onto system clipboard
@@ -97,6 +103,66 @@ public class ConversionToGregorian extends AppCompatActivity {
         strdtInput = (EditText) findViewById(R.id.strdtInput);
         gregInput = (EditText) findViewById(R.id.gregInput);
 
+        // set textchange listeners
+        strdtInput.addTextChangedListener(new TextWatcher()
+        {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = strdtInput.getText().toString();
+                var txtLen = strdtInput.getText().length();
+
+                if(txtLen == 7){
+                    strdtInput.setText(new StringBuilder(text).insert(text.length()-1, ".").toString());
+                    strdtInput.setSelection(strdtInput.getText().length());
+                }
+            }});
+        gregInput.addTextChangedListener(new TextWatcher()
+        {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = gregInput.getText().toString();
+                var txtLen = gregInput.getText().length();
+
+                // DATE STRING FORMAT: MM/DD/YYYY HH:MM:SS
+                // Insert slashes
+                if(txtLen == 2 || txtLen == 5){
+                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, "/").toString());
+                    gregInput.setSelection(gregInput.getText().length());
+                }
+                // Insert space
+                if(txtLen == 10){
+                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, " ").toString());
+                    gregInput.setSelection(gregInput.getText().length());
+                }
+                // Insert colons
+                if(txtLen == 12 || txtLen == 15 || txtLen == 18){
+                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, ":").toString());
+                    gregInput.setSelection(gregInput.getText().length());
+                }
+            }});
+
         pulsar = new stardate();
         Greg = LocalDateTime.of(1970,8,13,0,0,0);
     }
@@ -126,8 +192,10 @@ public class ConversionToGregorian extends AppCompatActivity {
             // valid stardate, convert to gregorian
                  /*
                     TODO
-                        [] Convert buffer to ArrayList<String>
+                        [*] Convert buffer to ArrayList<String>
                             - iterate through buffer, using iter numbers to determine units
+                            [*] Test and debug
+                        [] Run checks for improper use of hexadecimals
                             [] Test and debug
                   */
             ArrayList<String> bufferList = new ArrayList<>();
@@ -195,9 +263,6 @@ public class ConversionToGregorian extends AppCompatActivity {
     protected void onStart(){
 
         super.onStart();
-
-
-
         // On Click Events
         copyStrdtButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,10 +275,13 @@ public class ConversionToGregorian extends AppCompatActivity {
                      return;
                  }
 
-                 // Get gregorian date from pulsar
-                 // LocalDateTime tempGreg =
-                 // Apply to gregInput text
-                 //gregInput.setText();
+                 // Get stardate from buffer and cast
+                 CharSequence StarChar = (CharSequence) buffer.toString();
+                 // Declare/initialize clipboard manager, ClipData, and then copy text
+                 ClipboardManager clipMng = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                 ClipData paperClip = ClipData.newPlainText(StarChar.toString(), StarChar);
+                 clipMng.setPrimaryClip(paperClip);
+
              }catch(NullPointerException e){
                  System.out.println("NULL POINTER EXCEPTION IN COPYSTRDTBUTTON ONCLICK");
                  strdError.setVisibility(View.VISIBLE);
@@ -226,6 +294,10 @@ public class ConversionToGregorian extends AppCompatActivity {
             public void onClick(View v) {
                 try{
                     String buffer = String.valueOf(gregInput.getText());
+
+
+                    ClipboardManager clipMng = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData paperclip = ClipData.newPlainText("fuck", "fuck");
 
                 }catch(NullPointerException e){
                     System.out.println("NULL POINTER EXCEPTION IN COPYGREGBUTTON ONCLICK");

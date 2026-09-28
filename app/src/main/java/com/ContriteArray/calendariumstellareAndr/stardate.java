@@ -1,8 +1,6 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.HashMap;
 import java.lang.Math;
 import java.time.*;
@@ -50,7 +48,11 @@ public class stardate
     public void setGreg(LocalDateTime when)
     {
         this.todayGreg = when;
-        //this.setDatum(this.calcStardate(when));// Adjust stardate held in this.datum
+        this.setDatum(this.calcStardate(false));// Adjust stardate held in this.datum
+    }
+
+    public ArrayList<String> getStardate(){
+        return this.datum;
     }
 
     // Purpose: convert decimal integers to hexadecimal strings
@@ -237,7 +239,7 @@ public class stardate
         return LocalDateTime.now();
     }
 
-    public ArrayList<String> calcStardate()
+    public ArrayList<String> calcStardate(boolean now)
     {
         /*
         TODO
@@ -252,10 +254,16 @@ public class stardate
         // Debug printout
         MainActivity.debugPrintln("/clear");
         MainActivity.debugPrintln("Now in calcStardate()");
+        LocalDateTime rightFuckinNow;
 
-        // Get right fucking now and convert to Julian
-        LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
-        this.todayGreg = rightFuckinNow;
+        if(now) {
+            // Get right fucking now and convert to Julian
+            rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
+            this.todayGreg = rightFuckinNow;
+        }
+        else{
+            rightFuckinNow = this.todayGreg.minusDays((long) 13.0075);
+        }
         // Get duration difference between zero day and rn
         Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
 
@@ -378,6 +386,6 @@ public class stardate
         this.between.minusDays(12); // minus 12 days to convert to julian
         // 12 and not 13 because Period.between() is second date EXclusive so treat it as already subtracted
 
-        this.setDatum(this.calcStardate());
+        this.setDatum(this.calcStardate(true));
     }
 }
