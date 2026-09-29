@@ -1,6 +1,7 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,6 +39,7 @@ public class ConversionToGregorian extends AppCompatActivity {
     ImageButton copyGregButton;
     ImageButton con2Star;
     ImageButton con2Greg;
+    ImageButton backButton;
 
     /*
         TODO
@@ -100,6 +102,7 @@ public class ConversionToGregorian extends AppCompatActivity {
         copyGregButton = (ImageButton) findViewById(R.id.copyGregButton);
         con2Star = (ImageButton) findViewById(R.id.con2Star);
         con2Greg = (ImageButton) findViewById(R.id.con2Greg);
+        backButton = (ImageButton) findViewById(R.id.backButton);
 
         strdtInput = (EditText) findViewById(R.id.strdtInput);
         gregInput = (EditText) findViewById(R.id.gregInput);
@@ -361,6 +364,12 @@ public class ConversionToGregorian extends AppCompatActivity {
                     System.out.println("NULL POINTER EXCEPTION IN CON2GREG ONCLICK");
                     return;
                 }
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
