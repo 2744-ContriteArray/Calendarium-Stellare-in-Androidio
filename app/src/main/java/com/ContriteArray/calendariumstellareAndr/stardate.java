@@ -340,12 +340,24 @@ public class stardate
          */
 
         // Calculate Minutes
-        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60)+49,60);
+        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
                 delta.toSeconds()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
-        long StellarSec = ((delta.toSeconds()+11) % 60);
+        long StellarSec = ((delta.toSeconds()) % 60);
+
+        // Compensate for lagtime
+        StellarSec += 11;
+        if(StellarSec >= 60){
+            StellarSec -= 60;
+            StellarMin++;
+        }
+        StellarMin += 49;
+        if(StellarMin >= 60){
+            StellarHour++;
+            StellarMin -= 60;
+        }
 
 //        when.add("~~");
         // Format stellar minutes
