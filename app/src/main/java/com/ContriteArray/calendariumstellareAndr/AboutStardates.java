@@ -18,6 +18,7 @@ public class AboutStardates extends AppCompatActivity {
     protected ImageView aboutSect;
     protected ImageButton textSwitcher;
     protected ScrollView scrollingThing;
+    protected ImageButton BackB;
 
     protected boolean aboutSys = true; // Are we showing the about text and not the formulae?
 
@@ -35,12 +36,19 @@ public class AboutStardates extends AppCompatActivity {
         aboutSect = (ImageView) findViewById(R.id.about_sect);
         textSwitcher = (ImageButton) findViewById(R.id.textSwitcher);
         scrollingThing = (ScrollView) findViewById(R.id.scrollingThing);
+        BackB = (ImageButton) findViewById(R.id.BackB);
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
+        BackB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         textSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
