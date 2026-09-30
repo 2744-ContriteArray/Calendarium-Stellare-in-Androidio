@@ -28,26 +28,7 @@ public class AboutStardates extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-/*
         // initialize textview
         aboutSect = findViewById(R.id.about_sect);
-
-        // import txt file and parse contents
-        InputStream is = getResources().openRawResource(R.raw.about_text);
-        BufferedReader leitheoir = new BufferedReader(new InputStreamReader(is));
-        StringBuilder teachtaireacht = new StringBuilder();
-        String Piece = null;
-
-        try{
-            while ((Piece = leitheoir.readLine()) != null)
-                teachtaireacht.append(Piece);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        Piece = teachtaireacht.toString();
-
-
-        // assign contents to textview
-        aboutSect.setText(Piece);*/
     }
 }
