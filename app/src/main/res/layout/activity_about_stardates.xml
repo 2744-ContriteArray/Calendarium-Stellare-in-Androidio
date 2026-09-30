@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="@mipmap/about_backdrop"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".AboutStardates">
 
     <ScrollView
+        android:id="@+id/Scroller"
+        style="@android:style/Widget.Material.Light.ScrollView"
         android:layout_width="298dp"
-        android:layout_height="594dp"
+        android:layout_height="365dp"
         android:fillViewport="false"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -20,11 +24,23 @@
         app:layout_constraintVertical_bias="0.5">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/about_sect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             app:srcCompat="@mipmap/about_text_imagery" />
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/textSwitcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/text_switch_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
