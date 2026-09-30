@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="@mipmap/about_backdrop"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".AboutStardates">
 
     <ScrollView
         android:layout_width="298dp"
-        android:layout_height="594dp"
+        android:layout_height="365dp"
         android:fillViewport="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
