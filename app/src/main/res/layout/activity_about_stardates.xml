@@ -43,4 +43,14 @@
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/text_switch_button" />
+
+    <ImageButton
+        android:id="@+id/BackB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="195dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/back2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
