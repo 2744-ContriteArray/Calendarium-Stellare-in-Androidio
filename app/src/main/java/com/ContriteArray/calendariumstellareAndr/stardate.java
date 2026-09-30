@@ -1,8 +1,6 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.HashMap;
 import java.lang.Math;
 import java.time.*;
@@ -50,7 +48,11 @@ public class stardate
     public void setGreg(LocalDateTime when)
     {
         this.todayGreg = when;
-        //this.setDatum(this.calcStardate(when));// Adjust stardate held in this.datum
+        this.setDatum(this.calcStardate(false));// Adjust stardate held in this.datum
+    }
+
+    public ArrayList<String> getStardate(){
+        return this.datum;
     }
 
     // Purpose: convert decimal integers to hexadecimal strings
@@ -165,7 +167,79 @@ public class stardate
         return dec;
     }
 
-    public ArrayList<String> calcStardate()
+
+    public LocalDateTime conv2Greg(){
+        LocalDateTime result; //final result
+        int year; //int for the year to be assigned to result
+        int month; //int for the month to be assigned to result
+        int day; //int for the day to be assigned to result
+        int hour; //int for the hour to be assigned to result
+        int minute; //int for the minute to be assigned to result
+        int second; //int for the second to be assigned to result
+        /*
+        Reverse calcStardate()
+
+        TODO
+            [*] assign seconds
+            [*] assign minutes
+            [] Research
+                [] Euclidean algorithm for inverting modulo operations
+                    - a*s + t*b = 1
+                    - a*s ≡ 1 mod b
+                    - x*a*s ≡ c*s mod b
+                    - x*1 ≡ c*s mod b
+                    - x ≡ c*s mod b
+                        - https://math.stackexchange.com/questions/684550/how-to-reverse-modulo-of-a-multiplication
+                    - Might not be possible
+                        - https://stackoverflow.com/questions/53191604/how-do-i-reverse-the-modulus-operator
+            [] reverse hour calculation
+            [] reverse day calculations
+            [] calculate year
+            []
+         */
+
+        second = Integer.parseInt(this.datum.get(5));
+        minute = Integer.parseInt(this.datum.get(4));
+
+        // YEAR CALCULATION
+        int yearGap = hexToDec(this.datum.get(0));
+        //LocalDateTime rightNow = this.zeroDayJules;
+        //rightNow.minusYears(yearGap);
+        year = this.zeroDayJules.getYear()+yearGap;
+
+        // Day/month calculation
+        /*
+        - take days from this.datum
+        - calculate from 30 hour days down to 24 hour days
+        - temp LocalDateTime zeroDayJules clone
+        - add calculated days
+        - assign day to clone
+        - clone.getDays()
+        - clone.getMonth()
+
+         */
+        int dayGap = Integer.parseInt(this.datum.get(2));
+        // calculate from 30 hour days into 24 hour days
+        // assign result to dayGap
+
+        LocalDateTime zeroClone = this.zeroDayJules;
+        zeroClone.plusDays((long) Math.floor(dayGap+13.0075)); // convert to gregorian
+        month = zeroClone.getMonthValue();
+        day = zeroClone.getDayOfMonth();
+
+        // hour calculation
+        /*
+        - reverse hour calculation to get total hours
+        - modulo 24 to adjust for 24 hour periods
+        - bob's your uncle
+         */
+
+
+        //result = LocalDateTime.of(year,month,day,hour,minute,second);
+        return LocalDateTime.now();
+    }
+
+    public ArrayList<String> calcStardate(boolean now)
     {
         /*
         TODO
@@ -180,10 +254,16 @@ public class stardate
         // Debug printout
         MainActivity.debugPrintln("/clear");
         MainActivity.debugPrintln("Now in calcStardate()");
+        LocalDateTime rightFuckinNow;
 
-        // Get right fucking now and convert to Julian
-        LocalDateTime rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
-        this.todayGreg = rightFuckinNow;
+        if(now) {
+            // Get right fucking now and convert to Julian
+            rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
+            this.todayGreg = rightFuckinNow;
+        }
+        else{
+            rightFuckinNow = this.todayGreg.minusDays((long) 13.0075);
+        }
         // Get duration difference between zero day and rn
         Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
 
@@ -260,12 +340,24 @@ public class stardate
          */
 
         // Calculate Minutes
-        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60)+49,60);
+        int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
         MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
                 delta.toSeconds()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
-        long StellarSec = ((delta.toSeconds()+11) % 60);
+        long StellarSec = ((delta.toSeconds()) % 60);
+
+        // Compensate for lagtime
+        StellarSec += 11;
+        if(StellarSec >= 60){
+            StellarSec -= 60;
+            StellarMin++;
+        }
+        StellarMin += 49;
+        if(StellarMin >= 60){
+            StellarHour++;
+            StellarMin -= 60;
+        }
 
 //        when.add("~~");
         // Format stellar minutes
@@ -306,6 +398,6 @@ public class stardate
         this.between.minusDays(12); // minus 12 days to convert to julian
         // 12 and not 13 because Period.between() is second date EXclusive so treat it as already subtracted
 
-        this.setDatum(this.calcStardate());
+        this.setDatum(this.calcStardate(true));
     }
 }

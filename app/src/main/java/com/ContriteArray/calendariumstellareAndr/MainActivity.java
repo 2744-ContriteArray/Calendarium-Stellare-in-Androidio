@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         stardate star_today = new stardate();
         // get stardate
-        ArrayList<String> unformatTime = star_today.calcStardate();
+        ArrayList<String> unformatTime = star_today.calcStardate(true);
 
         // format the stardate into a string
         String Stime = "";
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stardate theDate = new stardate();
-                ArrayList<String> rawTime = theDate.calcStardate();
+                ArrayList<String> rawTime = theDate.calcStardate(true);
 
                 String Stime = "";
 
