@@ -343,11 +343,11 @@ public class ConversionToGregorian extends AppCompatActivity {
             public void onClick(View v) {
                 /*
                     TODO
-                        [] Check for null string (try-catch)
-                        [] Check for validity according to format
+                        [*] Check for null string (try-catch)
+                        [*] Check for validity according to format
                         if valid date:
-                        [] Assign string from gregInput to Pulsar.todayGreg
-                        [] Get stardate and assign to strdtInput text
+                        [*] Assign string from strdtInput to Pulsar.datum
+                        [] Get gregorian equivalent and assign to gregInput text
                  */
                 try{
                     String buffer = strdFormat();
@@ -367,6 +367,22 @@ public class ConversionToGregorian extends AppCompatActivity {
                     }
 
                     pulsar.setDatum(formatted);
+                    String gregNow = pulsar.getGreg().toString();
+                    /*
+                    TODO
+                        - pulsar.getGreg().toString() returns format "1970-08-13T00:00
+                        [] Reformat constituent elements of LocalDateTime obj
+                        [] Stringify and assign to gregNow
+                        [] gregInput.setText()
+                        - pulsar.getGreg() returns the gregorian zero day
+                        [] (In stardate.java) finish conversion to gregorian maths
+                            [] Figure out the algebra
+                            [] Apply said algebra
+                            [] Test it
+                     */
+
+                    System.out.println(("gregNow = "+gregNow+"\n\n\n\n\n"));
+
                 }catch(NullPointerException e){
                     System.out.println("NULL POINTER EXCEPTION IN CON2GREG ONCLICK");
                     return;
