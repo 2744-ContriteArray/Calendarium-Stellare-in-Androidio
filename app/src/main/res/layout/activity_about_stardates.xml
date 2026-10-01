@@ -14,14 +14,14 @@
         style="@android:style/Widget.Material.Light.ScrollView"
         android:layout_width="298dp"
         android:layout_height="365dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="41dp"
         android:fillViewport="false"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/about_sect"
@@ -36,11 +36,12 @@
         android:id="@+id/textSwitcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="93dp"
         android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/text_switch_button" />
 
