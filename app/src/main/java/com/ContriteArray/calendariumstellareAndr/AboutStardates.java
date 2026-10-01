@@ -52,15 +52,18 @@ public class AboutStardates extends AppCompatActivity {
         textSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollingThing.scrollTo(0,0);
+                //scrollingThing.scrollTo(0,0);
 
+                System.out.println(("aboutSys = "+aboutSys));
                 if(aboutSys){
-                    int formuID = getResources().getIdentifier("about_formulae_imagery", "drawable", getPackageName());
+                    int formuID = getResources().getIdentifier("about_formulae_imagery", "mipmap", getPackageName());
+                    System.out.println(("formuID = "+formuID));
                     aboutSect.setImageResource(formuID);
                     aboutSys = false;
                 }
                 else{
-                    int formuID = getResources().getIdentifier("about_text_imager", "drawable", getPackageName());
+                    int formuID = getResources().getIdentifier("about_text_imagery", "mipmap", getPackageName());
+                    System.out.println(("formuID = "+formuID));
                     aboutSect.setImageResource(formuID);
                     aboutSys = true;
                 }
