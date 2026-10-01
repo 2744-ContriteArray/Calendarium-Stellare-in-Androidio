@@ -286,21 +286,6 @@ public class ConversionToGregorian extends AppCompatActivity {
         copyStrdtButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                TODO
-                    - Currently doesn't copy correctly
-                    - ex. 0000000.0000 copies as [0, 0, 0, 0, 0, 0000, 0, 0000, 0, 0000, 00, 0, 0000, 00, ., 00, 00, 00]
-                    - what the fuck?
-                    [*] Diagnose problem
-                    - Diagnosis:
-                        - strdFormat() is returning that ^
-                        - investigate why
-                    [*] Solve
-                    - Solution:
-                        - return a string from strdFormat() instead of ArrayList<String>
-                        - Adapt other methods to compensate and make type agreements
-                    [*] Test
-                 */
              try{
                  // set datum in pulsar and set gregorian date to equivalent
                  String buffer = strdFormat();
@@ -310,15 +295,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                      return;
                  }
 
-                 // Get stardate from buffer and cast
-                 //CharSequence StarChar = (CharSequence) buffer.toString();
-                 /*String StarChar = "";
-                 for(String a: buffer){
-                     StarChar = StarChar.concat(a);
-                 }*/
-
                  System.out.println(("buffer = "+buffer));
-                 //System.out.println(("StarChar = "+StarChar+"\n\n\n\n\n"));
 
                  // Declare/initialize clipboard manager, ClipData, and then copy text
                  ClipboardManager clipMng = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
@@ -372,9 +349,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [] Assign string from gregInput to Pulsar.todayGreg
                         [] Get stardate and assign to strdtInput text
                  */
-
                 try{
-                    //ArrayList<String> buffer = strdFormat();
                     String buffer = strdFormat();
                     ArrayList<String> formatted = new ArrayList<String>();
 
