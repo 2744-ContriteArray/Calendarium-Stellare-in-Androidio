@@ -289,10 +289,10 @@ public class ConversionToGregorian extends AppCompatActivity {
                     - Currently doesn't copy correctly
                     - ex. 0000000.0000 copies as [0, 0, 0, 0, 0, 0000, 0, 0000, 0, 0000, 00, 0, 0000, 00, ., 00, 00, 00]
                     - what the fuck?
-                    [] Diagnose problem
+                    [*] Diagnose problem
                     - Diagnosis:
-                        - Must be something to do with the charsequence datatype
-                        -
+                        - strdFormat() is returning that ^
+                        - investigate why
                     [] Solve
                     - Solution:
                     [] Test
@@ -307,10 +307,18 @@ public class ConversionToGregorian extends AppCompatActivity {
                  }
 
                  // Get stardate from buffer and cast
-                 CharSequence StarChar = (CharSequence) buffer.toString();
+                 //CharSequence StarChar = (CharSequence) buffer.toString();
+                 String StarChar = "";
+                 for(String a: buffer){
+                     StarChar = StarChar.concat(a);
+                 }
+
+                 System.out.println(("buffer = "+buffer));
+                 System.out.println(("StarChar = "+StarChar+"\n\n\n\n\n"));
+
                  // Declare/initialize clipboard manager, ClipData, and then copy text
                  ClipboardManager clipMng = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-                 ClipData paperClip = ClipData.newPlainText(StarChar.toString(), StarChar);
+                 ClipData paperClip = ClipData.newPlainText(StarChar, StarChar);
                  clipMng.setPrimaryClip(paperClip);
 
              }catch(NullPointerException e){
