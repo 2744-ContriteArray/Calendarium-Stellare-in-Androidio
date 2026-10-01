@@ -187,7 +187,7 @@ public class ConversionToGregorian extends AppCompatActivity {
         }
     }
 
-    private ArrayList<String> strdFormat(){
+    private String strdFormat(){
         // cut from onStart()
         System.out.println("ENTERED strdFormat() METHOD \n\n\n\n\n");
         final int MAXYEARDIGITS = 1; // Amount of digits in a staryear
@@ -205,7 +205,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [] Run checks for improper use of hexadecimals
                             [] Test and debug
                   */
-                ArrayList<String> bufferList = new ArrayList<>();
+                /*ArrayList<String> bufferList = new ArrayList<>();
                 String year = "";
                 String day = "";
                 String hour = "";
@@ -251,24 +251,26 @@ public class ConversionToGregorian extends AppCompatActivity {
                         }
                     }
                 }
-                return bufferList;
+                return bufferList;*/
+                return buffer;
             } else {
                 //System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
                 strdError.setVisibility(View.VISIBLE);
-                ArrayList<String> buffError = new ArrayList<>();
-                buffError.add("ERROR");
-                return buffError;
+                return "ERROR";
+                //ArrayList<String> buffError = new ArrayList<>();
+                //buffError.add("ERROR");
+                //return buffError;
             }
         }catch(NullPointerException e){
             System.out.println("NULLPOINTER EXCEPTION IN STRDFORMAT() - BUFFER WAS NULL \n\n\n\n");
-            ArrayList<String> buffError = new ArrayList<>();
-            buffError.add("ERROR");
-            return buffError;
+            //ArrayList<String> buffError = new ArrayList<>();
+            //buffError.add("ERROR");
+            return "ERROR";
         }catch(StringIndexOutOfBoundsException I){
             System.out.println("INDEX OUT OF BOUNDS EXCEPTION IN STRDFORMAT() - BUFFER WAS EMPTY \n\n\n\n");
-            ArrayList<String> buffError = new ArrayList<>();
-            buffError.add("ERROR");
-            return buffError;
+            //ArrayList<String> buffError = new ArrayList<>();
+            //buffError.add("ERROR");
+            return "ERROR";
         }
     }
 
@@ -293,13 +295,15 @@ public class ConversionToGregorian extends AppCompatActivity {
                     - Diagnosis:
                         - strdFormat() is returning that ^
                         - investigate why
-                    [] Solve
+                    [*] Solve
                     - Solution:
-                    [] Test
+                        - return a string from strdFormat() instead of ArrayList<String>
+                        - Adapt other methods to compensate and make type agreements
+                    [*] Test
                  */
              try{
                  // set datum in pulsar and set gregorian date to equivalent
-                 ArrayList<String> buffer = strdFormat();
+                 String buffer = strdFormat();
 
                  if(buffer.contains("ERROR")){
                      strdError.setVisibility(View.VISIBLE);
@@ -308,17 +312,17 @@ public class ConversionToGregorian extends AppCompatActivity {
 
                  // Get stardate from buffer and cast
                  //CharSequence StarChar = (CharSequence) buffer.toString();
-                 String StarChar = "";
+                 /*String StarChar = "";
                  for(String a: buffer){
                      StarChar = StarChar.concat(a);
-                 }
+                 }*/
 
                  System.out.println(("buffer = "+buffer));
-                 System.out.println(("StarChar = "+StarChar+"\n\n\n\n\n"));
+                 //System.out.println(("StarChar = "+StarChar+"\n\n\n\n\n"));
 
                  // Declare/initialize clipboard manager, ClipData, and then copy text
                  ClipboardManager clipMng = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-                 ClipData paperClip = ClipData.newPlainText(StarChar, StarChar);
+                 ClipData paperClip = ClipData.newPlainText(buffer, buffer);
                  clipMng.setPrimaryClip(paperClip);
 
              }catch(NullPointerException e){
@@ -370,13 +374,24 @@ public class ConversionToGregorian extends AppCompatActivity {
                  */
 
                 try{
-                    ArrayList<String> buffer = strdFormat();
+                    //ArrayList<String> buffer = strdFormat();
+                    String buffer = strdFormat();
+                    ArrayList<String> formatted = new ArrayList<String>();
 
                     if(buffer.contains("ERROR")){
                         return;
                     }
+                    String time = "";
+                    for(int i = 0; i < buffer.length(); i++){
+                        time = time.concat(String.valueOf(buffer.charAt(i)));
+                        if(i==1 || i==4 || i==6 || i==7 || i==9 || i==11) {
+                            formatted.add(time);
+                            time = "";
+                            continue;
+                        }
+                    }
 
-                    pulsar.setDatum(buffer);
+                    pulsar.setDatum(formatted);
                 }catch(NullPointerException e){
                     System.out.println("NULL POINTER EXCEPTION IN CON2GREG ONCLICK");
                     return;
