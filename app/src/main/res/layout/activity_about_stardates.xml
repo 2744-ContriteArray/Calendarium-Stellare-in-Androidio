@@ -10,7 +10,7 @@
     tools:context=".AboutStardates">
 
     <ScrollView
-        android:id="@+id/Scroller"
+        android:id="@+id/scrollingThing"
         style="@android:style/Widget.Material.Light.ScrollView"
         android:layout_width="298dp"
         android:layout_height="365dp"

@@ -44,13 +44,6 @@ public class ConversionToGregorian extends AppCompatActivity {
     /*
         TODO
             [*] Check events for content input to fields
-                - is it possible? do they throw events like that?
-                - if so:
-                [*] strdtInput
-                    [*] Check character count. if == 7, append '.'
-                    [*] Character count limit of 12
-                [*] gregInput
-                    [*] Check character counts, add '/' between units
             [] string check functions
                 [] stardate
                     [] check validity according to format - no misplaced hex!
@@ -58,24 +51,9 @@ public class ConversionToGregorian extends AppCompatActivity {
                 [] Gregorian
                     [] check validity according to format
                     [] throw error message if incomplete or misformatted
-            [] Functionality for copyStrdtButton
-                [*] check for null string (try-catch)
-                [*] copy strdtInput text onto system clipboard
             [] Functionality for copyGregButton
                 [*] check for null string (try-catch)
-                [] copy date text onto system clipboard
-            [] Functionality for con2Star
-                [] Check for null string (try-catch)
-                [] Check for validity according to format
-                If valid stardate:
-                [] Assign string from strdtInput to Pulsar.datum
-                [] Get todayGreg and assign to gregInput text
-            [] Functionality for con2Greg
-                [] Check for null string (try-catch)
-                [] Check for validity according to format
-                if valid date:
-                [] Assign string from gregInput to Pulsar.todayGreg
-                [] Get stardate and assign to strdtInput text
+                [] copy date text onto system clipboard (using formatting and error prevention from copyStrdtButon
      */
 
     // Declare error message TextViews
@@ -127,7 +105,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                 var txtLen = strdtInput.getText().length();
 
                 if(txtLen == 7){
-                    strdtInput.setText(new StringBuilder(text).insert(text.length()-1, ".").toString());
+                    strdtInput.setText(new StringBuilder(text).insert(text.length(), ".").toString());
                     strdtInput.setSelection(strdtInput.getText().length());
                 }
             }});
@@ -152,17 +130,17 @@ public class ConversionToGregorian extends AppCompatActivity {
                 // DATE STRING FORMAT: MM/DD/YYYY HH:MM:SS
                 // Insert slashes
                 if(txtLen == 2 || txtLen == 5){
-                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, "/").toString());
+                    gregInput.setText(new StringBuilder(text).insert(text.length(), "/").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
                 // Insert space
                 if(txtLen == 10){
-                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, " ").toString());
+                    gregInput.setText(new StringBuilder(text).insert(text.length(), " ").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
                 // Insert colons
                 if(txtLen == 12 || txtLen == 15 || txtLen == 18){
-                    gregInput.setText(new StringBuilder(text).insert(text.length()-1, ":").toString());
+                    gregInput.setText(new StringBuilder(text).insert(text.length(), ":").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
             }});
@@ -174,9 +152,9 @@ public class ConversionToGregorian extends AppCompatActivity {
     private static boolean starCheck(String date){
         /*
             TODO
-                [] check validity of input according to format
-                [] if valid, return true
-                [] else throw error message, return false
+                [*] check validity of input according to format
+                [*] if valid, return true
+                [*] else throw error message, return false
          */
 
         final int CHARAMOUNT = 12; // proper character amount in stardate format
@@ -193,8 +171,10 @@ public class ConversionToGregorian extends AppCompatActivity {
 
         try {
             for (int i = 0; i < date.length(); i++) {
+                // Check for misplaced hex
                 if (i > YEARAMOUNT && letters.contains(date.charAt(i))) {
                     System.out.println("starCheck() fails");
+                    System.out.println("Reason for failure: MISPLACED HEX DIGIT \n\n\n\n\n");
                     return false;
                 }
             }
@@ -304,6 +284,19 @@ public class ConversionToGregorian extends AppCompatActivity {
         copyStrdtButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                TODO
+                    - Currently doesn't copy correctly
+                    - ex. 0000000.0000 copies as [0, 0, 0, 0, 0, 0000, 0, 0000, 0, 0000, 00, 0, 0000, 00, ., 00, 00, 00]
+                    - what the fuck?
+                    [] Diagnose problem
+                    - Diagnosis:
+                        - Must be something to do with the charsequence datatype
+                        -
+                    [] Solve
+                    - Solution:
+                    [] Test
+                 */
              try{
                  // set datum in pulsar and set gregorian date to equivalent
                  ArrayList<String> buffer = strdFormat();
@@ -346,12 +339,28 @@ public class ConversionToGregorian extends AppCompatActivity {
         con2Star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                /*
+                    TODO
+                        [] Check for null string (try-catch)
+                        [] Check for validity according to format
+                        If valid stardate:
+                        [] Assign string from strdtInput to Pulsar.datum
+                        [] Get todayGreg and assign to gregInput text
+                 */
             }
         });
         con2Greg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                    TODO
+                        [] Check for null string (try-catch)
+                        [] Check for validity according to format
+                        if valid date:
+                        [] Assign string from gregInput to Pulsar.todayGreg
+                        [] Get stardate and assign to strdtInput text
+                 */
+
                 try{
                     ArrayList<String> buffer = strdFormat();
 

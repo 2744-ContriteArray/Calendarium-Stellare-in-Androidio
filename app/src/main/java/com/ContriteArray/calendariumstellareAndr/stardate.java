@@ -347,6 +347,18 @@ public class stardate
         //Calculate Seconds
         long StellarSec = ((delta.toSeconds()) % 60);
 
+        // Compensate for lagtime
+        StellarSec += 11;
+        if(StellarSec >= 60){
+            StellarSec -= 60;
+            StellarMin++;
+        }
+        StellarMin += 49;
+        if(StellarMin >= 60){
+            StellarHour++;
+            StellarMin -= 60;
+        }
+
 //        when.add("~~");
         // Format stellar minutes
         if(StellarMin < 10)
