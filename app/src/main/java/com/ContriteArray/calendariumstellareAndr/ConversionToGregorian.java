@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import android.content.ClipboardManager;
@@ -163,7 +164,15 @@ public class ConversionToGregorian extends AppCompatActivity {
                     [*] Delimiter string "[/:\\s]"
                     [*] Convert to ints
                     [*] Value checks
-                    [X] Test
+                    [] Test
+                - Could also be fruitful to use DateTimeException to do the work for us
+                [] Rework to create LocalDateTime obj and try-catch for DateTimeException
+                    [] try{
+                    [] Delimiter string "[/:\\s]"
+                    [] Convert to ints
+                    [] LocalDateTime.of()
+                    [] catch(DateTimeException e){
+                    [] Test
          */
         String delim = "[/:\\s]";
         String[] arrayBuff = date.split(delim);
@@ -352,28 +361,35 @@ public class ConversionToGregorian extends AppCompatActivity {
         // Split `date` into substrings and add to buffer
         String delim = "[/:\\s]"; // delimiter characters with which to split the string
         String[] splitted = date.split(delim);
-        System.out.println(("splitted = "+splitted.toString()));
+        System.out.println(("splitted = "+ Arrays.toString(splitted)));
         for(String iter:splitted){
+            System.out.println(("iter = "+iter));
             buffer.add(Integer.parseInt(iter));
         }
-
-        // if units are missing
-        int len = splitted.length;
-        System.out.println(("splitted length = "+len));
-        switch(len){
-            case 3: // All clock units missing
-                buffer.add(0);
-                buffer.add(0);
-                buffer.add(0);
-            case 4: // Minutes and Seconds missing
-                buffer.add(0);
-                buffer.add(0);
-            case 5: // Seconds missing
-                buffer.add(0);
+        try {
+            // if units are missing
+            int len = splitted.length;
+            System.out.println(("splitted length = " + len));
+            switch (len) {
+                case 3: // All clock units missing
+                    buffer.add(0);
+                    buffer.add(0);
+                    buffer.add(0);
+                case 4: // Minutes and Seconds missing
+                    buffer.add(0);
+                    buffer.add(0);
+                case 5: // Seconds missing
+                    buffer.add(0);
+            }
+            System.out.println("intended length of ArrayList buffer is 6 indices");
+            System.out.println(("Actual amount of indices: " + buffer.size() + "\n\n\n\n\n"));
+            return LocalDateTime.of(buffer.get(2), buffer.get(0), buffer.get(1), buffer.get(3), buffer.get(4), buffer.get(5));
+        }catch(DateTimeException e){
+            System.out.println("DATE TIME EXCEPTION!");
+            System.out.println(e.getMessage());
+            System.out.println("\n\n\n\n");
+            return LocalDateTime.of(0,0,0,0,0);
         }
-        System.out.println("intended length of ArrayList buffer is 6 indices");
-        System.out.println(("Actual amount of indices: "+buffer.size()+"\n\n\n\n\n"));
-        return LocalDateTime.of(buffer.get(0),buffer.get(1),buffer.get(2),buffer.get(3),buffer.get(4),buffer.get(5));
     }
 
     @Override
@@ -430,12 +446,12 @@ public class ConversionToGregorian extends AppCompatActivity {
                     TODO
                         [*] Check for null string (try-catch)
                         [*] Check for validity according to format
-                            [X] Test
+                            [*] Test
                         If valid date:
                         [] Pass string from gregInput to Pulsar.setGreg()
                             - setGreg() takes a LocalDateTime obj parameter
                             [*] Use string date to create equivalent LocalDateTime
-                                [X] Test
+                                [*] Test
                             [] Call setter with received date
                         [] Get pulsar.datum, stringify, and assign to strdtInput text
                  */
