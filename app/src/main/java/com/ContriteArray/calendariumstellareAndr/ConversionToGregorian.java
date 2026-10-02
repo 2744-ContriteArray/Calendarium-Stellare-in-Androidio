@@ -80,8 +80,8 @@ public class ConversionToGregorian extends AppCompatActivity {
         strdError.setVisibility(View.INVISIBLE);
         gregError = (TextView) findViewById(R.id.gregError);
         gregError.setVisibility(View.INVISIBLE);
-        result1 = (TextView) findViewById(R.id.resultLbl1);
-        result2 = (TextView) findViewById(R.id.resultLbl2);
+        result1 = (TextView) findViewById(R.id.StarResult);
+        result2 = (TextView) findViewById(R.id.gregResult);
 
         copyStrdtButton = (ImageButton) findViewById(R.id.copyStrdtButton);
         copyGregButton = (ImageButton) findViewById(R.id.copyGregButton);
@@ -507,7 +507,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [*] Check for validity according to format
                         if valid stardate:
                         [*] Assign string from strdtInput to Pulsar.datum
-                        [] Get gregorian equivalent and assign to gregInput text
+                        [*] Get gregorian equivalent and assign to gregInput text
                  */
                 try{
                     String buffer = strdFormat();
