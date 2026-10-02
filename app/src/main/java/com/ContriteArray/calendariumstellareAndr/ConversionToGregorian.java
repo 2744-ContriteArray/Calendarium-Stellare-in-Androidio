@@ -149,6 +149,71 @@ public class ConversionToGregorian extends AppCompatActivity {
         Greg = LocalDateTime.of(1970,8,13,0,0,0);
     }
 
+    private static boolean gregCheck(String date){
+        int Month = 0;
+        int Day = 0;
+        int Hour = 0;
+        int Minute = 0;
+        int Sec = 0;
+
+        for(int i = 0; i < date.length(); i++){
+            int buff = (int) date.charAt(i);
+            switch(i){
+                case 0:
+                    Month = buff*10;
+
+                case 1:
+                    Month += buff;
+                    if(Month>12 || Month <= 0){
+                        System.out.println("INVALID MONTH - OUT OF BOUNDS");
+                        return false;
+                    }
+                // Days
+                case 3:
+                    Day = buff*10;
+
+                case 4:
+                    Day = buff;
+                    if(Day>31 || Day<=0){
+                        System.out.println("INVALID DAY - OUT OF BOUNDS");
+                        return false;
+                    }
+
+                // Hours
+                case 11:
+                    Hour = buff*10;
+                case 12:
+                    Hour += buff;
+                    if(Hour>23 || Hour<0){
+                        System.out.println("INVALID HOUR - OUT OF BOUNDS");
+                        return false;
+                    }
+                // Minutes
+                case 14:
+                    Minute = buff*10;
+                case 15:
+                    Minute += buff;
+                    if(Minute<0 || Minute>59){
+                        System.out.println("INVALID MINUTES - OUT OF BOUNDS");
+                        return false;
+                    }
+                // Seconds
+                case 17:
+                    Sec = buff*10;
+                case 18:
+                    Sec += buff;
+                    if(Sec > 59){
+                        System.out.println("INVALID SECONDS - OUT OF BOUNDS");
+                        return false;
+                    }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     private static boolean starCheck(String date){
         /*
             TODO
@@ -205,53 +270,6 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [] Run checks for improper use of hexadecimals
                             [] Test and debug
                   */
-                /*ArrayList<String> bufferList = new ArrayList<>();
-                String year = "";
-                String day = "";
-                String hour = "";
-                String minute = "";
-                String second = "";
-                // assemble buffer into arraylist (bufferList)
-                {
-                    for (int i = 0; i < 9; i++) {
-                        if (i < MAXYEARDIGITS) {
-                            year += buffer.charAt(i);
-                            continue;
-                        }
-                        bufferList.add(year);
-
-                        if (i < 5) {
-                            day += buffer.charAt(i);
-                            continue;
-                        }
-                        bufferList.add(day);
-
-                        if (i < 7) {
-                            hour += buffer.charAt(i);
-                            continue;
-                        }
-                        bufferList.add(hour);
-                    }
-
-                    bufferList.add(String.valueOf(buffer.charAt(7))); // add '.'
-
-                    for (int i = 8; i < buffer.length(); i++) {
-                        if (i < 10) {
-                            minute += buffer.charAt(i);
-                            continue;
-                        }
-                        bufferList.add(minute);
-
-                        if (i == 10) {
-                            second += buffer.charAt(i);
-                            continue;
-                        } else {
-                            second += buffer.charAt(i);
-                            bufferList.add(second);
-                        }
-                    }
-                }
-                return bufferList;*/
                 return buffer;
             } else {
                 //System.out.println("INVALID STARDATE IN COPYSTRDTBUTTON ONCLICK");
@@ -332,10 +350,18 @@ public class ConversionToGregorian extends AppCompatActivity {
                     TODO
                         [] Check for null string (try-catch)
                         [] Check for validity according to format
-                        If valid stardate:
-                        [] Assign string from strdtInput to Pulsar.datum
-                        [] Get todayGreg and assign to gregInput text
+                        If valid date:
+                        [] Pass string from gregInput to Pulsar.setGreg()
+                            - setGreg() takes a LocalDateTime obj parameter
+                            [] Use string date to create equivalent LocalDateTime
+                        [] Get pulsar.datum, stringify, and assign to strdtInput text
                  */
+                try{
+
+                }catch(NullPointerException e){
+                    System.out.println("NULLPOINTEREXCEPTION IN CON2STAR.ONCLICK()");
+                    return;
+                }
             }
         });
         con2Greg.setOnClickListener(new View.OnClickListener() {
@@ -345,7 +371,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                     TODO
                         [*] Check for null string (try-catch)
                         [*] Check for validity according to format
-                        if valid date:
+                        if valid stardate:
                         [*] Assign string from strdtInput to Pulsar.datum
                         [] Get gregorian equivalent and assign to gregInput text
                  */
