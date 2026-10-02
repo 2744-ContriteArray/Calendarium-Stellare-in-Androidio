@@ -160,10 +160,55 @@ public class ConversionToGregorian extends AppCompatActivity {
             TODO
                 - Is it wiser to split the string for this check as in gregFormat()?
                 [] Rework to use String.split()
-                    [] Delimiter string "[/:\\s]"
+                    [*] Delimiter string "[/:\\s]"
+                    [*] Convert to ints
+                    [*] Value checks
+                    [] Test
          */
+        String delim = "[/:\\s]";
+        String[] arrayBuff = date.split(delim);
+        ArrayList<Integer> numbers = new ArrayList<Integer>();
+
+        for(String iter: arrayBuff){
+            numbers.add(Integer.parseInt(iter));
+        }
+
+        // Check the numbers
+        if(numbers.get(0) > 12 || numbers.get(0) <= 0){// Month check
+            System.out.println("INVALID MONTH - OUT OF BOUNDS!");
+            System.out.println(("Month = "+numbers.get(0)));
+            return false;
+        }
+        if(numbers.get(1) > 31 || numbers.get(1) <= 0){ // Day check
+            System.out.println("INVALID DAY - OUT OF BOUNDS!");
+            System.out.println(("Day = "+numbers.get(1)));
+            return false;
+        }
+        int len = numbers.size();
+        if(len<3){ // if only calendar date and not clock
+            return true;
+        }
+
+        if(len>3 && (numbers.get(3) > 23 || numbers.get(3) < 0)){
+            System.out.println("INVALID HOUR - OUT OF BOUNDS!");
+            System.out.println(("Hour = "+numbers.get(3)));
+            return false;
+        }
+        if(len>4 && (numbers.get(4) > 59 || numbers.get(4) <0)){
+            System.out.println("INVALID MINUTES - OUT OF BOUNDS!");
+            System.out.println(("Minutes = " + numbers.get(4)));
+            return false;
+        }
+        if(len>5 && (numbers.get(5) > 59 || numbers.get(5) < 0)){
+            System.out.println("INVALID SECONDS - OUT OF BOUNDS!");
+            System.out.println(("Seconds = "+numbers.get(5)));
+            return false;
+        }
+
+        /*
         for(int i = 0; i < date.length(); i++){
             int buff = (int) date.charAt(i);
+            System.out.println(("buff = "+buff));
             switch(i){
                 case 0:
                     Month = buff*10;
@@ -172,6 +217,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                     Month += buff;
                     if(Month>12 || Month <= 0){
                         System.out.println("INVALID MONTH - OUT OF BOUNDS");
+                        System.out.println(("MONTH = "+Month));
                         return false;
                     }
                 // Days
@@ -215,9 +261,9 @@ public class ConversionToGregorian extends AppCompatActivity {
             }
 
             return true;
-        }
+        }*/
 
-        return false;
+        return true;
     }
 
     private static boolean starCheck(String date){
