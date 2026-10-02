@@ -154,7 +154,7 @@
         android:layout_width="220dp"
         android:layout_height="40dp"
         android:layout_marginStart="56dp"
-        android:layout_marginBottom="188dp"
+        android:layout_marginBottom="212dp"
         android:clickable="false"
         android:fontFamily="@font/oswald_extralight"
         android:text="0000000.0000"
