@@ -156,6 +156,12 @@ public class ConversionToGregorian extends AppCompatActivity {
         int Minute = 0;
         int Sec = 0;
 
+        /*
+            TODO
+                - Is it wiser to split the string for this check as in gregFormat()?
+                [] Rework to use String.split()
+                    [] Delimiter string "[/:\\s]"
+         */
         for(int i = 0; i < date.length(); i++){
             int buff = (int) date.charAt(i);
             switch(i){
@@ -292,8 +298,36 @@ public class ConversionToGregorian extends AppCompatActivity {
         }
     }
 
-    private static LocalDateTime gregFormat(){
-        return LocalDateTime.of(1970,8,13,0,0,0);
+    private static LocalDateTime gregFormat(String date){
+        System.out.println("Now in gregFormat()");
+        // create buffer for formatting later before constructing LocalDateTime obj
+        ArrayList<Integer> buffer = new ArrayList<Integer>();
+
+        // Split `date` into substrings and add to buffer
+        String delim = "[/:\\s]"; // delimiter characters with which to split the string
+        String[] splitted = date.split(delim);
+        System.out.println(("splitted = "+splitted.toString()));
+        for(String iter:splitted){
+            buffer.add(Integer.parseInt(iter));
+        }
+
+        // if units are missing
+        int len = splitted.length;
+        System.out.println(("splitted length = "+len));
+        switch(len){
+            case 3: // All clock units missing
+                buffer.add(0);
+                buffer.add(0);
+                buffer.add(0);
+            case 4: // Minutes and Seconds missing
+                buffer.add(0);
+                buffer.add(0);
+            case 5: // Seconds missing
+                buffer.add(0);
+        }
+        System.out.println("intended length of ArrayList buffer is 6 indices");
+        System.out.println(("Actual amount of indices: "+buffer.size()+"\n\n\n\n\n"));
+        return LocalDateTime.of(buffer.get(0),buffer.get(1),buffer.get(2),buffer.get(3),buffer.get(4),buffer.get(5));
     }
 
     @Override
@@ -348,18 +382,48 @@ public class ConversionToGregorian extends AppCompatActivity {
             public void onClick(View v) {
                 /*
                     TODO
-                        [] Check for null string (try-catch)
-                        [] Check for validity according to format
+                        [*] Check for null string (try-catch)
+                        [*] Check for validity according to format
+                            [] Test
                         If valid date:
                         [] Pass string from gregInput to Pulsar.setGreg()
                             - setGreg() takes a LocalDateTime obj parameter
-                            [] Use string date to create equivalent LocalDateTime
+                            [*] Use string date to create equivalent LocalDateTime
+                                [] Test
+                            [] Call setter with received date
                         [] Get pulsar.datum, stringify, and assign to strdtInput text
                  */
                 try{
+                    String buffer = gregInput.getText().toString();
+                    System.out.println(("gregInput text = "+buffer+"\n\n\n"));
+                    if(gregCheck(buffer)) {
+                        LocalDateTime rightNow = gregFormat(buffer);
+
+                        // Debug test
+                        System.out.println(("Back in onclick\nYear = " + rightNow.getYear()));
+                        System.out.println(("Month = " + rightNow.getMonthValue()));
+                        System.out.println(("Day = " + rightNow.getDayOfMonth()));
+                        System.out.println(("Hour = " + rightNow.getHour()));
+                        System.out.println(("Minute = " + rightNow.getMinute()));
+                        System.out.println(("Second = " + rightNow.getSecond() + "\n\n\n\n"));
+
+                        // Set pulsar date
+                        pulsar.setGreg(rightNow);
+                        System.out.println("Finished called to setGreg(), moving on to building stardate string");
+                        StringBuilder organize = new StringBuilder();
+                        for (String iter : pulsar.getStardate()) {
+                            organize.append(iter);
+                        }
+                        System.out.println(("Stardate string = " + organize.toString() + "\n\n\n\n"));
+                        strdtInput.setText(organize.toString());
+                    }else{
+                        gregError.setVisibility(View.VISIBLE);
+                        System.out.println("GREGCHECK() RETURNED FALSE\n\n\n");
+                    }
 
                 }catch(NullPointerException e){
                     System.out.println("NULLPOINTEREXCEPTION IN CON2STAR.ONCLICK()");
+                    gregError.setVisibility(View.VISIBLE);
                     return;
                 }
             }
