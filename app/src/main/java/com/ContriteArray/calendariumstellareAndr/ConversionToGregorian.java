@@ -42,6 +42,10 @@ public class ConversionToGregorian extends AppCompatActivity {
     ImageButton con2Greg;
     ImageButton backButton;
 
+    // Results TextViews
+    TextView result1;
+    TextView result2;
+
     /*
         TODO
             [*] Check events for content input to fields
@@ -76,6 +80,8 @@ public class ConversionToGregorian extends AppCompatActivity {
         strdError.setVisibility(View.INVISIBLE);
         gregError = (TextView) findViewById(R.id.gregError);
         gregError.setVisibility(View.INVISIBLE);
+        result1 = (TextView) findViewById(R.id.resultLbl1);
+        result2 = (TextView) findViewById(R.id.resultLbl2);
 
         copyStrdtButton = (ImageButton) findViewById(R.id.copyStrdtButton);
         copyGregButton = (ImageButton) findViewById(R.id.copyGregButton);
@@ -477,7 +483,9 @@ public class ConversionToGregorian extends AppCompatActivity {
                             organize.append(iter);
                         }
                         System.out.println(("Stardate string = " + organize.toString() + "\n\n\n\n"));
-                        strdtInput.setText(organize.toString());
+                        //strdtInput.setText(organize.toString());
+                        result1.setText(organize.toString());
+                        result2.setText(gregInput.getText().toString());
                     }else{
                         gregError.setVisibility(View.VISIBLE);
                         System.out.println("GREGCHECK() RETURNED FALSE\n\n\n");
