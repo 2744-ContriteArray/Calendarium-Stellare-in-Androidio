@@ -140,7 +140,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                     gregInput.setSelection(gregInput.getText().length());
                 }
                 // Insert colons
-                if(txtLen == 12 || txtLen == 15 || txtLen == 18){
+                if(txtLen == 13 || txtLen == 16){
                     gregInput.setText(new StringBuilder(text).insert(text.length(), ":").toString());
                     gregInput.setSelection(gregInput.getText().length());
                 }
@@ -477,7 +477,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                             organize.append(iter);
                         }
                         System.out.println(("Stardate string = " + organize.toString() + "\n\n\n\n"));
-                        //strdtInput.setText(organize.toString());
+                        strdtInput.setText(organize.toString());
                     }else{
                         gregError.setVisibility(View.VISIBLE);
                         System.out.println("GREGCHECK() RETURNED FALSE\n\n\n");
