@@ -163,7 +163,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                     [*] Delimiter string "[/:\\s]"
                     [*] Convert to ints
                     [*] Value checks
-                    [] Test
+                    [X] Test
          */
         String delim = "[/:\\s]";
         String[] arrayBuff = date.split(delim);
@@ -430,12 +430,12 @@ public class ConversionToGregorian extends AppCompatActivity {
                     TODO
                         [*] Check for null string (try-catch)
                         [*] Check for validity according to format
-                            [] Test
+                            [X] Test
                         If valid date:
                         [] Pass string from gregInput to Pulsar.setGreg()
                             - setGreg() takes a LocalDateTime obj parameter
                             [*] Use string date to create equivalent LocalDateTime
-                                [] Test
+                                [X] Test
                             [] Call setter with received date
                         [] Get pulsar.datum, stringify, and assign to strdtInput text
                  */
