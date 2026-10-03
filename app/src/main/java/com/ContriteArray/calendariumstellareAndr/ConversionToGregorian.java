@@ -95,7 +95,13 @@ public class ConversionToGregorian extends AppCompatActivity {
         // set textchange listeners
         strdtInput.addTextChangedListener(new TextWatcher()
         {
-
+            /*
+                TODO
+                    [] handling for backspace
+                        - Currently can't backspace over inserted format chars from onTextChanged()
+                        - How do?
+                    [] Test
+             */
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -118,7 +124,13 @@ public class ConversionToGregorian extends AppCompatActivity {
             }});
         gregInput.addTextChangedListener(new TextWatcher()
         {
-
+            /*
+                TODO
+                    [] handling for backspace
+                        - Currently can't backspace over inserted format chars from onTextChanged()
+                        - How do?
+                    [] Test
+             */
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -407,13 +419,7 @@ public class ConversionToGregorian extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              try{
-                 // set datum in pulsar and set gregorian date to equivalent
-                 String buffer = strdFormat();
-
-                 if(buffer.contains("ERROR")){
-                     strdError.setVisibility(View.VISIBLE);
-                     return;
-                 }
+                 String buffer = result1.getText().toString();
 
                  System.out.println(("buffer = "+buffer));
 
@@ -433,11 +439,11 @@ public class ConversionToGregorian extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
-                    String buffer = String.valueOf(gregInput.getText());
+                    String buffer = String.valueOf(result2.getText());
 
 
                     ClipboardManager clipMng = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData paperclip = ClipData.newPlainText("fuck", "fuck");
+                    ClipData paperclip = ClipData.newPlainText(buffer, buffer);
 
                 }catch(NullPointerException e){
                     System.out.println("NULL POINTER EXCEPTION IN COPYGREGBUTTON ONCLICK");
