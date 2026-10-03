@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/copyGregButton"
-        app:srcCompat="@mipmap/copy_lcars" />
+        app:srcCompat="@mipmap/copy_strd" />
 
     <ImageButton
         android:id="@+id/copyGregButton"
@@ -33,14 +33,14 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@mipmap/copy_lcars" />
+        app:srcCompat="@mipmap/copy_greg" />
 
     <ImageButton
         android:id="@+id/con2Greg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="356dp"
-        android:layout_marginEnd="112dp"
+        android:layout_marginEnd="100dp"
         android:background="#00FFFFFF"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
         android:id="@+id/con2Star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="12dp"
         android:background="#00FFFFFF"
         android:visibility="visible"
@@ -61,7 +61,7 @@
 
     <EditText
         android:id="@+id/strdtInput"
-        android:layout_width="223dp"
+        android:layout_width="228dp"
         android:layout_height="71dp"
         android:layout_marginStart="45dp"
         android:layout_marginTop="160dp"
@@ -85,7 +85,7 @@
 
     <EditText
         android:id="@+id/gregInput"
-        android:layout_width="223dp"
+        android:layout_width="228dp"
         android:layout_height="71dp"
         android:layout_marginStart="45dp"
         android:layout_marginTop="24dp"
@@ -179,7 +179,7 @@
         android:id="@+id/gregResult"
         android:layout_width="220dp"
         android:layout_height="40dp"
-        android:layout_marginStart="45dp"
+        android:layout_marginStart="42dp"
         android:layout_marginTop="38dp"
         android:fontFamily="@font/oswald_extralight"
         android:text="08/13/1970 00:00:00"
