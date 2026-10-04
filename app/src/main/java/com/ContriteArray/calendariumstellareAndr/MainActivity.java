@@ -1,12 +1,9 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,16 +13,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.badge.BadgeUtils;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    // WIDGETS
-    public static TextView debugHermes;
     private ImageButton mute_button;
     private boolean muted;
     ImageButton refresher;
@@ -57,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         aboutAct = new Intent(this, AboutStardates.class);
         convAct = new Intent(this, ConversionToGregorian.class);
     }
-
+/*
     public static void debugPrintln(String message) {
         if(Objects.equals(message, "/clear")){
             debugHermes.setText(" ");
@@ -68,15 +61,15 @@ public class MainActivity extends AppCompatActivity {
 //        debugHermes.setText(message);
         }
     }
-
+*/
     @Override
     protected void onStart() {
 
         super.onStart();
         TextView Today_Is = (TextView) findViewById(R.id.Today_is);
         TextView StarNow = (TextView) findViewById(R.id.NowDate);
-        debugHermes = (TextView) findViewById(R.id.debugHermes);
-        debugHermes.setText("");
+        //debugHermes = (TextView) findViewById(R.id.debugHermes);
+        //debugHermes.setText("");
 
         stardate star_today = new stardate();
         // get stardate

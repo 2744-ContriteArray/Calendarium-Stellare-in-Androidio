@@ -34,8 +34,8 @@ public class stardate
             this.todayGreg = this.calcGregDate();
         }catch (IndexOutOfBoundsException e)
         {
-            MainActivity.debugPrintln(("ERROR IN setDatum(): "+e.getMessage()));
-            MainActivity.debugPrintln(("STACK TRACE: "+e.getStackTrace()));
+            System.out.println(("ERROR IN setDatum(): "+e.getMessage()));
+            System.out.println(("STACK TRACE: "+e.getStackTrace()));
 //            throw new RuntimeException(e);
         }
     }
@@ -143,7 +143,7 @@ public class stardate
                     digit = Letters.get(String.valueOf(hexaD.charAt(i)));
                 }
                 catch (NullPointerException e) {
-                    MainActivity.debugPrintln(("ERROR: "+e.getMessage()));
+                    System.out.println(("ERROR: "+e.getMessage()));
                     throw new RuntimeException(e);
                 }
             }
@@ -154,8 +154,8 @@ public class stardate
                 }
                 catch (NullPointerException e){
                     digit = 0;
-                    MainActivity.debugPrintln("ERROR: NULLPOINTER AT LINE 162");
-                    MainActivity.debugPrintln(("Variable hexaD = "+hexaD));
+                    System.out.println("ERROR: NULLPOINTER AT LINE 153");
+                    System.out.println(("Variable hexaD = "+hexaD));
                 }
             }
 
@@ -275,9 +275,6 @@ public class stardate
     {
         ArrayList<String> when = new ArrayList<>();
 
-        // Debug printout
-        MainActivity.debugPrintln("/clear");
-        MainActivity.debugPrintln("Now in calcStardate()");
         LocalDateTime rightFuckinNow;
 
         if(now) {
@@ -294,26 +291,17 @@ public class stardate
 // CALCULATIONS
         // Calculate Julian years
         int Y = (int) (Math.floorDiv((int) delta.toDays(), (int) 365.25));
-        //MainActivity.debugPrintln(("Y = "+Y));
-        //MainActivity.debugPrintln(("Years in duration " +
-        //        "(found using Math.floorDiv((int) delta.toDays(), (int) 365.25): "+Y));
 
         int H = (int) Math.floor(delta.toHours());
-        MainActivity.debugPrintln(("H = "+ H));
 
         // Calculate stellar year and convert to hex
         int StellarYear = (int) Math.floorDiv((int) (H/30 - Y*0.25), 360);
         when.add(decToHex(StellarYear));
 
-        //MainActivity.debugPrintln("/clear");
-        MainActivity.debugPrintln("NOW EVALUATING STELLAR DAY CALCULATIONS");
         // Convert days
         int Y2 = this.between.getYears();
-        MainActivity.debugPrintln(("this.between.getYears() = "+this.between.getYears()));
 
         var StellarDay = (int) Math.floor(H / 30 - Y2 * 0.25)%360;
-        MainActivity.debugPrintln("Stellar day = (int) Math.floor(H/30 - Y*0.25)%360 " +
-                "= "+StellarDay);
 
         // Format Stellar Days
         String buff = timeForm(1,StellarDay);
@@ -329,11 +317,7 @@ public class stardate
         }*/
 
         // Convert hours
-        MainActivity.debugPrintln("/clear");
-        MainActivity.debugPrintln("NOW EVALUATING HOUR CALCULATIONS");
         int StellarHour = (H-1)%30;
-        MainActivity.debugPrintln((H+"/30 = " + H/30));
-        MainActivity.debugPrintln(("StellarHour = "+H+"%30 = "+StellarHour));
 
         // Format stellar hours
         buff = timeForm(StellarHour);
@@ -349,11 +333,6 @@ public class stardate
         //when.add("00");
         when.add(".");
 
-        MainActivity.debugPrintln("/clear");
-        MainActivity.debugPrintln("CALCULATING MINUTES NOW");
-        MainActivity.debugPrintln(("delta.toMinutes() = "+delta.toMinutes()));
-        MainActivity.debugPrintln(("delta.toSeconds() = "+delta.toSeconds()));
-
         /*
                     CURRENT BEHAVIOR
         - Calculates current time in EST
@@ -368,8 +347,6 @@ public class stardate
 
         // Calculate Minutes
         int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
-        MainActivity.debugPrintln(("StellarMin = floorMod(delta.toMinutes()/60, 60) \n= floorMod("+
-                delta.toSeconds()/60+", 60) = "+StellarMin));
 
         //Calculate Seconds
         long StellarSec = ((delta.toSeconds()) % 60);
@@ -441,7 +418,6 @@ public class stardate
     public stardate()
     {
         this.datum = new ArrayList<String>();
-        MainActivity.debugPrintln(("datum.isEmpty() evaluates to "+this.datum.isEmpty()));
 
         // Initialize Period object "between"
         LocalDate rightNowGreg = LocalDate.now();
