@@ -53,12 +53,9 @@ public class ConversionToGregorian extends AppCompatActivity {
                 [] stardate
                     [] check validity according to format - no misplaced hex!
                     [*] throw error message if incomplete or misformatted
-                [] Gregorian
-                    [] check validity according to format
-                    [] throw error message if incomplete or misformatted
-            [] Functionality for copyGregButton
-                [*] check for null string (try-catch)
-                [] copy date text onto system clipboard (using formatting and error prevention from copyStrdtButon
+                [*] Gregorian
+                    [*] check validity according to format
+                    [*] throw error message if incomplete or misformatted
      */
 
     // Declare error message TextViews
@@ -178,7 +175,7 @@ public class ConversionToGregorian extends AppCompatActivity {
         /*
             TODO
                 - Is it wiser to split the string for this check as in gregFormat()?
-                [] Rework to use String.split()
+                [*] Rework to use String.split()
                     [*] Delimiter string "[/:\\s]"
                     [*] Convert to ints
                     [*] Value checks
@@ -294,12 +291,6 @@ public class ConversionToGregorian extends AppCompatActivity {
     }
 
     private static boolean starCheck(String date){
-        /*
-            TODO
-                [*] check validity of input according to format
-                [*] if valid, return true
-                [*] else throw error message, return false
-         */
 
         final int CHARAMOUNT = 12; // proper character amount in stardate format
         final int YEARAMOUNT = 2;
@@ -460,12 +451,12 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [*] Check for validity according to format
                             [*] Test
                         If valid date:
-                        [] Pass string from gregInput to Pulsar.setGreg()
+                        [*] Pass string from gregInput to Pulsar.setGreg()
                             - setGreg() takes a LocalDateTime obj parameter
                             [*] Use string date to create equivalent LocalDateTime
                                 [*] Test
-                            [] Call setter with received date
-                        [] Get pulsar.datum, stringify, and assign to strdtInput text
+                            [*] Call setter with received date
+                        [*] Get pulsar.datum, stringify, and assign to strdtInput text
                  */
                 try{
                     String buffer = gregInput.getText().toString();
@@ -507,14 +498,6 @@ public class ConversionToGregorian extends AppCompatActivity {
         con2Greg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                    TODO
-                        [*] Check for null string (try-catch)
-                        [*] Check for validity according to format
-                        if valid stardate:
-                        [*] Assign string from strdtInput to Pulsar.datum
-                        [*] Get gregorian equivalent and assign to gregInput text
-                 */
                 try{
                     String buffer = strdFormat();
                     ArrayList<String> formatted = new ArrayList<String>();
