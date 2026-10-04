@@ -239,16 +239,40 @@ public class stardate
         return LocalDateTime.now();
     }
 
+    private String timeForm(int index, int time) {
+        String finish = "";
+
+        if (index == 0) {
+            if (time < 10) {
+                finish = "00" + String.valueOf(time);
+            } else if ((time >= 10) && (time <= 99)) {
+                finish = "0" + String.valueOf(time);
+            } else {
+                finish = String.valueOf(time);
+            }
+        }else{
+            if(time<10){
+                finish = "0"+String.valueOf(time);
+            }else{
+                finish = String.valueOf(time);
+            }
+        }
+        return finish;
+    }
+
+    private String timeForm(int time){
+        String finish;
+        if(time<10){
+            finish = "0"+String.valueOf(time);
+        }else{
+            finish = String.valueOf(time);
+        }
+
+        return finish;
+    }
+
     public ArrayList<String> calcStardate(boolean now)
     {
-        /*
-        TODO
-            [] Currently, method only calculates stardate for current moment. needs flexibility
-                - How do?
-                - Polymorphism? Additional calcStardate() method with parameter?
-                - Would need to amend current calculations to compensate for lag window first
-         */
-
         ArrayList<String> when = new ArrayList<>();
 
         // Debug printout
@@ -287,15 +311,14 @@ public class stardate
         int Y2 = this.between.getYears();
         MainActivity.debugPrintln(("this.between.getYears() = "+this.between.getYears()));
 
-        //var H2 = (int) (this.between.getDays()*24 + delta.toHours()%24);
-        //MainActivity.debugPrintln(("H = "+ between.getDays()+"* 24 + "+delta.toHours()+"%24 = "+H2));
-        //MainActivity.debugPrintln(("between.getDays() = "+this.between.getDays()));
         var StellarDay = (int) Math.floor(H / 30 - Y2 * 0.25)%360;
-        //int StellarDay = (int) delta.toSeconds()%60;
         MainActivity.debugPrintln("Stellar day = (int) Math.floor(H/30 - Y*0.25)%360 " +
                 "= "+StellarDay);
 
         // Format Stellar Days
+        String buff = timeForm(1,StellarDay);
+        when.add(buff);
+        /*
         if(StellarDay < 10)
         {
             when.add(("00"+String.valueOf(StellarDay)));
@@ -303,7 +326,7 @@ public class stardate
             when.add(("0"+String.valueOf(StellarDay)));
         } else {
             when.add(String.valueOf(StellarDay));
-        }
+        }*/
 
         // Convert hours
         MainActivity.debugPrintln("/clear");
@@ -313,12 +336,16 @@ public class stardate
         MainActivity.debugPrintln(("StellarHour = "+H+"%30 = "+StellarHour));
 
         // Format stellar hours
+        buff = timeForm(StellarHour);
+        when.add(buff);
+        /*
         if(StellarHour < 10){
             when.add(("0"+StellarHour));
         }
         else {
             when.add(String.valueOf(StellarHour));
         }
+        */
         //when.add("00");
         when.add(".");
 
@@ -352,15 +379,40 @@ public class stardate
         if(StellarSec >= 60){
             StellarSec -= 60;
             StellarMin++;
+
+            buff = timeForm((int) StellarSec);
+            when.add(5, buff);
         }
         StellarMin += 49;
         if(StellarMin >= 60){
             StellarHour++;
             StellarMin -= 60;
+
+            buff = timeForm(StellarMin);
+            when.add(4,buff);
+        }
+        if(StellarHour >= 30){
+            StellarDay++;
+            StellarHour -= 30;
+
+            buff = timeForm(2, StellarHour);
+            when.add(2,buff);
+        }
+        if(StellarDay>360){ // Compiler flags this as "always false" but clearly that mightn't be accurate
+            // given that it can be incremented in above conditional *after* modulo is done when calculating initial value
+            StellarDay -= 360;
+            StellarYear++;
+
+            buff = timeForm(1,StellarDay);
+            when.add(1,buff);
+
+            buff = decToHex(StellarYear);
+            when.add(0, buff);
         }
 
 //        when.add("~~");
         // Format stellar minutes
+        /*
         if(StellarMin < 10)
         {
             when.add("0"+StellarMin);
@@ -377,7 +429,7 @@ public class stardate
         else{
             when.add(String.valueOf(StellarSec));
         }
-
+        */
         //when.add("0000");
         return when;
     }
