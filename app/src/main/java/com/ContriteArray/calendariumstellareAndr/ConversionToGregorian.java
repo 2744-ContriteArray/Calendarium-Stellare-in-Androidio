@@ -94,10 +94,10 @@ public class ConversionToGregorian extends AppCompatActivity {
         {
             /*
                 TODO
-                    [] handling for backspace
+                    [*] handling for backspace
                         - Currently can't backspace over inserted format chars from onTextChanged()
                         - How do?
-                    [] Test
+                    [*] Test
              */
             @Override
             public void afterTextChanged(Editable s) {
@@ -114,7 +114,20 @@ public class ConversionToGregorian extends AppCompatActivity {
                 String text = strdtInput.getText().toString();
                 var txtLen = strdtInput.getText().length();
 
-                if(txtLen == 7 && !(before>=count)){
+                if(before>=count){
+                    return;
+                } else if (txtLen == 8 && s.charAt(7)!='.') {
+                    char buffer = s.charAt(7);
+                    StringBuilder result = new StringBuilder();
+                    for(int i = 0; i<7;i++){
+                        result.append(s.charAt(i));
+                    }
+                    result.append('.');
+                    result.append(buffer);
+                    strdtInput.setText(result);
+                    strdtInput.setSelection(strdtInput.getText().length());
+                }
+                if(txtLen == 7){
                     strdtInput.setText(new StringBuilder(text).insert(text.length(), ".").toString());
                     strdtInput.setSelection(strdtInput.getText().length());
                 }
@@ -145,6 +158,9 @@ public class ConversionToGregorian extends AppCompatActivity {
 
                 // DATE STRING FORMAT: MM/DD/YYYY HH:MM:SS
                 // Insert slashes
+                if(before>=count){
+                    return;
+                }
                 if(txtLen == 2 || txtLen == 5){
                     gregInput.setText(new StringBuilder(text).insert(text.length(), "/").toString());
                     gregInput.setSelection(gregInput.getText().length());
