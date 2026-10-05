@@ -245,7 +245,7 @@ public class stardate
         if (index == 0) {
             if (time < 10) {
                 finish = "00" + String.valueOf(time);
-            } else if ((time >= 10) && (time <= 99)) {
+            } else if (time <= 99) {
                 finish = "0" + String.valueOf(time);
             } else {
                 finish = String.valueOf(time);
@@ -306,6 +306,7 @@ public class stardate
         // Format Stellar Days
         String buff = timeForm(1,StellarDay);
         when.add(buff);
+        System.out.println(("when has "+when.size()+" indices on line 308 after adding StellarDay\n\n\n"));
         /*
         if(StellarDay < 10)
         {
@@ -322,6 +323,7 @@ public class stardate
         // Format stellar hours
         buff = timeForm(StellarHour);
         when.add(buff);
+        System.out.println(("After adding StellarHour, when has "+when.size()+" indices"));
         /*
         if(StellarHour < 10){
             when.add(("0"+StellarHour));
@@ -347,18 +349,33 @@ public class stardate
 
         // Calculate Minutes
         int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
+        System.out.println(("Line 352: StellarMin = "+StellarMin));
+        when.add(timeForm(StellarMin));
 
         //Calculate Seconds
         long StellarSec = ((delta.toSeconds()) % 60);
+        System.out.println(("Line 357: StellarSec = "+StellarSec));
+        when.add(timeForm((int) StellarSec));
 
         // Compensate for lagtime
         StellarSec += 11;
+        System.out.println(("Line 362: StellarSec after lag compensation = "+StellarSec));
+        System.out.println(("Minutes index of when = "+when.get(4)));
+        System.out.println(("Seconds index of when = "+when.get(5)+"\n"));
+        System.out.println("BEGINNING FORMATTING PROCEDURES\n");
+
         if(StellarSec >= 60){
             StellarSec -= 60;
             StellarMin++;
 
             buff = timeForm((int) StellarSec);
-            when.add(5, buff);
+            System.out.println(("Line 372: buff(StellarSec) = "+buff));
+            try {
+                when.set(5, buff);
+            }catch(IndexOutOfBoundsException e){
+                System.out.println("INDEXOUTOFBOUNDSEXCEPTION ON LINE 364\n\n\n\n");
+                when.add(buff);
+            }
         }
         StellarMin += 49;
         if(StellarMin >= 60){
@@ -366,14 +383,14 @@ public class stardate
             StellarMin -= 60;
 
             buff = timeForm(StellarMin);
-            when.add(4,buff);
+            when.set(4,buff);
         }
         if(StellarHour >= 30){
             StellarDay++;
             StellarHour -= 30;
 
             buff = timeForm(2, StellarHour);
-            when.add(2,buff);
+            when.set(2,buff);
         }
         if(StellarDay>360){ // Compiler flags this as "always false" but clearly that mightn't be accurate
             // given that it can be incremented in above conditional *after* modulo is done when calculating initial value
@@ -381,10 +398,10 @@ public class stardate
             StellarYear++;
 
             buff = timeForm(1,StellarDay);
-            when.add(1,buff);
+            when.set(1,buff);
 
             buff = decToHex(StellarYear);
-            when.add(0, buff);
+            when.set(0, buff);
         }
 
 //        when.add("~~");
