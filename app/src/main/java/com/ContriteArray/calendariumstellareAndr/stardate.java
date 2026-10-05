@@ -347,18 +347,33 @@ public class stardate
 
         // Calculate Minutes
         int StellarMin = (int) Math.floorMod((delta.toSeconds()/60),60);
+        System.out.println(("Line 349: StellarMin = "+StellarMin));
+        when.add(timeForm(StellarMin));
 
         //Calculate Seconds
         long StellarSec = ((delta.toSeconds()) % 60);
+        System.out.println(("Line 354: StellarSec = "+StellarSec));
+        when.add(timeForm((int) StellarSec));
 
         // Compensate for lagtime
         StellarSec += 11;
+        System.out.println(("Line 359: StellarSec after lag compensation = "+StellarSec));
+        System.out.println(("Minutes index of when = "+when.get(4)));
+        System.out.println(("Seconds index of when = "+when.get(5)+"\n"));
+        System.out.println("BEGINNING FORMATTING PROCEDURES\n");
+
         if(StellarSec >= 60){
             StellarSec -= 60;
             StellarMin++;
 
             buff = timeForm((int) StellarSec);
-            when.add(5, buff);
+            System.out.println(("Line 369: buff(StellarSec) = "+buff));
+            try {
+                when.add(5, buff);
+            }catch(IndexOutOfBoundsException e){
+                System.out.println("INDEXOUTOFBOUNDSEXCEPTION ON LINE 364\n\n\n\n");
+                when.add(buff);
+            }
         }
         StellarMin += 49;
         if(StellarMin >= 60){
