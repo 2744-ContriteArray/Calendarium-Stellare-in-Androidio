@@ -49,9 +49,9 @@ public class ConversionToGregorian extends AppCompatActivity {
     /*
         TODO
             [*] Check events for content input to fields
-            [] string check functions
-                [] stardate
-                    [] check validity according to format - no misplaced hex!
+            [*] string check functions
+                [*] stardate
+                    [*] check validity according to format - no misplaced hex!
                     [*] throw error message if incomplete or misformatted
                 [*] Gregorian
                     [*] check validity according to format
@@ -114,7 +114,7 @@ public class ConversionToGregorian extends AppCompatActivity {
                 String text = strdtInput.getText().toString();
                 var txtLen = strdtInput.getText().length();
 
-                if(txtLen == 7){
+                if(txtLen == 7 && !(before>=count)){
                     strdtInput.setText(new StringBuilder(text).insert(text.length(), ".").toString());
                     strdtInput.setSelection(strdtInput.getText().length());
                 }

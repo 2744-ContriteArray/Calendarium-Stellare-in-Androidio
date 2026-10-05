@@ -53,6 +53,7 @@ public class AboutStardates extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //scrollingThing.scrollTo(0,0);
+                scrollingThing.fullScroll(View.FOCUS_UP);
 
                 System.out.println(("aboutSys = "+aboutSys));
                 if(aboutSys){
