@@ -297,6 +297,7 @@ public class stardate
         return finish;
     }
 
+    @Deprecated
     public ArrayList<String> calcStardateDEPR(boolean now)
     {
         ArrayList<String> when = new ArrayList<>();
@@ -471,6 +472,7 @@ public class stardate
                 [*] Declare Duration delta as Duration.between(zeroDayJules,rightFuckinNow)
                 [*] S_t = delta.getSeconds()
             [*] Calculations
+                [] Implement Euclidean division instead of regular, float-yielding division
                 [*] Calculate StellarYear
                 [*] Calculate StellarDay
                 [*] Calculate StellarHour
