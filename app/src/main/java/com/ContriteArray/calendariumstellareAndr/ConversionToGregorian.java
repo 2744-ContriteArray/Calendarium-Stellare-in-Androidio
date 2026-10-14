@@ -539,10 +539,11 @@ public class ConversionToGregorian extends AppCompatActivity {
                         [*] Reformat constituent elements of LocalDateTime obj
                         [*] Stringify and assign to gregNow
                         [*] gregInput.setText()
+                        [] Test it
                         - pulsar.getGreg() returns the gregorian zero day
                         [] (In stardate.java) finish conversion to gregorian maths
-                            [] Figure out the algebra
-                            [] Apply said algebra
+                            [*] Figure out the algebra
+                            [*] Apply said algebra
                             [] Test it
                      */
 

@@ -28,11 +28,11 @@ public class stardate
             //MainActivity.debugPrintln(("datum = "+this.datum));
             /*
                 TODO:
-                    [] take new stardate and convert to greg
-                        [] calcGregDate() is complete
+                    [*] take new stardate and convert to greg
+                        [*] conv2Greg() is complete
                     [*] assign to todayGreg
              */
-            this.todayGreg = this.calcGregDate();
+            this.todayGreg = this.conv2Greg();
         }catch (IndexOutOfBoundsException e)
         {
             System.out.println(("ERROR IN setDatum(): "+e.getMessage()));
@@ -218,8 +218,6 @@ public class stardate
 
         // S_t CALCULATION
         int yearGap = hexToDec(this.datum.get(0));
-        //LocalDateTime rightNow = this.zeroDayJules;
-        //rightNow.minusYears(yearGap);
         S_t = yearGap * SYfactor;
 
         // CALCULATIONS
