@@ -172,72 +172,99 @@ public class stardate
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
         int year; //int for the year to be assigned to result
-        int month; //int for the month to be assigned to result
+        int month = 1; //int for the month to be assigned to result
         int day; //int for the day to be assigned to result
         int hour; //int for the hour to be assigned to result
         int minute; //int for the minute to be assigned to result
         int second; //int for the second to be assigned to result
+        int dayOfMonth = 1; // calendar day
+        long S_t = 0;
+
+        int remains = 0;
+        // UNIT FACTORS
+        long SYfactor = 38880000;
+        long F_y = 31557600;
+        long F_d = 86400;
+        int F_h = 3600;
+        int F_m = 60;
+
         /*
         Reverse calcStardate()
 
         TODO
-            [*] assign seconds
-            [*] assign minutes
-            [] Research
-                [] Euclidean algorithm for inverting modulo operations
-                    - a*s + t*b = 1
-                    - a*s ≡ 1 mod b
-                    - x*a*s ≡ c*s mod b
-                    - x*1 ≡ c*s mod b
-                    - x ≡ c*s mod b
-                        - https://math.stackexchange.com/questions/684550/how-to-reverse-modulo-of-a-multiplication
-                    - Might not be possible
-                        - https://stackoverflow.com/questions/53191604/how-do-i-reverse-the-modulus-operator
-            [] reverse hour calculation
-            [] reverse day calculations
-            [] calculate year
-            []
+            [*] Unit Factors
+                [*] Julian
+                    [*] Year
+                    [*] Day
+                    [*] Hour
+                    [*] Minute
+                [*] Stellar
+                    [*] Year
+            [*] Get Stellar Units from this.datum
+                [*] Year
+                [*] Convert to Decimal
+            [*] Get S_t by StellarYear*SYfactor
+            [*] Calculate Julian date via division and modulo
+                [*] int remains
+                [*] Year
+                [*] Month
+                [*] Day of year
+                [*] Day of month
+                [*] Hour
+                [*] Minute
+                [*] Seconds
+            [] Test
          */
 
-        second = Integer.parseInt(this.datum.get(5));
-        minute = Integer.parseInt(this.datum.get(4));
-
-        // YEAR CALCULATION
+        // S_t CALCULATION
         int yearGap = hexToDec(this.datum.get(0));
         //LocalDateTime rightNow = this.zeroDayJules;
         //rightNow.minusYears(yearGap);
-        year = this.zeroDayJules.getYear()+yearGap;
+        S_t = yearGap * SYfactor;
 
-        // Day/month calculation
-        /*
-        - take days from this.datum
-        - calculate from 30 hour days down to 24 hour days
-        - temp LocalDateTime zeroDayJules clone
-        - add calculated days
-        - assign day to clone
-        - clone.getDays()
-        - clone.getMonth()
+        // CALCULATIONS
+            // YEAR
+        year = Math.toIntExact(S_t / F_y);
+        remains = Math.toIntExact(S_t % F_y);
+            // DAY OF YEAR (NOT OF MONTH)
+        day = Math.toIntExact(remains/F_d);
+        remains = Math.toIntExact(remains%F_d);
+            // HOUR
+        hour = Math.toIntExact(remains/F_h);
+        remains = Math.toIntExact(remains%F_h);
+            // MINUTE
+        minute = Math.toIntExact(remains/F_m);
+        remains = Math.toIntExact(remains%F_m);
+            // SECOND
+        second = Math.toIntExact(remains/F_m);
+        // No remainder needed for seconds
 
-         */
-        int dayGap = Integer.parseInt(this.datum.get(2));
-        // calculate from 30 hour days into 24 hour days
-        // assign result to dayGap
+        // Convert to gregorian
+        day += 13;
+        if(day > 365){
+            day =- 365;
+            year++;
+        }
 
-        LocalDateTime zeroClone = this.zeroDayJules;
-        zeroClone.plusDays((long) Math.floor(dayGap+13.0075)); // convert to gregorian
-        month = zeroClone.getMonthValue();
-        day = zeroClone.getDayOfMonth();
+        // MONTH CALCULATION
+        int[] MonthLen = {31,28,31,30,31,30,31,31,30,31,30,31};
+        if(year%4==0){
+            MonthLen[1] = 29;
+        }
+        int DayBuff = day;
+            // MONTH
+        for(int i=0; i<12; i++){
+            DayBuff =- MonthLen[i];
+            if(DayBuff <=31){
+                month = i+1;
+                dayOfMonth = DayBuff;
+                break;
+            }
+        }
 
-        // hour calculation
-        /*
-        - reverse hour calculation to get total hours
-        - modulo 24 to adjust for 24 hour periods
-        - bob's your uncle
-         */
 
-
-        //result = LocalDateTime.of(year,month,day,hour,minute,second);
-        return LocalDateTime.now();
+        result = LocalDateTime.of(year,month,dayOfMonth,hour,minute,second);
+        return result;
     }
 
     private String timeForm(int index, int time) {
