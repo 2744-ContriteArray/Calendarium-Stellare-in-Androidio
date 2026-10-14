@@ -1,6 +1,7 @@
 package com.ContriteArray.calendariumstellareAndr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.lang.Math;
 import java.time.*;
@@ -271,7 +272,7 @@ public class stardate
         return finish;
     }
 
-    public ArrayList<String> calcStardate(boolean now)
+    public ArrayList<String> calcStardateDEPR(boolean now)
     {
         ArrayList<String> when = new ArrayList<>();
 
@@ -425,6 +426,180 @@ public class stardate
         }
         */
         //when.add("0000");
+        return when;
+    }
+
+    /*
+        TODO:
+            - OVERHAUL TO STARDATE FORMULAE
+            [*] Copy essentials from existing method
+                [*] Manage if(now) operation
+                [*] Calculate Julian from Greg
+                [*] ArrayList<String> when
+            [*] Setup new essentials
+                [*] Hashmap for stellar unit factors
+                    [*] Declare
+                    [*] Assign
+                [*] Hashmap for remainders
+                    [*] Declare
+            [*] Get S_t (total seconds elapsed since zero day)
+                [*] Declare Duration delta as Duration.between(zeroDayJules,rightFuckinNow)
+                [*] S_t = delta.getSeconds()
+            [*] Calculations
+                [*] Calculate StellarYear
+                [*] Calculate StellarDay
+                [*] Calculate StellarHour
+                [*] Calculate StellarMin
+                [*] Calculate StellarSec
+            [*] Formatting
+                [*] Create buff string = ""
+                [*] Value Adjustments
+                    [*] Seconds
+                        [*] If seconds >= 60
+                            [*] Correct seconds
+                            [*] minutes++
+                    [*] Minutes
+                        [*] If minutes >= 60
+                            [*] Correct minutes
+                            [*] Hours++
+                    [*] Hours
+                        [*] If hours >= 30
+                            [*] Correct hours
+                            [*] Days++
+                    [*] Days
+                        [*] If days > 360
+                            [*] Correct days
+                            [*] years++
+                [*] String creation and Array assignments
+                    [*] Years
+                        [*] Convert years to Hex
+                        [*] Add StellarYear hex value string to `when`
+                    [*] Days
+                        [*] Call timeForm() on StellarDay, assign to buff
+                        [*] Add buff string value to `when`
+                    [*] Hours
+                        [*] Call timeForm() on StellarHour, assign to buff
+                        [*] Add buff string value to `when`
+                    [*] Point
+                        [*] Add "." to `when`
+                    [*] Minutes
+                        [*] Call timeForm() on StellarMin, assign to buff
+                        [*] Add buff string value to `when`
+                    [*] Seconds
+                        [*] Call timeForm() on StellarSec, assign to buff
+                        [*] Add buff string value to `when`
+                - `when` should have 6 indices afterwards
+            [*] Return `when`
+            [] TESTS
+     */
+    public ArrayList<String> calcStardate(boolean now){
+        ArrayList<String> when = new ArrayList<>();
+
+        LocalDateTime rightFuckinNow;
+        // Unit factors
+        HashMap<String, Integer> Factors = new HashMap<>();
+        // Assignments
+        Factors.put("year",38880000);
+        Factors.put("day", 108000);
+        Factors.put("hour", 3600);
+        Factors.put("minute", 60);
+
+        // Remainders
+        HashMap<String, Integer> Remains = new HashMap<>();
+        // Total seconds elapsed
+        long S_t;
+
+        if(now){
+            // Get right fucking now and convert to Julian
+            rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
+            this.todayGreg = rightFuckinNow;
+        }
+        else{
+            rightFuckinNow = this.todayGreg.minusDays((long) 13.0075);
+        }
+
+        // Getting S_t value
+        Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
+        S_t = delta.getSeconds();
+
+        // CALCULATIONS
+            // VARIABLE DECLARATIONS
+        int StellarYear;
+        int StellarDay;
+        int StellarHour;
+        int StellarMin;
+        int StellarSec;
+
+        try {
+            // YEARS
+            StellarYear = Math.floorDiv((int) S_t, Factors.get("year"));
+            Remains.put("year", Math.floorMod(S_t, Factors.get("year")));
+            // DAYS
+            StellarDay = Math.floorDiv(Remains.get("year"), Factors.get("day"));
+            Remains.put("day", Math.floorMod(Remains.get("year"), Factors.get("day")));
+            // HOURS
+            StellarHour = Math.floorDiv(Remains.get("day"), Factors.get("hour"));
+            Remains.put("hour", Math.floorMod(Remains.get("day"), Factors.get("hour")));
+            // MINUTES
+            StellarMin = Math.floorDiv(Remains.get("hour"), Factors.get("minute"));
+            Remains.put("minute", Math.floorMod(Remains.get("hour"), Factors.get("minute")));
+            // SECONDS
+            StellarSec = Math.floorDiv(Remains.get("minute"), Factors.get("minute"));
+            // No remains necessary for seconds
+        }catch(NullPointerException e){
+            System.out.println("NULL POINTER EXCEPTION IN CALCULATIONS, LINES 534-547\n\n\n");
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            when.add("00");
+            when.add("000");
+            when.add("00");
+            when.add(".");
+            when.add("00");
+            when.add("00");
+            return when;
+        }
+
+        // VALUE ADJUSTMENTS
+            // SECONDS
+        if(StellarSec >= 60){
+            StellarSec =- 60;
+            StellarMin++;
+        }
+            // MINUTES
+        if(StellarMin >= 60){
+            StellarMin =- 60;
+            StellarHour++;
+        }
+            // HOURS
+        if(StellarHour >= 30){
+            StellarHour =- 30;
+            StellarDay++;
+        }
+            // DAYS
+        if(StellarDay > 360){
+            StellarDay =- 360;
+            StellarYear++;
+        }
+
+        // FORMATTING STRINGS AND ADDING TO `WHEN`
+        String buff = "";
+            // YEARS
+        when.add(decToHex(StellarYear));
+            // DAYS
+        buff = timeForm(1, StellarDay);
+        when.add(buff);
+            // HOURS
+        buff = timeForm(StellarHour);
+        when.add(buff);
+            // POINT
+        when.add(".");
+            // MINUTES
+        buff = timeForm(StellarMin);
+        when.add(buff);
+            // SECONDS
+        buff = timeForm(StellarSec);
+        when.add(buff);
+
+
         return when;
     }
 
