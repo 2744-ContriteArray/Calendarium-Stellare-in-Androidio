@@ -455,6 +455,19 @@ public class stardate
         return when;
     }
 
+    // Implement Euclidean division
+    private int[] euclidDiv(long a, long b){
+        int r = (int) a;
+        int q = 0;
+
+        while(r >= b){
+            r = r - (int) b;
+            q++;
+        }
+
+        int[] euclid = {q, r};
+        return euclid;
+    }
     /*
         TODO:
             - OVERHAUL TO STARDATE FORMULAE
@@ -532,7 +545,8 @@ public class stardate
         Factors.put("minute", 60);
 
         // Remainders
-        HashMap<String, Integer> Remains = new HashMap<>();
+        int remainder1 = 0; // R_n
+        //int remainder2 = 0; // R_n+1
         // Total seconds elapsed
         long S_t;
 
@@ -556,22 +570,28 @@ public class stardate
         int StellarHour;
         int StellarMin;
         int StellarSec;
+        int[] euclid = {0,0};
 
         try {
             // YEARS
-            StellarYear = Math.floorDiv((int) S_t, Factors.get("year"));
-            Remains.put("year", Math.floorMod(S_t, Factors.get("year")));
+            euclid = euclidDiv(S_t, Factors.get("year"));
+            StellarYear = euclid[0];
+            remainder1 = euclid[1];
             // DAYS
-            StellarDay = Math.floorDiv(Remains.get("year"), Factors.get("day"));
-            Remains.put("day", Math.floorMod(Remains.get("year"), Factors.get("day")));
+            euclid = euclidDiv(remainder1, Factors.get("day"));
+            StellarDay = euclid[0];
+            remainder1 = euclid[1];
             // HOURS
-            StellarHour = Math.floorDiv(Remains.get("day"), Factors.get("hour"));
-            Remains.put("hour", Math.floorMod(Remains.get("day"), Factors.get("hour")));
+            euclid = euclidDiv(remainder1, Factors.get("hour"));
+            StellarHour = euclid[0];
+            remainder1 = euclid[1];
             // MINUTES
-            StellarMin = Math.floorDiv(Remains.get("hour"), Factors.get("minute"));
-            Remains.put("minute", Math.floorMod(Remains.get("hour"), Factors.get("minute")));
+            euclid = euclidDiv(remainder1, Factors.get("minute"));
+            StellarMin = euclid[0];
+            remainder1 = euclid[1];
             // SECONDS
-            StellarSec = Math.floorDiv(Remains.get("minute"), Factors.get("minute"));
+            euclid = euclidDiv(remainder1, Factors.get("minute"));
+            StellarSec = euclid[0];
             // No remains necessary for seconds
         }catch(NullPointerException e){
             System.out.println("NULL POINTER EXCEPTION IN CALCULATIONS, LINES 534-547\n\n\n");
@@ -628,10 +648,6 @@ public class stardate
 
 
         return when;
-    }
-
-    public LocalDateTime calcGregDate(){
-        return this.zeroDayGreg;
     }
 
     public stardate()
