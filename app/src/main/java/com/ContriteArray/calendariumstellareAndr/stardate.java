@@ -252,11 +252,15 @@ public class stardate
         int DayBuff = day;
             // MONTH
         for(int i=0; i<12; i++){
-            DayBuff =- MonthLen[i];
             if(DayBuff <=31){
                 month = i+1;
+                if(DayBuff <=0){
+                    DayBuff += MonthLen[i-1];
+                }
                 dayOfMonth = DayBuff;
                 break;
+            }else{
+                DayBuff =- MonthLen[i];
             }
         }
 
@@ -298,13 +302,13 @@ public class stardate
     }
 
     @Deprecated
-    public ArrayList<String> calcStardateDEPR(boolean now)
+    public ArrayList<String> calcStardateDEPR()
     {
         ArrayList<String> when = new ArrayList<>();
 
         LocalDateTime rightFuckinNow;
 
-        if(now) {
+        if(true) {
             // Get right fucking now and convert to Julian
             rightFuckinNow = LocalDateTime.now().minusDays((long) 13.0075);
             this.todayGreg = rightFuckinNow;
@@ -465,8 +469,7 @@ public class stardate
             q++;
         }
 
-        int[] euclid = {q, r};
-        return euclid;
+        return new int[]{q, r};
     }
     /*
         TODO:
