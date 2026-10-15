@@ -229,11 +229,14 @@ public class stardate
             [] Test
                 [] Debug printouts
                 [] Reevaluate maths
+                    - S_t isn't being calculated correctly
+                    - Comes out to 505,440,000 when it should be 1,767,278,640
+                    - Possibly need to do reverse calculations from seconds all the way up to years, adding results together
                 [] Make adjustments where needed
                     - Do we need a method for reversing euclidDiv()?
                     - Are we doing the math correctly?
                 - For debug test, use stardate 2D16320.4400, it should evaluate to 8/13/2026 @ 14:44:00
-                    - S_t calculates to 505,440,000
+                    - S_t calculates to 505,440,000 (Should be 1,767,278,640)
                     - Year in decimal evaluates to 13, throws nullpointererror at i=0 (SHOULD BE 45!!)
                     - Gregorian date evaluates to 01/19/0016 (???)
                     - Doesn't assign text to TextView?
@@ -247,25 +250,35 @@ public class stardate
         System.out.println(("S_t = "+S_t+"\n\n\n"));
 
         // CALCULATIONS
+        System.out.println("ENTERING JULIAN CALCULATIONS");
         int[] euclid;
             // YEAR
         euclid = euclidDiv(S_t, F_y);
         year = euclid[0];
         remains = euclid[1];
+        System.out.println(("year = "+year));
+        System.out.println(("remains = "+remains+"\n"));
             // DAY OF YEAR (NOT OF MONTH)
         euclid = euclidDiv(remains, F_d);
         day = euclid[0];
         remains = euclid[1];
+        System.out.println(("day = "+day));
+        System.out.println(("remains = "+remains+"\n"));
             // HOUR
         euclid = euclidDiv(remains, F_h);
         hour = euclid[0];
         remains = euclid[1];
+        System.out.println(("hour = "+hour));
+        System.out.println(("remains = "+remains+"\n"));
             // MINUTE
         euclid = euclidDiv(remains, F_m);
         minute = euclid[0];
         remains = euclid[1];
+        System.out.println(("minute = "+minute));
+        System.out.println(("remains = "+remains+"\n"));
             // SECOND
         second = remains;
+        System.out.println(("second = "+second+"\n\n\n"));
         // No remainder needed for seconds
 
         // Convert to gregorian
