@@ -169,6 +169,18 @@ public class stardate
         return dec;
     }
 
+    // Implement Euclidean division
+    private int[] euclidDiv(long a, long b){
+        int r = (int) a;
+        int q = 0;
+
+        while(r >= b){
+            r = r - (int) b;
+            q++;
+        }
+
+        return new int[]{q, r};
+    }
 
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
@@ -215,27 +227,41 @@ public class stardate
                 [*] Minute
                 [*] Seconds
             [] Test
+                [*] Debug printouts
+                [*] Reevaluate maths
+                [*] Make adjustments where needed
+                    - Do we need a method for reversing euclidDiv()?
+                    - Are we doing the math correctly?
+                - For debug test, use stardate 2D16320.4400, it should evaluate to 8/13/2026 @ 14:44:00
          */
 
         // S_t CALCULATION
+        System.out.println("ENTERING S_t CALCULATION");
         int yearGap = hexToDec(this.datum.get(0));
         S_t = yearGap * SYfactor;
+        System.out.println(("year rendered to decimal = "+yearGap));
+        System.out.println(("S_t = "+S_t+"\n\n\n"));
 
         // CALCULATIONS
+        int[] euclid;
             // YEAR
-        year = Math.toIntExact(S_t / F_y);
-        remains = Math.toIntExact(S_t % F_y);
+        euclid = euclidDiv(S_t, F_y);
+        year = euclid[0];
+        remains = euclid[1];
             // DAY OF YEAR (NOT OF MONTH)
-        day = Math.toIntExact(remains/F_d);
-        remains = Math.toIntExact(remains%F_d);
+        euclid = euclidDiv(remains, F_d);
+        day = euclid[0];
+        remains = euclid[1];
             // HOUR
-        hour = Math.toIntExact(remains/F_h);
-        remains = Math.toIntExact(remains%F_h);
+        euclid = euclidDiv(remains, F_h);
+        hour = euclid[0];
+        remains = euclid[1];
             // MINUTE
-        minute = Math.toIntExact(remains/F_m);
-        remains = Math.toIntExact(remains%F_m);
+        euclid = euclidDiv(remains, F_m);
+        minute = euclid[0];
+        remains = euclid[1];
             // SECOND
-        second = Math.toIntExact(remains/F_m);
+        second = remains;
         // No remainder needed for seconds
 
         // Convert to gregorian
@@ -460,18 +486,7 @@ public class stardate
         return when;
     }
 
-    // Implement Euclidean division
-    private int[] euclidDiv(long a, long b){
-        int r = (int) a;
-        int q = 0;
 
-        while(r >= b){
-            r = r - (int) b;
-            q++;
-        }
-
-        return new int[]{q, r};
-    }
     /*
         TODO:
             - OVERHAUL TO STARDATE FORMULAE
@@ -489,7 +504,7 @@ public class stardate
                 [*] Declare Duration delta as Duration.between(zeroDayJules,rightFuckinNow)
                 [*] S_t = delta.getSeconds()
             [*] Calculations
-                [] Implement Euclidean division instead of regular, float-yielding division
+                [*] Implement Euclidean division instead of regular, float-yielding division
                 [*] Calculate StellarYear
                 [*] Calculate StellarDay
                 [*] Calculate StellarHour
@@ -534,7 +549,7 @@ public class stardate
                         [*] Add buff string value to `when`
                 - `when` should have 6 indices afterwards
             [*] Return `when`
-            [] TESTS
+            [*] TESTS
                 - Seconds not updating on MainActivity, showing '00'
                 [*] Add debug printouts go leor
                 [*] Run and evaluate
