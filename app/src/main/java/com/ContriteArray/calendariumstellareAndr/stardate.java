@@ -151,12 +151,13 @@ public class stardate
             else
             {
                 try{
-                    digit = Integer.getInteger(String.valueOf(hexaD.charAt(i)));
+                    digit = Integer.getInteger(String.valueOf(hexaD.charAt(i))); // Throwing nullpointers
                 }
                 catch (NullPointerException e){
                     digit = 0;
-                    System.out.println("ERROR: NULLPOINTER AT LINE 153");
+                    System.out.println("ERROR: NULLPOINTER AT LINE 154");
                     System.out.println(("Variable hexaD = "+hexaD));
+                    System.out.println(("i = "+i));
                 }
             }
 
@@ -534,6 +535,10 @@ public class stardate
                 - `when` should have 6 indices afterwards
             [*] Return `when`
             [] TESTS
+                - Seconds not updating on MainActivity, showing '00'
+                [*] Add debug printouts go leor
+                [*] Run and evaluate
+                - Repeat until problem identified
      */
     public ArrayList<String> calcStardate(boolean now){
         ArrayList<String> when = new ArrayList<>();
@@ -565,6 +570,7 @@ public class stardate
         // Getting S_t value
         Duration delta = Duration.between(zeroDayJules, rightFuckinNow);
         S_t = delta.getSeconds();
+        System.out.println(("LINE 571: S_t = "+S_t+"\n"));
 
         // CALCULATIONS
             // VARIABLE DECLARATIONS
@@ -575,26 +581,38 @@ public class stardate
         int StellarSec;
         int[] euclid = {0,0};
 
+        System.out.println("Entering try-catch for calculations (line 584)");
         try {
             // YEARS
             euclid = euclidDiv(S_t, Factors.get("year"));
             StellarYear = euclid[0];
+            System.out.println(("StellarYear = "+StellarYear));
             remainder1 = euclid[1];
+            System.out.println(("Remainder for year = "+remainder1+"\n\n"));
             // DAYS
             euclid = euclidDiv(remainder1, Factors.get("day"));
             StellarDay = euclid[0];
             remainder1 = euclid[1];
+            System.out.println(("StellarDay = "+StellarDay));
+            System.out.println(("Remainder for day = "+remainder1+"\n\n"));
             // HOURS
             euclid = euclidDiv(remainder1, Factors.get("hour"));
             StellarHour = euclid[0];
             remainder1 = euclid[1];
+            System.out.println(("StellarHour = "+StellarHour));
+            System.out.println(("Remainder for hour = "+remainder1+"\n\n"));
             // MINUTES
             euclid = euclidDiv(remainder1, Factors.get("minute"));
             StellarMin = euclid[0];
             remainder1 = euclid[1];
+            System.out.println(("StellarMin = "+StellarMin));
+            System.out.println(("Remainder for minutes = "+remainder1+"\n\n"));
             // SECONDS
-            euclid = euclidDiv(remainder1, Factors.get("minute"));
-            StellarSec = euclid[0];
+            //euclid = euclidDiv(remainder1, Factors.get("minute"));
+            StellarSec = remainder1;
+            //System.out.println(("StellarSec = "+StellarSec));
+
+            System.out.println("FINISHED WITH INITIAL CALCULATIONS\n\n\n\n");
             // No remains necessary for seconds
         }catch(NullPointerException e){
             System.out.println("NULL POINTER EXCEPTION IN CALCULATIONS, LINES 534-547\n\n\n");
@@ -609,9 +627,11 @@ public class stardate
         }
 
         // VALUE ADJUSTMENTS
+        System.out.println("ENTERING VALUE ADJUSTMENTS PHASE");
             // SECONDS
         if(StellarSec >= 60){
             StellarSec =- 60;
+            System.out.println(("StellarSec after adjustment = "+StellarSec+"\n\n\n\n"));
             StellarMin++;
         }
             // MINUTES
