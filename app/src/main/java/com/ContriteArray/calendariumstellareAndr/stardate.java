@@ -227,12 +227,16 @@ public class stardate
                 [*] Minute
                 [*] Seconds
             [] Test
-                [*] Debug printouts
-                [*] Reevaluate maths
-                [*] Make adjustments where needed
+                [] Debug printouts
+                [] Reevaluate maths
+                [] Make adjustments where needed
                     - Do we need a method for reversing euclidDiv()?
                     - Are we doing the math correctly?
                 - For debug test, use stardate 2D16320.4400, it should evaluate to 8/13/2026 @ 14:44:00
+                    - S_t calculates to 505,440,000
+                    - Year in decimal evaluates to 13, throws nullpointererror at i=0 (SHOULD BE 45!!)
+                    - Gregorian date evaluates to 01/19/0016 (???)
+                    - Doesn't assign text to TextView?
          */
 
         // S_t CALCULATION
