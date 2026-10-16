@@ -131,27 +131,46 @@ public class stardate
             Letters.put("F", 15);
         }
         int power = hexaD.length()-1;
+        System.out.println(("hexaD is suposed equal 2D and thus 2 chars.\nActual length: "+hexaD.length()));
+        System.out.println(("power (hexaD.lenght()-1) = "+power));
         int dec = 0;
+        /*
+            TODO
+                - Turn hexaD into a String[]
+                - Use .split(""), it yields indices of " " and the char
+                - Remove the " " in each index. how do?
+                - SUPPOSED TO BE RETURNING 45. MOST RECENT TEST RETURNS 34
+         */
 
-        for(int i=0; i<hexaD.length(); i++)
+        String[] parseable = hexaD.split("");
+        System.out.println(("parseable declared and set. Value therein = "+parseable));
+        for(int i=0; i< parseable.length; i++){
+            parseable[i] = parseable[i].substring(1,1);
+        }
+        System.out.println(("Finished loop to remove \"\". parseable = "+parseable+"\n\n"));
+
+        for(int i=0; i<parseable.length; i++)
         {
-            int digit;
+            int digit=0;
 
             // handle the letters and cast from String to Integer
-            if(Letters.containsKey(String.valueOf(hexaD.charAt(i))))
+            /*if(Letters.containsKey(String.valueOf(parseable[i])))
             {
                 try {
-                    digit = Letters.get(String.valueOf(hexaD.charAt(i)));
+                    digit = Letters.get(parseable[i]);// Throws null
                 }
                 catch (NullPointerException e) {
                     System.out.println(("ERROR: "+e.getMessage()));
-                    throw new RuntimeException(e);
+                    digit = 0;
+                    //throw new RuntimeException(e);
+                    System.out.println(e.getCause());
                 }
             }
             else
             {
                 try{
-                    digit = Integer.getInteger(String.valueOf(hexaD.charAt(i))); // Throwing nullpointers
+                    // INVALID MEANS OF EXTRACTING INTEGER, THROWS NULL EVERY TIME
+                    digit = Integer.getInteger(parseable[i]);
                 }
                 catch (NullPointerException e){
                     digit = 0;
@@ -159,12 +178,38 @@ public class stardate
                     System.out.println(("Variable hexaD = "+hexaD));
                     System.out.println(("i = "+i));
                 }
+            }*/
+
+            try {
+                switch (parseable[i]) {
+                    case "A":
+                        digit = 10;
+                    case "B":
+                        digit = 11;
+                    case "C":
+                        digit = 12;
+                    case "D":
+                        digit = 13;
+                    case "E":
+                        digit = 14;
+                    case "F":
+                        digit = 15;
+                    default:
+                        digit = Integer.parseInt(parseable[i]);
+                }
+            }catch(Exception e){
+                System.out.println("ERROR IN SWITCH STATEMENT IN HEXTODEC()");
+                System.out.println(("i = "+i));
+                System.out.println(e.getStackTrace());
             }
+            System.out.println("Finished number extraction conditionals");
+            System.out.println(("variable int digit = "+digit));
 
             // Convert the digit to decimal and add it to the final int
             dec += (int) (digit*(Math.pow(16, power)));
             power -= 1;
         }
+        System.out.println("LOOP FINISHED IN HEXTODEC()\n\n\n");
 
         return dec;
     }
@@ -245,6 +290,7 @@ public class stardate
         // S_t CALCULATION
         System.out.println("ENTERING S_t CALCULATION");
         int yearGap = hexToDec(this.datum.get(0));
+        System.out.println(("hexToDec() returns "+yearGap));
         S_t = yearGap * SYfactor;
         System.out.println(("year rendered to decimal = "+yearGap));
         System.out.println(("S_t = "+S_t+"\n\n\n"));
@@ -714,7 +760,7 @@ public class stardate
         LocalDate startingGreg = LocalDate.of(1970, 8, 13);
         this.between = Period.between(startingGreg, rightNowGreg);
         this.between.minusDays(12); // minus 12 days to convert to julian
-        // 12 and not 13 because Period.between() is second date EXclusive so treat it as already subtracted
+        // 12 and not 13 because Period.between() is second date Exclusive so treat it as already subtracted
 
         this.setDatum(this.calcStardate(true));
     }
