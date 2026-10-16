@@ -36,7 +36,7 @@ public class stardate
         }catch (IndexOutOfBoundsException e)
         {
             System.out.println(("ERROR IN setDatum(): "+e.getMessage()));
-            System.out.println(("STACK TRACE: "+e.getStackTrace()));
+            System.out.println(("STACK TRACE: "+e.getCause()));
 //            throw new RuntimeException(e);
         }
     }
@@ -131,7 +131,7 @@ public class stardate
             Letters.put("F", 15);
         }
         int power = hexaD.length()-1;
-        System.out.println(("hexaD is suposed equal 2D and thus 2 chars.\nActual length: "+hexaD.length()));
+        System.out.println(("hexaD is supposed equal 2D and thus 2 chars.\nActual length: "+hexaD.length()));
         System.out.println(("power (hexaD.lenght()-1) = "+power));
         int dec = 0;
         /*
@@ -143,16 +143,27 @@ public class stardate
          */
 
         String[] parseable = hexaD.split("");
-        System.out.println(("parseable declared and set. Value therein = "+parseable));
+        System.out.println(("parseable declared and set. Value therein = "+ Arrays.toString(parseable)));
+        System.out.println("ENTERING STRING BUILDER LOOP");
+        StringBuilder tinker = new StringBuilder();
         for(int i=0; i< parseable.length; i++){
-            parseable[i] = parseable[i].substring(1,1);
+            if(parseable[i].contains(" ")) {
+                tinker.append(parseable[i]);// Load parseable into tinker
+                tinker.deleteCharAt(0);// Remove " "
+                parseable[i] = tinker.toString();// Assign refined string to parseable
+                tinker.delete(0, tinker.length() - 1);// Clear tinker
+                // DOESN'T WORK, RETURNS [, ]
+            }else{
+                continue;
+            }
         }
-        System.out.println(("Finished loop to remove \"\". parseable = "+parseable+"\n\n"));
+        System.out.println(("Finished loop to remove \"\". parseable = "+ Arrays.toString(parseable) +"\n\n"));
 
+        System.out.println(("ENTERING PARSE INTEGERS LOOP"));
         for(int i=0; i<parseable.length; i++)
         {
             int digit=0;
-
+            System.out.println(("Iterator i = "+i));
             // handle the letters and cast from String to Integer
             /*if(Letters.containsKey(String.valueOf(parseable[i])))
             {
@@ -200,7 +211,7 @@ public class stardate
             }catch(Exception e){
                 System.out.println("ERROR IN SWITCH STATEMENT IN HEXTODEC()");
                 System.out.println(("i = "+i));
-                System.out.println(e.getStackTrace());
+                System.out.println(e.getCause());
             }
             System.out.println("Finished number extraction conditionals");
             System.out.println(("variable int digit = "+digit));
@@ -210,7 +221,7 @@ public class stardate
             power -= 1;
         }
         System.out.println("LOOP FINISHED IN HEXTODEC()\n\n\n");
-
+        System.out.println(("Return value = "+dec));
         return dec;
     }
 
@@ -281,9 +292,9 @@ public class stardate
                     - Do we need a method for reversing euclidDiv()?
                     - Are we doing the math correctly?
                 - For debug test, use stardate 2D16320.4400, it should evaluate to 8/13/2026 @ 14:44:00
-                    - S_t calculates to 505,440,000 (Should be 1,767,278,640)
-                    - Year in decimal evaluates to 13, throws nullpointererror at i=0 (SHOULD BE 45!!)
-                    - Gregorian date evaluates to 01/19/0016 (???)
+                    - S_t calculates to 1,827,360,000 (Should be 1,767,278,640)
+                    - Year in decimal evaluates to 47, (SHOULD BE 45!!)
+                    - Gregorian date evaluates to feb 1st (day 330), 57CE (???)
                     - Doesn't assign text to TextView?
          */
 
@@ -352,6 +363,9 @@ public class stardate
             }else{
                 DayBuff =- MonthLen[i];
             }
+        }
+        if(dayOfMonth <= 0){
+            dayOfMonth = 1;
         }
 
 
