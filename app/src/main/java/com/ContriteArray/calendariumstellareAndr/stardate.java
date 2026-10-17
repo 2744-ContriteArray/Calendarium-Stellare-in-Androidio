@@ -332,8 +332,9 @@ public class stardate
                 }else if (this.datum.get(i).startsWith("0")) {
                     parseable[i] = charDelete(this.datum.get(i));
                 }else{
-                    System.out.println(("Integer.parseInt(this.datum.get("+i+") = "
-                            +Integer.parseInt(this.datum.get(i)+"\n\n")));
+                    System.out.println(("String received = "+this.datum.get(i)));
+                    //System.out.println(("Integer.parseInt(this.datum.get("+i+") = "
+                    //        +Integer.parseInt(this.datum.get(i)+"\n\n")));
                     break;
                 }
             }
@@ -365,6 +366,11 @@ public class stardate
 
     // Recursive method for steps to calculate Julian units from S_t
     private int[] euc2JulesREC(long S_t, int[] jules, int iter){
+        /*
+        TODO
+            - Reorganize to increment DOWNWARD from jules.length-1
+            - Year unit factor is GF[3], not GF[0]
+         */
         if(iter == jules.length-1){
             // Prevent out of range error
             // Assign Seconds to jules and return
@@ -720,25 +726,25 @@ public class stardate
         System.out.println("Entering try-catch for calculations (line 720)");
         try {
             // YEARS
-            euclid = euclidDiv(S_t, SF[0]);
+            euclid = euclidDiv(S_t, SF[3]);
             StellarYear = euclid[0];
             System.out.println(("StellarYear = "+StellarYear));
             remainder1 = euclid[1];
             System.out.println(("Remainder for year = "+remainder1+"\n\n"));
             // DAYS
-            euclid = euclidDiv(remainder1, SF[1]);
+            euclid = euclidDiv(remainder1, SF[2]);
             StellarDay = euclid[0];
             remainder1 = euclid[1];
             System.out.println(("StellarDay = "+StellarDay));
             System.out.println(("Remainder for day = "+remainder1+"\n\n"));
             // HOURS
-            euclid = euclidDiv(remainder1, SF[2]);
+            euclid = euclidDiv(remainder1, SF[1]);
             StellarHour = euclid[0];
             remainder1 = euclid[1];
             System.out.println(("StellarHour = "+StellarHour));
             System.out.println(("Remainder for hour = "+remainder1+"\n\n"));
             // MINUTES
-            euclid = euclidDiv(remainder1, SF[3]);
+            euclid = euclidDiv(remainder1, SF[0]);
             StellarMin = euclid[0];
             remainder1 = euclid[1];
             System.out.println(("StellarMin = "+StellarMin));
