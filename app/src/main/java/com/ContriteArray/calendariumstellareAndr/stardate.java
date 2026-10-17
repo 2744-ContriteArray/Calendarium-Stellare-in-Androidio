@@ -245,27 +245,40 @@ public class stardate
         return new int[]{q, r};
     }
 
+
+        // CALCULATING S_t
     // Recursive function to contain steps for deriving S_t from stardate as part of conv2Greg()
     // Takes an array (S_n) containing the compiled integers of the stardate, sans formatting
     private long conv2Gstep(long[] S_n, int iter){
+        System.out.println(("conv2Gstep() iteration "+iter));
+
         if(iter >= SF.length || iter >= S_n.length){
             // If the iterator exceeds the amount of indices, then we've reached the end and
                 // don't want to throw an out of range error! Time to unwind the recursion!
+            System.out.println("RECURSION COMPLETE, RETURNING AND UNWINDING");
             return 0;
         }
+        System.out.println(("S_n[iter] = "+S_n[iter]));
+        System.out.println(("SF[iter] = "+SF[iter]));
         long product = S_n[iter] * SF[iter];
+        System.out.println(("Product = "+product));
 
         return product+conv2Gstep(S_n, iter+1);
     }
 
     private long conv2Gstep(int[] S_n, int iter){
         // Polymorphic variant of above. Change in parameter types
+        System.out.println(("conv2Gstep() iteration "+iter));
         if(iter >= SF.length || iter >= S_n.length){
             // If the iterator exceeds the amount of indices, then we've reached the end and
             // don't want to throw an out of range error! Time to unwind the recursion!
+            System.out.println("RECURSION COMPLETE, RETURNING AND UNWINDING\n\n\n");
             return 0;
         }
+        System.out.println(("S_n[iter] = "+S_n[iter]));
+        System.out.println(("SF[iter] = "+SF[iter]));
         long product = S_n[iter] * SF[iter];
+        System.out.println(("Product = "+product));
 
         return product+conv2Gstep(S_n, iter+1);
     }
@@ -305,8 +318,8 @@ public class stardate
     }
 
     // Deformat the stardate from strings to ints
-    private long[] Deformat(){
-        long[] results = new long[5];
+    private int[] Deformat(){
+        int[] results = new int[5];
         results[0] = hexToDec(this.datum.get(0));
         System.out.println(("hexToDec() returns "+results[0]));
         //System.out.println(("year rendered to decimal = "+StellarYear));
@@ -325,27 +338,59 @@ public class stardate
             }
         }
 
+        System.out.println(("ABOUT TO RETURN TO CONV2GREG()\nresults = "+results.toString()));
+
         return results;
     }
 
+        // CALCULATING DATES FROM S_t
+    // Recursive method for the steps to calculate stardate from S_t
+    /*private int[] euc2Star(int[] stellaris, int iter){
+        return stellaris;
+    }*/
+
+    // Initial iteration of euc2Jules
+    private int[] euc2Jules(long S_t){
+        //int[] euclid = euclidDiv(S_t, GF[0]);
+        int[] jules = new int[6];
+        // Euclidean division
+        //jules[0] = euclid[0];
+
+        return euc2Jules(S_t, jules, 0);
+    }
+
+    // Recursive method for steps to calculate Julian units from S_t
+    private int[] euc2Jules(long S_t, int[] jules, int iter){
+        if(iter == jules.length-1){
+            // Prevent out of range error
+            // Assign Seconds to jules and return
+            // Recursion is done, time to unwind!
+            jules[iter] = (int) S_t;
+            return jules;
+        }
+        /*
+        STEPS
+            - send dividends to euclidDiv()
+            - get back the quotient and remainder
+            - assign quotient to jules[iter]
+            - send remainder to next iter
+         */
+        // Send dividends to euclidDiv() and get quotient and remainder back
+        int[] euclid = euclidDiv(S_t, GF[iter]);
+        // Assign quotient to jules
+        jules[iter] = euclid[0];
+        // Send remainder to next iter
+        return euc2Jules(euclid[1], jules, iter+1);
+    }
+
+    
+        //  CONVERSION METHODS
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
-        int year; //int for the year to be assigned to result
         int month = 1; //int for the month to be assigned to result
         int day; //int for the day to be assigned to result
-        int hour; //int for the hour to be assigned to result
-        int minute; //int for the minute to be assigned to result
-        int second; //int for the second to be assigned to result
         int dayOfMonth = 1; // calendar day
         long S_t = 0;
-
-        int remains = 0;
-        // UNIT FACTORS
-        long SYfactor = 38880000;
-        long F_y = 31557600;
-        long F_d = 86400;
-        int F_h = 3600;
-        int F_m = 60;
 
         /*
         Reverse calcStardate()
@@ -355,8 +400,8 @@ public class stardate
                 [*] Year
                 [*] Convert to Decimal
             [] Get S_t by calling conv2Gstep()
-                [] Created long[] obj from deformatted stardates
-                [] Make initial recursion call
+                [*] Created long[] obj from deformatted stardates
+                [*] Make initial recursion call
             [] Calculate Julian date via division and modulo
             [] Test
                 [] Debug printouts
@@ -373,17 +418,17 @@ public class stardate
                     - Gregorian date evaluates to feb 1st (day 330), 57CE (???)
                     - Doesn't assign text to TextView?
          */
-
-        // Translating star year to decimal
-
-
         // S_t calculations
-        long[] stellaris = Deformat(); // Will hold unformatted stardate integers
-
+        int[] stellaris = Deformat(); // Will hold unformatted stardate integers
+        S_t = conv2Gstep(stellaris, 0);
+        System.out.println("FINISHED UNWINDING");
+        System.out.println(("S_t = "+S_t));
 
         // CALCULATIONS
         System.out.println("ENTERING JULIAN CALCULATIONS");
-        int[] euclid;
+        int[] dates = euc2Jules(S_t);
+        System.out.println(("int[] dates = "+Arrays.toString(dates)));
+        /*
             // YEAR
         euclid = euclidDiv(S_t, F_y);
         year = euclid[0];
@@ -412,20 +457,21 @@ public class stardate
         second = remains;
         System.out.println(("second = "+second+"\n\n\n"));
         // No remainder needed for seconds
+        */
 
         // Convert to gregorian
-        day += 13;
-        if(day > 365){
-            day =- 365;
-            year++;
+        dates[1] += 13;
+        if(dates[1] > 365){
+            dates[1] =- 365;
+            dates[0]++;
         }
 
         // MONTH CALCULATION
         int[] MonthLen = {31,28,31,30,31,30,31,31,30,31,30,31};
-        if(year%4==0){
+        if(dates[0]%4==0){
             MonthLen[1] = 29;
         }
-        int DayBuff = day;
+        int DayBuff = dates[1];
             // MONTH
         for(int i=0; i<12; i++){
             if(DayBuff <=31){
@@ -444,8 +490,7 @@ public class stardate
         }
 
 
-        result = LocalDateTime.of(year,month,dayOfMonth,hour,minute,second);
-        return result;
+        return LocalDateTime.of(dates[0],month,dayOfMonth,dates[2],dates[3],dates[4]);
     }
 
     @Deprecated
