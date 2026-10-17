@@ -56,8 +56,14 @@ public class stardate
         return this.datum;
     }
 
-    // Purpose: convert decimal integers to hexadecimal strings
-    private static String decToHex(int dec)
+            // CALCULATION STEPS
+
+    // VARIABLES
+    long[] SF = {60, 3600, 108000, 38880000}; // Unit factors for stardates
+    long[] GF = {60, 3600, 86400, 31557600}; // Unit factors for Gregorian units
+
+    // METHODS/FUNCTIONS
+    private static String decToHex(int dec)// Convert decimal integers to hexadecimal strings
     {
         //MainActivity.debugPrintln("Now in decToHex()");
         String hexa = "";
@@ -110,7 +116,7 @@ public class stardate
         return hexa;
     }
 
-    // Purpose: convert hexadecimal strings into decimal integers
+    // Convert hexadecimal strings into decimal integers
     private static int hexToDec(String hexaD)
     {
         // PROCESS
@@ -238,6 +244,66 @@ public class stardate
         return new int[]{q, r};
     }
 
+    // Recursive function to contain steps for deriving S_t from stardate as part of conv2Greg()
+    // Takes an array (S_n) containing the compiled integers of the stardate, sans formatting
+    private long conv2Gstep(long[] S_n, int iter){
+        if(iter >= SF.length || iter >= S_n.length){
+            // If the iterator exceeds the amount of indices, then we've reached the end and
+                // don't want to throw an out of range error! Time to unwind the recursion!
+            return 0;
+        }
+        long product = S_n[iter] * SF[iter];
+
+        return product+conv2Gstep(S_n, iter+1);
+    }
+
+    private long conv2Gstep(int[] S_n, int iter){
+        // Polymorphic variant of above. Change in parameter types
+        if(iter >= SF.length || iter >= S_n.length){
+            // If the iterator exceeds the amount of indices, then we've reached the end and
+            // don't want to throw an out of range error! Time to unwind the recursion!
+            return 0;
+        }
+        long product = S_n[iter] * SF[iter];
+
+        return product+conv2Gstep(S_n, iter+1);
+    }
+
+    // Formatting the stardate strings
+    private String timeForm(int index, int time) {
+        String finish = "";
+
+        if (index == 0) {
+            if (time < 10) {
+                finish = "00" + String.valueOf(time);
+            } else if (time <= 99) {
+                finish = "0" + String.valueOf(time);
+            } else {
+                finish = String.valueOf(time);
+            }
+        }else{
+            if(time<10){
+                finish = "0"+String.valueOf(time);
+            }else{
+                finish = String.valueOf(time);
+            }
+        }
+        return finish;
+    }
+
+    // Format the Stardate strings
+    private String timeForm(int time){
+        String finish;
+        if(time<10){
+            finish = "0"+String.valueOf(time);
+        }else{
+            finish = String.valueOf(time);
+        }
+
+        return finish;
+    }
+
+
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
         int year; //int for the year to be assigned to result
@@ -261,27 +327,13 @@ public class stardate
         Reverse calcStardate()
 
         TODO
-            [*] Unit Factors
-                [*] Julian
-                    [*] Year
-                    [*] Day
-                    [*] Hour
-                    [*] Minute
-                [*] Stellar
-                    [*] Year
             [*] Get Stellar Units from this.datum
                 [*] Year
                 [*] Convert to Decimal
-            [*] Get S_t by StellarYear*SYfactor
-            [*] Calculate Julian date via division and modulo
-                [*] int remains
-                [*] Year
-                [*] Month
-                [*] Day of year
-                [*] Day of month
-                [*] Hour
-                [*] Minute
-                [*] Seconds
+            [] Get S_t by calling conv2Gstep()
+                [] Created long[] obj from deformatted stardates
+                [] Make initial recursion call
+            [] Calculate Julian date via division and modulo
             [] Test
                 [] Debug printouts
                 [] Reevaluate maths
@@ -298,13 +350,13 @@ public class stardate
                     - Doesn't assign text to TextView?
          */
 
-        // S_t CALCULATION
-        System.out.println("ENTERING S_t CALCULATION");
-        int yearGap = hexToDec(this.datum.get(0));
-        System.out.println(("hexToDec() returns "+yearGap));
-        S_t = yearGap * SYfactor;
-        System.out.println(("year rendered to decimal = "+yearGap));
-        System.out.println(("S_t = "+S_t+"\n\n\n"));
+        // Translating star year to decimal
+        int StellarYear = hexToDec(this.datum.get(0));
+        System.out.println(("hexToDec() returns "+StellarYear));
+        //System.out.println(("year rendered to decimal = "+StellarYear));
+
+        // S_t calculations
+        long[] stellaris; // Will hold unformatted stardate integers
 
         // CALCULATIONS
         System.out.println("ENTERING JULIAN CALCULATIONS");
@@ -371,38 +423,6 @@ public class stardate
 
         result = LocalDateTime.of(year,month,dayOfMonth,hour,minute,second);
         return result;
-    }
-
-    private String timeForm(int index, int time) {
-        String finish = "";
-
-        if (index == 0) {
-            if (time < 10) {
-                finish = "00" + String.valueOf(time);
-            } else if (time <= 99) {
-                finish = "0" + String.valueOf(time);
-            } else {
-                finish = String.valueOf(time);
-            }
-        }else{
-            if(time<10){
-                finish = "0"+String.valueOf(time);
-            }else{
-                finish = String.valueOf(time);
-            }
-        }
-        return finish;
-    }
-
-    private String timeForm(int time){
-        String finish;
-        if(time<10){
-            finish = "0"+String.valueOf(time);
-        }else{
-            finish = String.valueOf(time);
-        }
-
-        return finish;
     }
 
     @Deprecated
@@ -564,74 +584,6 @@ public class stardate
     }
 
 
-    /*
-        TODO:
-            - OVERHAUL TO STARDATE FORMULAE
-            [*] Copy essentials from existing method
-                [*] Manage if(now) operation
-                [*] Calculate Julian from Greg
-                [*] ArrayList<String> when
-            [*] Setup new essentials
-                [*] Hashmap for stellar unit factors
-                    [*] Declare
-                    [*] Assign
-                [*] Hashmap for remainders
-                    [*] Declare
-            [*] Get S_t (total seconds elapsed since zero day)
-                [*] Declare Duration delta as Duration.between(zeroDayJules,rightFuckinNow)
-                [*] S_t = delta.getSeconds()
-            [*] Calculations
-                [*] Implement Euclidean division instead of regular, float-yielding division
-                [*] Calculate StellarYear
-                [*] Calculate StellarDay
-                [*] Calculate StellarHour
-                [*] Calculate StellarMin
-                [*] Calculate StellarSec
-            [*] Formatting
-                [*] Create buff string = ""
-                [*] Value Adjustments
-                    [*] Seconds
-                        [*] If seconds >= 60
-                            [*] Correct seconds
-                            [*] minutes++
-                    [*] Minutes
-                        [*] If minutes >= 60
-                            [*] Correct minutes
-                            [*] Hours++
-                    [*] Hours
-                        [*] If hours >= 30
-                            [*] Correct hours
-                            [*] Days++
-                    [*] Days
-                        [*] If days > 360
-                            [*] Correct days
-                            [*] years++
-                [*] String creation and Array assignments
-                    [*] Years
-                        [*] Convert years to Hex
-                        [*] Add StellarYear hex value string to `when`
-                    [*] Days
-                        [*] Call timeForm() on StellarDay, assign to buff
-                        [*] Add buff string value to `when`
-                    [*] Hours
-                        [*] Call timeForm() on StellarHour, assign to buff
-                        [*] Add buff string value to `when`
-                    [*] Point
-                        [*] Add "." to `when`
-                    [*] Minutes
-                        [*] Call timeForm() on StellarMin, assign to buff
-                        [*] Add buff string value to `when`
-                    [*] Seconds
-                        [*] Call timeForm() on StellarSec, assign to buff
-                        [*] Add buff string value to `when`
-                - `when` should have 6 indices afterwards
-            [*] Return `when`
-            [*] TESTS
-                - Seconds not updating on MainActivity, showing '00'
-                [*] Add debug printouts go leor
-                [*] Run and evaluate
-                - Repeat until problem identified
-     */
     public ArrayList<String> calcStardate(boolean now){
         ArrayList<String> when = new ArrayList<>();
 
