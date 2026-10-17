@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.lang.Math;
 import java.time.*;
+import java.util.Objects;
 
 public class stardate
 {
@@ -303,6 +304,29 @@ public class stardate
         return finish;
     }
 
+    // Deformat the stardate from strings to ints
+    private long[] Deformat(){
+        long[] results = new long[5];
+        results[0] = hexToDec(this.datum.get(0));
+        System.out.println(("hexToDec() returns "+results[0]));
+        //System.out.println(("year rendered to decimal = "+StellarYear));
+        for(int i = 1; i <= results.length; i++){
+            if(Objects.equals(this.datum.get(i), ".")){
+                continue;
+            }
+            System.out.println("IN DEFORMAT()");
+            System.out.println(("Integer.parseInt(this.datum.get("+i+") = "
+                    +Integer.parseInt(this.datum.get(i)+"\n\n")));
+
+            if(i >= 4){
+                results[i-1] = Integer.parseInt(this.datum.get(i));
+            }else {
+                results[i] = Integer.parseInt(this.datum.get(i));
+            }
+        }
+
+        return results;
+    }
 
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
@@ -351,12 +375,11 @@ public class stardate
          */
 
         // Translating star year to decimal
-        int StellarYear = hexToDec(this.datum.get(0));
-        System.out.println(("hexToDec() returns "+StellarYear));
-        //System.out.println(("year rendered to decimal = "+StellarYear));
+
 
         // S_t calculations
-        long[] stellaris; // Will hold unformatted stardate integers
+        long[] stellaris = Deformat(); // Will hold unformatted stardate integers
+
 
         // CALCULATIONS
         System.out.println("ENTERING JULIAN CALCULATIONS");
