@@ -343,12 +343,6 @@ public class stardate
         return results;
     }
 
-        // CALCULATING DATES FROM S_t
-    // Recursive method for the steps to calculate stardate from S_t
-    /*private int[] euc2Star(int[] stellaris, int iter){
-        return stellaris;
-    }*/
-
     // Initial iteration of euc2Jules
     private int[] euc2Jules(long S_t){
         //int[] euclid = euclidDiv(S_t, GF[0]);
@@ -383,7 +377,32 @@ public class stardate
         return euc2Jules(euclid[1], jules, iter+1);
     }
 
-    
+    // CALCULATING DATES FROM S_t
+    // Recursive method for the steps to calculate stardate from S_t
+    private int[] euc2Star(long S_t, int[] stellaris, int iter){
+        if(iter == stellaris.length-1){
+            // Prevent out of range error
+            // Assign seconds to stellaris and return
+            // Recursion is done, time to unwind!
+            stellaris[iter] = (int) S_t;
+            return stellaris;
+        }
+
+        /*
+        STEPS
+            - Send dividends to euclidDiv()
+            - Get back the quotient and remainder
+            - Assign quotient to stellaris[iter]
+            - Send remainder to next iter
+         */
+        // Send dividends to euclidDiv() and get results
+        int[] euclid = euclidDiv(S_t, SF[iter]);
+        // Assign quotient to stellaris
+        stellaris[iter] = euclid[0];
+        // Send remainder to next iter
+        return euc2Star(euclid[1], stellaris, iter+1);
+    }
+
         //  CONVERSION METHODS
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
@@ -656,17 +675,6 @@ public class stardate
         ArrayList<String> when = new ArrayList<>();
 
         LocalDateTime rightFuckinNow;
-        // Unit factors
-        HashMap<String, Integer> Factors = new HashMap<>();
-        // Assignments
-        Factors.put("year",38880000);
-        Factors.put("day", 108000);
-        Factors.put("hour", 3600);
-        Factors.put("minute", 60);
-
-        // Remainders
-        int remainder1 = 0; // R_n
-        //int remainder2 = 0; // R_n+1
         // Total seconds elapsed
         long S_t;
 
@@ -685,14 +693,12 @@ public class stardate
         System.out.println(("LINE 571: S_t = "+S_t+"\n"));
 
         // CALCULATIONS
-            // VARIABLE DECLARATIONS
-        int StellarYear;
-        int StellarDay;
-        int StellarHour;
-        int StellarMin;
-        int StellarSec;
-        int[] euclid = {0,0};
 
+        System.out.println("Declaring int[] stellaris and beginning recursion");
+        int[] stellaris = euc2Star(S_t, new int[5], 0);
+        System.out.println(("Recursion complete.\nstellaris = "+Arrays.toString(stellaris)));
+
+        /*
         System.out.println("Entering try-catch for calculations (line 584)");
         try {
             // YEARS
@@ -736,49 +742,49 @@ public class stardate
             when.add("00");
             when.add("00");
             return when;
-        }
+        }*/
 
         // VALUE ADJUSTMENTS
         System.out.println("ENTERING VALUE ADJUSTMENTS PHASE");
             // SECONDS
-        if(StellarSec >= 60){
-            StellarSec =- 60;
-            System.out.println(("StellarSec after adjustment = "+StellarSec+"\n\n\n\n"));
-            StellarMin++;
+        if(stellaris[4] >= 60){
+            stellaris[4] =- 60;
+            System.out.println(("StellarSec after adjustment = "+stellaris[5]+"\n\n\n\n"));
+            stellaris[3]++;
         }
             // MINUTES
-        if(StellarMin >= 60){
-            StellarMin =- 60;
-            StellarHour++;
+        if(stellaris[3] >= 60){
+            stellaris[3] =- 60;
+            stellaris[2]++;
         }
             // HOURS
-        if(StellarHour >= 30){
-            StellarHour =- 30;
-            StellarDay++;
+        if(stellaris[2] >= 30){
+            stellaris[2] =- 30;
+            stellaris[1]++;
         }
             // DAYS
-        if(StellarDay > 360){
-            StellarDay =- 360;
-            StellarYear++;
+        if(stellaris[1] > 360){
+            stellaris[1] =- 360;
+            stellaris[0]++;
         }
 
         // FORMATTING STRINGS AND ADDING TO `WHEN`
         String buff = "";
             // YEARS
-        when.add(decToHex(StellarYear));
+        when.add(decToHex(stellaris[0]));
             // DAYS
-        buff = timeForm(1, StellarDay);
+        buff = timeForm(1, stellaris[1]);
         when.add(buff);
             // HOURS
-        buff = timeForm(StellarHour);
+        buff = timeForm(stellaris[2]);
         when.add(buff);
             // POINT
         when.add(".");
             // MINUTES
-        buff = timeForm(StellarMin);
+        buff = timeForm(stellaris[3]);
         when.add(buff);
             // SECONDS
-        buff = timeForm(StellarSec);
+        buff = timeForm(stellaris[4]);
         when.add(buff);
 
 
