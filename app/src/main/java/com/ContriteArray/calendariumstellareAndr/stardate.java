@@ -26,13 +26,6 @@ public class stardate
         try {
             this.datum.clear();
             this.datum.addAll(when);
-            //MainActivity.debugPrintln(("datum = "+this.datum));
-            /*
-                TODO:
-                    [*] take new stardate and convert to greg
-                        [*] conv2Greg() is complete
-                    [*] assign to todayGreg
-             */
             this.todayGreg = this.conv2Greg();
         }catch (IndexOutOfBoundsException e)
         {
@@ -62,6 +55,17 @@ public class stardate
     // VARIABLES
     long[] SF = {60, 3600, 108000, 38880000}; // Unit factors for stardates
     long[] GF = {60, 3600, 86400, 31557600}; // Unit factors for Gregorian units
+
+    private String charDelete(String thing){
+        StringBuilder tinker = new StringBuilder();
+        tinker.append(thing);// Load parseable into tinker
+        tinker.deleteCharAt(0);// Remove " "
+        thing = tinker.toString();// Assign refined string to parseable
+
+        System.out.println(("Finished loop to remove \"\". parseable = "+ thing +"\n\n"));
+
+        return thing;
+    }
 
     // METHODS/FUNCTIONS
     private static String decToHex(int dec)// Convert decimal integers to hexadecimal strings
@@ -118,7 +122,7 @@ public class stardate
     }
 
     // Convert hexadecimal strings into decimal integers
-    private static int hexToDec(String hexaD)
+    private int hexToDec(String hexaD)
     {
         // PROCESS
         // Multiply each digit of hex number by 16 raised to the power of its position
@@ -128,15 +132,6 @@ public class stardate
 
         // create the dictionary for letter digits
         // .put() operations braced for easy organizing and collapsibility
-        HashMap<String, Integer> Letters = new HashMap<String, Integer>();
-        {
-            Letters.put("A", 10);
-            Letters.put("B", 11);
-            Letters.put("C", 12);
-            Letters.put("D", 13);
-            Letters.put("E", 14);
-            Letters.put("F", 15);
-        }
         int power = hexaD.length()-1;
         System.out.println(("hexaD is supposed equal 2D and thus 2 chars.\nActual length: "+hexaD.length()));
         System.out.println(("power (hexaD.lenght()-1) = "+power));
@@ -151,20 +146,12 @@ public class stardate
 
         String[] parseable = hexaD.split("");
         System.out.println(("parseable declared and set. Value therein = "+ Arrays.toString(parseable)));
-        System.out.println("ENTERING STRING BUILDER LOOP");
-        StringBuilder tinker = new StringBuilder();
-        for(int i=0; i< parseable.length; i++){
-            if(parseable[i].contains(" ")) {
-                tinker.append(parseable[i]);// Load parseable into tinker
-                tinker.deleteCharAt(0);// Remove " "
-                parseable[i] = tinker.toString();// Assign refined string to parseable
-                tinker.delete(0, tinker.length() - 1);// Clear tinker
-                // DOESN'T WORK, RETURNS [, ]
-            }else{
-                continue;
+        System.out.println("ENTERING LOOP");
+        for(int i = 0; i < parseable.length; i++){
+            if(parseable[i].contains(" ")){
+                parseable[i] = charDelete(parseable[i]);
             }
         }
-        System.out.println(("Finished loop to remove \"\". parseable = "+ Arrays.toString(parseable) +"\n\n"));
 
         System.out.println(("ENTERING PARSE INTEGERS LOOP"));
         for(int i=0; i<parseable.length; i++)
@@ -323,17 +310,41 @@ public class stardate
         results[0] = hexToDec(this.datum.get(0));
         System.out.println(("hexToDec() returns "+results[0]));
         //System.out.println(("year rendered to decimal = "+StellarYear));
+
+        String[] parseable = new String[7];
+        this.datum.toArray(parseable);
+
         for(int i = 1; i <= results.length; i++){
-            if(Objects.equals(this.datum.get(i), ".")){
+            if(Objects.equals(parseable[i], ".")){
                 continue;
             }
             System.out.println("IN DEFORMAT()");
-            System.out.println(("Integer.parseInt(this.datum.get("+i+") = "
-                    +Integer.parseInt(this.datum.get(i)+"\n\n")));
 
-            if(i >= 4){
+            /*
+            TODO
+                - ADD STEPS TO REMOVE PADDED ZEROES FROM STRINGS
+                - ADD CHECKS FOR MULTIPLE PADDING DIGITS
+                - ADD HANDLING FOR STRINGS THAT ARE AAAALL ZEROES. LIKE 00 SECONDS
+             */
+
+            for(int j = 0; j < 2; j++) {
+                if(this.datum.get(i).equals("00")){
+                    break;
+                }else if (this.datum.get(i).startsWith("0")) {
+                    parseable[i] = charDelete(this.datum.get(i));
+                }else{
+                    System.out.println(("Integer.parseInt(this.datum.get("+i+") = "
+                            +Integer.parseInt(this.datum.get(i)+"\n\n")));
+                    break;
+                }
+            }
+
+
+            if(i >= 4 && !this.datum.get(i).equals("00")){
                 results[i-1] = Integer.parseInt(this.datum.get(i));
-            }else {
+            }else if(i >= 4) {
+                results[i-1] = 0;
+            }else{
                 results[i] = Integer.parseInt(this.datum.get(i));
             }
         }
