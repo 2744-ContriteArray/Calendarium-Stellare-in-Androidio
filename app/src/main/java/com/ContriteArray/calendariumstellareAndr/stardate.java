@@ -366,11 +366,6 @@ public class stardate
 
     // Recursive method for steps to calculate Julian units from S_t
     private int[] euc2JulesREC(long S_t, int[] jules, int iter){
-        /*
-        TODO
-            - Reorganize to increment DOWNWARD from jules.length-1
-            - Year unit factor is GF[3], not GF[0]
-         */
         if(iter == jules.length-1){
             // Prevent out of range error
             // Assign Seconds to jules and return
@@ -396,7 +391,7 @@ public class stardate
     // CALCULATING DATES FROM S_t
     // Recursive method for the steps to calculate stardate from S_t
     private int[] euc2StarREC(long S_t, int[] stellaris, int iter){
-        if(iter == stellaris.length-1){
+        if(iter <= 0){
             // Prevent out of range error
             // Assign seconds to stellaris and return
             // Recursion is done, time to unwind!
@@ -416,7 +411,7 @@ public class stardate
         // Assign quotient to stellaris
         stellaris[iter] = euclid[0];
         // Send remainder to next iter
-        return euc2StarREC(euclid[1], stellaris, iter+1);
+        return euc2StarREC(euclid[1], stellaris, iter-1);
     }
 
         //  CONVERSION METHODS
@@ -709,11 +704,14 @@ public class stardate
         System.out.println(("LINE 571: S_t = "+S_t+"\n"));
 
         // CALCULATIONS
-/*
-        System.out.println("Declaring int[] stellaris and beginning recursion");
-        int[] stellaris = euc2StarREC(S_t, new int[5], 0);
-        System.out.println(("Recursion complete.\nstellaris = "+Arrays.toString(stellaris)));*/
 
+        // RECURSIVE METHOD
+        System.out.println("Declaring int[] stellaris and beginning recursion");
+        int[] stellaris = euc2StarREC(S_t, new int[5], this.datum.size()-2);
+        System.out.println(("Recursion complete.\nstellaris = "+Arrays.toString(stellaris)));
+
+        /*
+        // NON-RECURSIVE ORIGINAL
         // VARIABLE DECLARATIONS
         int[] euclid;
         int StellarYear = 0;
@@ -766,32 +764,32 @@ public class stardate
             when.add("00");
             when.add("00");
             return when;
-        }
+        }*/
 
         // VALUE ADJUSTMENTS
         System.out.println("ENTERING VALUE ADJUSTMENTS PHASE");
-        /*    // SECONDS
-        if(stellaris[4] >= 60){
-            stellaris[4] =- 60;
-            System.out.println(("StellarSec after adjustment = "+stellaris[5]+"\n\n\n\n"));
-            stellaris[3]++;
+            // SECONDS
+        if(stellaris[0] >= 60){
+            stellaris[0] =- 60;
+            System.out.println(("StellarSec after adjustment = "+stellaris[0]+"\n\n\n\n"));
+            stellaris[1]++;
         }
             // MINUTES
-        if(stellaris[3] >= 60){
-            stellaris[3] =- 60;
+        if(stellaris[1] >= 60){
+            stellaris[1] =- 60;
             stellaris[2]++;
         }
             // HOURS
         if(stellaris[2] >= 30){
             stellaris[2] =- 30;
-            stellaris[1]++;
+            stellaris[3]++;
         }
             // DAYS
-        if(stellaris[1] > 360){
-            stellaris[1] =- 360;
-            stellaris[0]++;
-        }*/
-        // SECONDS
+        if(stellaris[3] > 360){
+            stellaris[3] =- 360;
+            stellaris[4]++;
+        }
+        /*// SECONDS
         if(StellarSec >= 60){
             StellarSec =- 60;
             System.out.println(("StellarSec after adjustment = "+StellarSec+"\n\n\n\n"));
@@ -811,25 +809,25 @@ public class stardate
         if(StellarDay > 360){
             StellarDay =- 360;
             StellarYear++;
-        }
+        }*/
 
         // FORMATTING STRINGS AND ADDING TO `WHEN`
         String buff = "";
             // YEARS
-        when.add(decToHex(StellarYear));
+        when.add(decToHex(/*StellarYear*/stellaris[4]));
             // DAYS
-        buff = timeForm(1, StellarDay);
+        buff = timeForm(1, /*StellarDay*/stellaris[3]);
         when.add(buff);
             // HOURS
-        buff = timeForm(StellarHour);
+        buff = timeForm(/*StellarHour*/stellaris[2]);
         when.add(buff);
             // POINT
         when.add(".");
             // MINUTES
-        buff = timeForm(StellarMin);
+        buff = timeForm(/*StellarMin*/stellaris[1]);
         when.add(buff);
             // SECONDS
-        buff = timeForm(StellarSec);
+        buff = timeForm(/*StellarSec*/stellaris[0]);
         when.add(buff);
 
 
