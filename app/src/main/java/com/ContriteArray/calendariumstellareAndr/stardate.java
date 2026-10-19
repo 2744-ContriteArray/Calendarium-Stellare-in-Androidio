@@ -395,7 +395,7 @@ public class stardate
             // Prevent out of range error
             // Assign seconds to stellaris and return
             // Recursion is done, time to unwind!
-            stellaris[iter] = (int) S_t;
+            stellaris[0] = (int) S_t;
             return stellaris;
         }
 
@@ -407,7 +407,9 @@ public class stardate
             - Send remainder to next iter
          */
         // Send dividends to euclidDiv() and get results
-        int[] euclid = euclidDiv(S_t, SF[iter]);
+        int[] euclid = euclidDiv(S_t, SF[iter-1]);
+        System.out.println(("Finished calculating euclid[] = "+Arrays.toString(euclid)));
+
         // Assign quotient to stellaris
         stellaris[iter] = euclid[0];
         // Send remainder to next iter
@@ -707,7 +709,9 @@ public class stardate
 
         // RECURSIVE METHOD
         System.out.println("Declaring int[] stellaris and beginning recursion");
-        int[] stellaris = euc2StarREC(S_t, new int[5], this.datum.size()-2);
+        // Previously passed this.datum.size()-1 as iter. this caused issues on startup because there was no existing stardate in datum to make this work mathematically
+        //System.out.println(("Sending this.datum.size()-1 as iter\n iter = "+(this.datum.size()-1)));
+        int[] stellaris = euc2StarREC(S_t, new int[5], 4);
         System.out.println(("Recursion complete.\nstellaris = "+Arrays.toString(stellaris)));
 
         /*
