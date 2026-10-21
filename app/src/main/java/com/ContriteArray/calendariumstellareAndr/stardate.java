@@ -1,5 +1,7 @@
 package com.ContriteArray.calendariumstellareAndr;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.Math;
@@ -29,7 +31,7 @@ public class stardate
         }catch (IndexOutOfBoundsException e)
         {
             System.out.println(("ERROR IN setDatum(): "+e.getMessage()));
-            System.out.println(("STACK TRACE: "+e.getCause()));
+            System.out.println(("STACK TRACE: "+e.getStackTrace().toString()));
 //            throw new RuntimeException(e);
         }
     }
@@ -53,7 +55,7 @@ public class stardate
 
     // VARIABLES
     long[] SF = {60, 3600, 108000, 38880000}; // Unit factors for stardates
-    long[] GF = {60, 3600, 86400, 31557600}; // Unit factors for Gregorian units
+    long[] GF = {60, 3600, 86400, 31536000}; // Unit factors for Gregorian units
 
     private String charDelete(String thing){
         StringBuilder tinker = new StringBuilder();
@@ -354,23 +356,14 @@ public class stardate
         return results;
     }
 
-    // Initial iteration of euc2Jules
-    private int[] euc2JulesREC(long S_t){
-        //int[] euclid = euclidDiv(S_t, GF[0]);
-        int[] jules = new int[6];
-        // Euclidean division
-        //jules[0] = euclid[0];
-
-        return euc2JulesREC(S_t, jules, 0);
-    }
-
     // Recursive method for steps to calculate Julian units from S_t
-    private int[] euc2JulesREC(long S_t, int[] jules, int iter){
-        if(iter == jules.length-1){
+    @NonNull
+    private int[] euc2JulesREC(long S_t, @NonNull int[] jules, int iter){
+        if(iter <= 0){
             // Prevent out of range error
             // Assign Seconds to jules and return
             // Recursion is done, time to unwind!
-            jules[iter] = (int) S_t;
+            jules[0] = (int) S_t;
             return jules;
         }
         /*
@@ -381,15 +374,16 @@ public class stardate
             - send remainder to next iter
          */
         // Send dividends to euclidDiv() and get quotient and remainder back
-        int[] euclid = euclidDiv(S_t, GF[iter]);
+        int[] euclid = euclidDiv(S_t, GF[iter-1]);
         // Assign quotient to jules
         jules[iter] = euclid[0];
         // Send remainder to next iter
-        return euc2JulesREC(euclid[1], jules, iter+1);
+        return euc2JulesREC(euclid[1], jules, iter-1);
     }
 
     // CALCULATING DATES FROM S_t
     // Recursive method for the steps to calculate stardate from S_t
+    @NonNull
     private int[] euc2StarREC(long S_t, int[] stellaris, int iter){
         if(iter <= 0){
             // Prevent out of range error
@@ -458,7 +452,19 @@ public class stardate
 
         // CALCULATIONS
         System.out.println("ENTERING JULIAN CALCULATIONS");
-        int[] dates = euc2JulesREC(S_t);
+        int[] dates = euc2JulesREC(S_t, new int[5], 4); // Somehow evaluates to [35019527, 0, 0, 0, 0]
+        /*
+        10/20/26: changing above call from now-deleted initializer overload where the only param is S_t,
+        to remaining call with new int[5], and 4 as additional params. 5 because we need that many indices and 4 because we're gonna count down from the 4th index of the unit
+        factors array.
+
+        Contemplating another new parameter that increments *upwards* for to use with other arrays.
+
+        dates[] needs to be formatted so that
+        21h08m: Adjusted index calls on following lines to reflect the pattern of dates[] = [seconds, minutes, hours, days, years]
+           Changed iter operations in euc2JulesREC() to increment *downward* from 4. GF[] has 4 indices but we need to fill out 5 of em. keep an eye on iter!
+        21h16m: somehow returned dates = [0, 47, 20, 306, 14]. 14 years!? since 1970!?
+         */
         System.out.println(("int[] dates = "+Arrays.toString(dates)));
         /*
             // YEAR
@@ -492,18 +498,18 @@ public class stardate
         */
 
         // Convert to gregorian
-        dates[1] += 13;
-        if(dates[1] > 365){
+        dates[3] += 13;
+        if(dates[3] > 365){
             dates[1] =- 365;
             dates[0]++;
         }
 
         // MONTH CALCULATION
         int[] MonthLen = {31,28,31,30,31,30,31,31,30,31,30,31};
-        if(dates[0]%4==0){
+        if(dates[4]%4==0){
             MonthLen[1] = 29;
         }
-        int DayBuff = dates[1];
+        int DayBuff = dates[3];
             // MONTH
         for(int i=0; i<12; i++){
             if(DayBuff <=31){
@@ -522,7 +528,7 @@ public class stardate
         }
 
 
-        return LocalDateTime.of(dates[0],month,dayOfMonth,dates[2],dates[3],dates[4]);
+        return LocalDateTime.of(dates[4],month,dayOfMonth,dates[2],dates[1],dates[0]);
     }
 
     @Deprecated
