@@ -500,10 +500,12 @@ public class stardate
         // Convert to gregorian
         dates[3] += 13;
         if(dates[3] > 365){
-            dates[1] =- 365;
-            dates[0]++;
+            dates[3] =- 365;
+            dates[4]++;
         }
 
+        /*
+        deemed unnecessary
         // MONTH CALCULATION
         int[] MonthLen = {31,28,31,30,31,30,31,31,30,31,30,31};
         if(dates[4]%4==0){
@@ -526,9 +528,17 @@ public class stardate
         if(dayOfMonth <= 0){
             dayOfMonth = 1;
         }
+*/
 
+        // The calculations above yield the span of A DURATION not an explicit point in time
+        LocalDateTime gregDay = zeroDayGreg;
+        gregDay.plusSeconds(dates[0]); // Seconds
+        gregDay.plusMinutes(dates[1]); // Minutes
+        gregDay.plusHours(dates[2]); // Hours
+        gregDay.plusDays(dates[3]); // Days
+        gregDay.plusYears(dates[4]); // Years
 
-        return LocalDateTime.of(dates[4],month,dayOfMonth,dates[2],dates[1],dates[0]);
+        return gregDay;
     }
 
     @Deprecated
