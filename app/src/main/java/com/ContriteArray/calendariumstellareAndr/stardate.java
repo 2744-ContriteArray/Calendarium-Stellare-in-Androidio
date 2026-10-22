@@ -234,26 +234,6 @@ public class stardate
     }
 
 
-        // CALCULATING S_t
-    // Recursive function to contain steps for deriving S_t from stardate as part of conv2Greg()
-    // Takes an array (S_n) containing the compiled integers of the stardate, sans formatting
-    private long conv2Gstep(long[] S_n, int iter){
-        System.out.println(("conv2Gstep() iteration "+iter));
-
-        if(iter >= SF.length || iter >= S_n.length){
-            // If the iterator exceeds the amount of indices, then we've reached the end and
-                // don't want to throw an out of range error! Time to unwind the recursion!
-            System.out.println("RECURSION COMPLETE, RETURNING AND UNWINDING");
-            return 0;
-        }
-        System.out.println(("S_n[iter] = "+S_n[iter]));
-        System.out.println(("SF[iter] = "+SF[iter]));
-        long product = S_n[iter] * SF[iter];
-        System.out.println(("Product = "+product));
-
-        return product+conv2Gstep(S_n, iter+1);
-    }
-
     private long conv2Gstep(int[] S_n, int iter){
         // Polymorphic variant of above. Change in parameter types
         System.out.println(("conv2Gstep() iteration "+iter));
