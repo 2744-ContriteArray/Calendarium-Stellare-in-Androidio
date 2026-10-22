@@ -393,9 +393,6 @@ public class stardate
         //  CONVERSION METHODS
     public LocalDateTime conv2Greg(){
         LocalDateTime result; //final result
-        int month = 1; //int for the month to be assigned to result
-        int day; //int for the day to be assigned to result
-        int dayOfMonth = 1; // calendar day
         long S_t = 0;
 
         /*
@@ -432,18 +429,20 @@ public class stardate
 
         // CALCULATIONS
         System.out.println("ENTERING JULIAN CALCULATIONS");
-        int[] dates = euc2JulesREC(S_t, new int[5], 4); // Somehow evaluates to [35019527, 0, 0, 0, 0]
+        int[] dates = euc2JulesREC(S_t, new int[5], 4);
         /*
-        10/20/26: changing above call from now-deleted initializer overload where the only param is S_t,
-        to remaining call with new int[5], and 4 as additional params. 5 because we need that many indices and 4 because we're gonna count down from the 4th index of the unit
-        factors array.
+        10/20/26:
+            changing above call from now-deleted initializer overload where the only param is S_t,
+            to remaining call with new int[5], and 4 as additional params. 5 because we need that many indices and 4 because we're gonna count down from the 4th index of the unit
+            factors array.
 
-        Contemplating another new parameter that increments *upwards* for to use with other arrays.
+            Contemplating another new parameter that increments *upwards* for to use with other arrays.
 
-        dates[] needs to be formatted so that
-        21h08m: Adjusted index calls on following lines to reflect the pattern of dates[] = [seconds, minutes, hours, days, years]
-           Changed iter operations in euc2JulesREC() to increment *downward* from 4. GF[] has 4 indices but we need to fill out 5 of em. keep an eye on iter!
-        21h16m: somehow returned dates = [0, 47, 20, 306, 14]. 14 years!? since 1970!?
+            21h08m: Adjusted index calls on following lines to reflect the pattern of dates[] = [seconds, minutes, hours, days, years]
+            Changed iter operations in euc2JulesREC() to increment *downward* from 4. GF[] has 4 indices, but we need to fill out 5 of em. keep an eye on iter!
+            21h16m: somehow returned dates = [0, 47, 20, 306, 14]. 14 years!? since 1970!?
+        10/22/26:
+            14h06: Could above array formatting be mislabeled? could dates[1] contain the year calculation?
          */
         System.out.println(("int[] dates = "+Arrays.toString(dates)));
         /*
@@ -511,14 +510,14 @@ public class stardate
 */
 
         // The calculations above yield the span of A DURATION not an explicit point in time
-        LocalDateTime gregDay = zeroDayGreg;
-        gregDay.plusSeconds(dates[0]); // Seconds
-        gregDay.plusMinutes(dates[1]); // Minutes
-        gregDay.plusHours(dates[2]); // Hours
-        gregDay.plusDays(dates[3]); // Days
-        gregDay.plusYears(dates[4]); // Years
+        result = zeroDayGreg;
+        result.plusSeconds(dates[0]); // Seconds
+        result.plusMinutes(dates[1]); // Minutes
+        result.plusHours(dates[2]); // Hours
+        result.plusDays(dates[3]); // Days
+        result.plusYears(dates[4]); // Years
 
-        return gregDay;
+        return result;
     }
 
     @Deprecated
